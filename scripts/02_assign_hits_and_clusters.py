@@ -16,7 +16,10 @@ from Bio import SeqIO
 
 #Load input dataframe
 df = pd.read_csv(
-    os.path.join("input_data","figure_1_manual_testing_results.csv"))
+    os.path.join(
+        "input_data",
+        "figure_1_manual_testing_results.csv"),
+    index_col="Unnamed: 0")
 
 #Drop protein folding domains
 df = df[df["AD or PFD"]=="AD"].reset_index(drop=True) 
@@ -46,4 +49,4 @@ df.to_csv(
         "output",
         "preprocessing",
         "02_manually_tested_hits_and_clusters_assigned.csv")
-    ,index=False)
+    )
