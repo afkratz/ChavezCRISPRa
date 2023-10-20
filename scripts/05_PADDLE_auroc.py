@@ -6,34 +6,26 @@ All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
 """
+
+import pandas as pd
 import os
 from pathlib import Path
 import sys
 os.chdir(Path(__file__).resolve().parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
-from src import paddle_interface as pi
+
+from src import auroc_utils
+
 import pandas as pd
 df = pd.read_csv(
         os.path.join(
         "output",
         "preprocessing",
-        "03_manually_tested_biochem_charachterized.csv"),
+        "04_manually_tested_paddle_charachterized.csv"),
         index_col="Unnamed: 0"
     )
 
-from progress.bar import Bar
-bar = Bar("PADDLE predicting...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
-for i in range(len(df)):
-    bar.next()
-    res = pi.process_sequences(df.at[i,"AA sequence"],accept_short=True)[0]
-    if i==0:
-        for k in res:
-            df[k]=''
-    for k in res:
-        df.at[i,k]=str(res[k])
-df.to_csv(
-        os.path.join(
-        "output",
-        "preprocessing",
-        "04_manually_tested_paddle_charachterized.csv")
-    )
+x = df["Score"].to_list()
+y = df["Hit on any"]
+fpr,tpr = auroc_utils.get_FPR_TPR(x,y)
+print(auroc_utils.calculate_auc(fpr,tpr))

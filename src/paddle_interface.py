@@ -69,6 +69,12 @@ Returns:
     
     ["Strong medium indexes"], list[(int,int)]: List of tuples of ints,
         where each tuple is the (start,end) of a medium domain. 0-indexed
+
+    ["Score"], int: A value that quantifies the confidence of PADDLE 
+        that this sequence is a hit. If ["Is short"], it is the average
+        of the score for the tiles. Otherwise, it is the maximum score 
+        that is true for 5 consecuitive tiles. If this is over 6, then 
+        ["Has strong hit"] should be True.
 """
 
 from pathlib import Path
@@ -166,8 +172,11 @@ def process_prediction(pred:np.ndarray)->dict:
 
         results["Strong domain indexes"]=list(map(lambda win:(win[0],win[1]+53),strong_windows))
         results["Medium domain indexes"]=list(map(lambda win:(win[0],win[1]+53),medium_windows))
+
+        results["Score"] = score
+
         return results
-    
+    ###### - end of "Is short" section - #####
     smoothed_prediction = np.array(
         [np.mean(
             pred[
@@ -209,6 +218,14 @@ def process_prediction(pred:np.ndarray)->dict:
     results["Strong domain indexes"]=list(map(lambda win:(win[0],win[1]+53),condensed_strong_windows))
     results["Medium domain indexes"]=list(map(lambda win:(win[0],win[1]+53),checked_medium_windows))
     
+    #Find the highest 
+    score = max(
+        map(lambda x:min(x),
+            [smoothed_prediction[i:i+5] for i in range(0,len(smoothed_prediction)-4)]
+            )
+        )
+
+    results["Score"] = score
 
     return results
 
