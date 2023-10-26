@@ -1,0 +1,5 @@
+trait name,window start,window end,header,tail,length,rename?,rename dict
+BC1,50,83,CTAGGG,AACACTG,"6,8",1,screen_data/traits/bipartite_screen_decode.csv
+UMI1,73,105,ATTAG,GCTAG,6,0,
+BC2,10,40,CTAGGG,AACACTG,"6,8",1,screen_data/traits/bipartite_screen_decode.csv
+UMI2,40,70,ATTAG,GCTAG,6,0,

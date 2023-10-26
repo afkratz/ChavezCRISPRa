@@ -1,0 +1,5 @@
+trait name,in read,window start,window end,header,tail,flexible,length,rename?,rename dict
+BC3,f,19,30,TAGGG,AACAC,1,"6,8",1,screen_data/traits/tripartite_screen_decode.csv
+BC2,f,56,76,TAGGG,AACAC,1,"6,8",1,screen_data/traits/tripartite_screen_decode.csv
+UMI2,r,16,45,ATTAG,GCTAG,0,6,0,
+BC1,r,38,64,TAGGG,AACAC,0,"6,8",1,screen_data/traits/tripartite_screen_decode.csv

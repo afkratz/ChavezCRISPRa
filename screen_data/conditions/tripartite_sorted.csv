@@ -1,0 +1,33 @@
+condition,fw reads,rv reads
+EPCAM_1_bin 1,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 1_rv.fastq.gz
+EPCAM_1_bin 2,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 2_rv.fastq.gz
+EPCAM_1_bin 3,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 3_rv.fastq.gz
+EPCAM_1_bin 4,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_1_bin 4_rv.fastq.gz
+EPCAM_1_NS,screen_data/reads/tripartite_sorted_reads/EPCAM_1_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_1_NS_rv.fastq.gz
+EPCAM_2_bin 1,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 1_rv.fastq.gz
+EPCAM_2_bin 2,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 2_rv.fastq.gz
+EPCAM_2_bin 3,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 3_rv.fastq.gz
+EPCAM_2_bin 4,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin 4_rv.fastq.gz
+EPCAM_2_NS,screen_data/reads/tripartite_sorted_reads/EPCAM_2_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_NS_rv.fastq.gz
+CXCR4_1_bin 1_half1,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 1_half1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 1_half1_rv.fastq.gz
+CXCR4_1_bin 1_half2,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 1_half2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 1_half2_rv.fastq.gz
+CXCR4_1_bin 1_mixed,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 1_mixed_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 1_mixed_rv.fastq.gz
+CXCR4_1_bin 2,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 2_rv.fastq.gz
+CXCR4_1_bin 3,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 3_rv.fastq.gz
+CXCR4_1_bin 4,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin 4_rv.fastq.gz
+CXCR4_1_NS,screen_data/reads/tripartite_sorted_reads/CXCR4_1_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_NS_rv.fastq.gz
+CXCR4_2_bin 1,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 1_rv.fastq.gz
+CXCR4_2_bin 2,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 2_rv.fastq.gz
+CXCR4_2_bin 3,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 3_rv.fastq.gz
+CXCR4_2_bin 4,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_2_bin 4_rv.fastq.gz
+CXCR4_2_NS,screen_data/reads/tripartite_sorted_reads/CXCR4_2_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_2_NS_rv.fastq.gz
+Reporter_1_bin 1,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 1_rv.fastq.gz
+Reporter_1_bin 2,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 2_rv.fastq.gz
+Reporter_1_bin 3,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 3_rv.fastq.gz
+Reporter_1_bin 4,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_1_bin 4_rv.fastq.gz
+Reporter_1_NS,screen_data/reads/tripartite_sorted_reads/Reporter_1_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_1_NS_rv.fastq.gz
+Reporter_2_bin 1,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 1_rv.fastq.gz
+Reporter_2_bin 2,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 2_rv.fastq.gz
+Reporter_2_bin 3,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 3_rv.fastq.gz
+Reporter_2_bin 4,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_2_bin 4_rv.fastq.gz
+Reporter_2_NS,screen_data/reads/tripartite_sorted_reads/Reporter_2_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/Reporter_2_NS_rv.fastq.gz
