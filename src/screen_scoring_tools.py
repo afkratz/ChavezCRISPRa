@@ -16,7 +16,7 @@ def load_dfs(path,targets,replicates,bins):
         for r in replicates:
             dfs[t][r]={}
             for b in bins:
-                df=pd.read_csv(os.path.join(path,t+"_"+r+"_"+b+".csv"),index_col="Unnamed: 0")
+                df=pd.read_csv(os.path.join(path,t+"_"+r+"_"+b+".csv"))
                 dfs[t][r][b]=df
     return dfs
 
@@ -95,6 +95,13 @@ def bin_on_traits(dfs,traits,targets,replicates,bins):
                 dfs[t][r][b]=pd.DataFrame(dics).reset_index(drop=True)
 
 def combine_bins(dfs,targets,replicates,bins):
+    columns = dfs[targets[0]][replicates[0]][bins[0]].columns
+    for t in targets:
+        for r in replicates:
+            for b in bins:
+                assert set(dfs[t][r][b].columns.values)==set(columns.values)
+                
+
     condensed_dfs={}
     for t in targets:
         condensed_dfs[t]={}
@@ -111,7 +118,7 @@ def combine_bins(dfs,targets,replicates,bins):
                 df=dfs[t][r][b]
                 for i in range(0,len(df)):
                     label=""
-                    for col in df.columns:
+                    for col in dfs[t][r][bins[0]].columns:
                         if col=="count":
                             continue
                         else:
@@ -135,7 +142,7 @@ def discard_combined_bin_counts(dfs,mincount,targets,replicates):
             df=dfs[t][r]
             keep_indexes=[]
             for i in range(0,len(dfs[t][r])):
-                if df.at[i,"bin 1"]+df.at[i,"bin 2"]+df.at[i,"bin 3"]+df.at[i,"bin 4"]>mincount:
+                if df.at[i,"bin_1"]+df.at[i,"bin_2"]+df.at[i,"bin_3"]+df.at[i,"bin_4"]>mincount:
                     keep_indexes.append(i)
             dfs[t][r]=dfs[t][r].iloc[keep_indexes].reset_index(drop=True)
 
@@ -145,10 +152,10 @@ def discard_min_bin_counts(dfs,mincount,targets,replicates):
             df=dfs[t][r]
             keep_indexes=[]
             for i in range(0,len(dfs[t][r])):
-                if df.at[i,"bin 1"]>mincount:
-                    if df.at[i,"bin 2"]>mincount:
-                        if df.at[i,"bin 3"]>mincount:
-                            if df.at[i,"bin 4"]>mincount:
+                if df.at[i,"bin_1"]>mincount:
+                    if df.at[i,"bin_2"]>mincount:
+                        if df.at[i,"bin_3"]>mincount:
+                            if df.at[i,"bin_4"]>mincount:
                                 keep_indexes.append(i)
             dfs[t][r]=dfs[t][r].iloc[keep_indexes].reset_index(drop=True)
 
@@ -165,8 +172,8 @@ def add_FluorescentProductScore(dfs,mfis,targets,replicates,bins):
                 for b in bins:
                     if b=="NS":continue
                     score+=mfis.at[t+"_"+r,b]*dfs[t][r].at[i,b]
-                if(sum(dfs[t][r].iloc[i][["bin 1","bin 2","bin 3","bin 4"]])>0):
-                    score=score/sum(dfs[t][r].iloc[i][["bin 1","bin 2","bin 3","bin 4"]])
+                if(sum(dfs[t][r].iloc[i][["bin_1","bin_2","bin_3","bin_4"]])>0):
+                    score=score/sum(dfs[t][r].iloc[i][["bin_1","bin_2","bin_3","bin_4"]])
                     dfs[t][r].at[i,"FluorescentProductScore"]=score
 
 def drop_item(dfs,trait,targets,replicates):
@@ -258,68 +265,3 @@ def fill_in_combinatorial_results(df,columns,entries):
             full_df.at["_".join(label),c]=df.at[index,c]
     return full_df
 
-
-def test_2():
-    targets=["EPCAM","CXCR4","Reporter"]
-    replicates=["1","2"]
-    bins=["bin 1","bin 2","bin 3","bin 4","NS"]
-    dfs = load_dfs("output/screen_results/processed_reads/bipartite_sorted",targets,replicates,bins)
-    print('loaded')
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
-    discard_errors(dfs,targets,replicates,bins)
-    print('errors discarded')
-    discard_negative_controls(dfs,['BC1','BC2'],barcodes,targets,replicates,bins)
-    discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
-    print('negatives discarded')
-    umi_traits = {"UMI1":0,"UMI2":2}
-    bin_on_traits(dfs,umi_traits,targets,replicates,bins)
-    print('binned on umis')
-    normalize_read_counts(dfs,targets,replicates,bins)
-    print('normalized')
-    dfs=combine_bins(dfs,targets,replicates,bins)
-    discard_combined_bin_counts(dfs,20,targets,replicates)
-    mfis=load_mfis("screen_Data/bin_mfis/p2_sorted_mfi.csv")
-    add_FluorescentProductScore(dfs,mfis,targets,replicates,bins)
-    print('scored')
-    drop_item(dfs,"bin 1",targets,replicates)
-    drop_item(dfs,"bin 2",targets,replicates)
-    drop_item(dfs,"bin 3",targets,replicates)
-    drop_item(dfs,"bin 4",targets,replicates)
-    drop_item(dfs,"NS",targets,replicates)
-    mean_x_over_y(dfs,"FluorescentProductScore","UMI2",3,targets,replicates,bins)
-
-    odf=combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
-    odf = fill_in_combinatorial_results(odf,["BC1","BC2"],barcodes)
-    odf.to_csv("P2_sorted_scored.csv",index=False)
-
-def test_3():
-    targets=["EPCAM","CXCR4","Reporter"]
-    replicates=["1","2"]
-    bins=["bin 1","bin 2","bin 3","bin 4","NS"]
-    dfs = load_dfs("output/screen_results/processed_reads/tripartite_sorted",targets,replicates,bins)
-    print('loaded')
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
-    discard_errors(dfs,targets,replicates,bins)
-    print('errors discarded')
-    discard_negative_controls(dfs,['BC1','BC2','BC3'],barcodes,targets,replicates,bins)
-    discard_high_counts_percentage_of_total(dfs,0.01,targets,replicates,bins)
-    print('negatives discarded')
-    umi_traits = {"UMI2":0}
-    bin_on_traits(dfs,umi_traits,targets,replicates,bins)
-    print('binned on umis')
-    normalize_read_counts(dfs,targets,replicates,bins)
-    print('normalized')
-    dfs=combine_bins(dfs,targets,replicates,bins)
-    discard_min_bin_counts(dfs,0,targets,replicates)
-    discard_combined_bin_counts(dfs,493,targets,replicates)
-    mfis=load_mfis("screen_Data/bin_mfis/p3_sorted_mfi.csv")
-    add_FluorescentProductScore(dfs,mfis,targets,replicates,bins)
-    print('scored')
-    drop_item(dfs,"bin 1",targets,replicates)
-    drop_item(dfs,"bin 2",targets,replicates)
-    drop_item(dfs,"bin 3",targets,replicates)
-    drop_item(dfs,"bin 4",targets,replicates)
-    drop_item(dfs,"NS",targets,replicates)
-    odf=combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
-    odf = fill_in_combinatorial_results(odf,["BC1","BC2","BC3"],barcodes)
-    odf.to_csv("P3_sorted_scored.csv",index=False)

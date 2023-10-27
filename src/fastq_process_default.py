@@ -5,7 +5,7 @@ Copyright 2023 Alexander Kratz, Alejandro Chavez lab
 All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
-Provides functions used to process the tripartite screen.
+Provides functions used to process the single domain and bipartite screens
 Due to differences in the read structure of the (single&bipartite) vs tripartite
 screens, we broke the pipeline up into slightly different forms for the tripartite
 screen. 
@@ -27,7 +27,7 @@ def revcom(ori):
     return ori.upper().translate(trans)[::-1]
 
 class ScreenReads:
-    def __init__(self,fw_read_file=None,rv_read_file=None,concat_reads:bool = True):
+    def __init__(self,fw_read_file=None,rv_read_file=None):
         if fw_read_file==None and rv_read_file==None:
             raise ValueError("Need to pass in at least one of fw_read_file or rv_read_file")
         self._has_fw=False
@@ -69,12 +69,11 @@ class ScreenReads:
             rv = revcom(str(self._rv_records.__next__().seq))
         else:
             rv = ""
-        return (fw,rv)
+        return fw+rv
 
 class Rule:
-    def __init__(self,name,in_read,header,tail,length,window,rename,rename_dict):
+    def __init__(self,name,header,tail,length,window,rename,rename_dict):
         self.name=name
-        self.in_read=in_read
         self.header=header
         self.tail=tail
         self.length=length
@@ -85,48 +84,37 @@ class Rule:
     def __repr__(self):
         return(self.header+"_"+self.name+"_"+self.tail+"{}".format(self.length))
 
-def analyze_read(read_pair:Tuple[str,str],rules:List[Rule])->Tuple[str]:
+def analyze_read(read:str,rules:List[Rule])->Tuple[str]:
     key = []
     for rule in rules:
-        if rule.in_read=='f':
-            read = read_pair[0]
-        else:
-            assert rule.in_read=='r'
-            read = read_pair[1]
         substring = read[rule.window[0]:rule.window[1]]
-        if rule.rename == 1:
-            found=[]
-            for dict_key in rule.rename_dict:
-                if dict_key in substring:
-                    found.append(rule.rename_dict[dict_key])
-            if len(found)==0:
-                key.append("No BCs in window")
-                continue
-            if len(found)==1:
-                key.append(found[0])
-                continue
-            if len(found)>1:
-                key.append("Multiple BC")
+        header = rule.header
+        if header not in substring:
+            key.append("Missing header")
+            continue
+        removed_header = substring.split(header)[1]
+        
+        tail = rule.tail
+        if tail not in removed_header:
+            key.append("Missing tail")
+            continue
+        removed_tail = tail.join(removed_header.split(tail)[:-1])
+
+        if len(removed_tail) not in rule.length:
+            key.append("Length failed")
+            continue
+
+        if rule.rename==1:
+            if removed_tail in rule.rename_dict:
+                key.append(
+                    rule.rename_dict[removed_tail]
+                )
+            else:
+                key.append("Unknown BC")
                 continue
         else:
-            header = rule.header
-            if header not in substring:
-                key.append("Missing header")
-                continue
-            removed_header = substring.split(header)[1]
-        
-            tail = rule.tail
-            if tail not in removed_header:
-                key.append("Missing tail")
-                continue
-            removed_tail = tail.join(removed_header.split(tail)[:-1])
-
-            if len(removed_tail) not in rule.length:
-                key.append("Length failed")
-                continue        
-
             key.append(removed_tail)
-
+            continue
     assert len(key)==len(rules)
     return tuple(key)
 
@@ -134,10 +122,10 @@ def analyze_reads(read_handle:ScreenReads,rules,condition_name = None):
     if condition_name!=None:
         spinner = sp.PieSpinner("Processing {}...%(index)d k reads ... %(elapsed)ds".format(condition_name))
     results = {}
-    for read_pair in read_handle:
+    for read in read_handle:
         if condition_name!=None and read_handle.n_read%25_000==0:
             spinner.next(25)
-        key = analyze_read(read_pair,rules)
+        key = analyze_read(read,rules)
         if key not in results:
             results[key]=0
         results[key]+=1
@@ -156,11 +144,11 @@ def save_results(res:dict,rules:List[Rule],condition_name:str):
         odf['Errors'][i]=0
         for j,rule in enumerate(rules):
             odf[rule.name][i]=key[j]
-            if key[j] in ["No BCs in window","Multiple BC","Missing header","Length failed","Missing tail","Unknown BC"]:
+            if key[j] in ["Missing header","Length failed","Missing tail","Unknown BC"]:
                 odf['Errors'][i]+=1
         odf["count"][i]=res[key]
     odf = pd.DataFrame(odf)
-    odf.to_csv(condition_name+".csv")
+    odf.to_csv(condition_name+".csv",index=False)
 
 def df_to_rules(df:pd.DataFrame)->List[Rule]:
     rules = []
@@ -186,7 +174,6 @@ def df_to_rules(df:pd.DataFrame)->List[Rule]:
         rules.append(
             Rule(
                 name=df.at[i,"trait name"],
-                in_read=df.at[i,"in read"],
                 header=df.at[i,"header"],
                 tail=df.at[i,"tail"],
                 length=length,
