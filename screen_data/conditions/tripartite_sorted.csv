@@ -9,7 +9,7 @@ EPCAM_2_bin_2,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin_2_fw.fastq.g
 EPCAM_2_bin_3,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin_3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin_3_rv.fastq.gz
 EPCAM_2_bin_4,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin_4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_bin_4_rv.fastq.gz
 EPCAM_2_NS,screen_data/reads/tripartite_sorted_reads/EPCAM_2_NS_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/EPCAM_2_NS_rv.fastq.gz
-CXCR4_1_bin_1,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_1_mixed_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_1_mixed_rv.fastq.gz
+CXCR4_1_bin_1,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_1_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_1_rv.fastq.gz
 CXCR4_1_bin_2,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_2_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_2_rv.fastq.gz
 CXCR4_1_bin_3,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_3_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_3_rv.fastq.gz
 CXCR4_1_bin_4,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_4_fw.fastq.gz,screen_data/reads/tripartite_sorted_reads/CXCR4_1_bin_4_rv.fastq.gz
