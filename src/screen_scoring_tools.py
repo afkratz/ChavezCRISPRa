@@ -177,7 +177,6 @@ def combine_bins(dfs,targets,replicates,bins):
             for b in bins:
                 assert set(dfs[t][r][b].columns.values)==set(columns.values)
                 
-
     condensed_dfs={}
     for t in targets:
         condensed_dfs[t]={}
@@ -251,6 +250,34 @@ def add_FluorescentProductScore(dfs,mfis,targets,replicates,bins):
                 if(sum(dfs[t][r].iloc[i][["bin_1","bin_2","bin_3","bin_4"]])>0):
                     score=score/sum(dfs[t][r].iloc[i][["bin_1","bin_2","bin_3","bin_4"]])
                     dfs[t][r].at[i,"FluorescentProductScore"]=score
+
+def add_ToxicityScore(df,pre_selection,post_selection,tox_column_name:str,psuedoreads:int=1):
+    """
+    Calculates toxicity score as 
+    log2(
+        pre_selection_normalized_reads + 1 psuedoread
+        ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+        post_selection_normalized_reads + 1 psuedoread
+        )
+    The psuedoreads are added to every value, and are included
+    to limit the impact of low-read counts, without which,
+    certain activators reach infinite toxicity 
+    """
+    if isinstance(pre_selection,str):
+        pre_selection=[pre_selection]
+
+    if isinstance(post_selection,str):
+        post_selection=[post_selection]
+    
+    numerator = df[pre_selection].values.mean(axis=1) + psuedoreads
+    denominator = df[post_selection].values.mean(axis=1) + psuedoreads
+
+    df[tox_column_name]=np.log2(numerator / denominator)
+
+def calculate_zscore(df,input_col,output_col):
+    mean = df[input_col].mean()
+    std_dev = df[input_col].std()
+    df[output_col]=(df[input_col]-mean)/std_dev
 
 def drop_item(dfs,trait,targets,replicates):
     for t in targets:

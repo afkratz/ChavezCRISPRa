@@ -77,6 +77,7 @@ def single_domain_score():
     odf=sst.combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
     odf = sst.fill_in_combinatorial_results(odf,["BC1"],barcodes)
     spinner.next()
+    
     odf.to_csv(
         os.path.join(
             "output",
@@ -142,10 +143,77 @@ def single_domain_toxicity():
     spinner.next()
 
     dfs=sst.combine_bins(dfs,targets,replicates,bins)
+
     spinner.next()
     for t in targets:
         for r in replicates:
-            sst.fill_in_combinatorial_results(dfs[t][r],["BC1"],barcodes).to_csv("single_domain_plasmid_and_unsorted_normalized_reads.csv",index=False)
+            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_-L2FC")
+            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_-L2FC")
+            sst.calculate_zscore(dfs[t][r],"EPCAM_-L2FC","EPCAM_Tox_Zscore")
+            sst.calculate_zscore(dfs[t][r],"CXCR4_-L2FC","CXCR4_Tox_Zscore")
+            sst.fill_in_combinatorial_results(dfs[t][r],["BC1"],barcodes).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_toxicity", 
+                    "single_domain_toxicity.csv"        
+                     ),index=False)
+    spinner.finish()
+
+def single_domain_read_counts():
+    spinner = sp.PieSpinner("Generating single domain read counts... %(elapsed)ds")
+    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    targets=["EPCAM","CXCR4","Reporter"]
+    replicates=["1","2"]
+    bins=["bin_1","bin_2","bin_3","bin_4","NS"]
+
+    dfs = sst.load_dfs(
+        os.path.join("output","screen_results","processed_reads","single_domain_sorted"),
+        targets,replicates,bins)
+    spinner.next()
+    sst.discard_errors(dfs,targets,replicates,bins)
+    spinner.next()
+
+    sst.discard_negative_controls(dfs,["BC1"],barcodes,targets,replicates,bins)
+    spinner.next()
+
+    sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
+    spinner.next()
+
+    umi_traits={"UMI1":0}
+    sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
+    spinner.next()
+
+    raw_read_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.normalize_read_counts(dfs,targets,replicates,bins)
+    normalized_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    spinner.next()
+
+    if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts","single_domain")):
+        os.mkdir(
+            os.path.join("output","screen_results","screen_bin_counts","single_domain"))
+    for t in targets:
+        for r in replicates:
+            sst.fill_in_combinatorial_results(raw_read_dfs[t][r],["BC1"],barcodes).fillna(0).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_bin_counts",
+                    "single_domain",
+                    t+"_"+r+"_raw_counts.csv"
+                ),
+                index=False
+            )
+            sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1"],barcodes).fillna(0).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_bin_counts",
+                    "single_domain",
+                    t+"_"+r+"_normalized_counts.csv"
+                ),
+                index=False
+            )
     spinner.finish()
 
 def bipartite_score():
@@ -276,7 +344,73 @@ def bipartite_toxicity():
 
     for t in targets:
         for r in replicates:
-            sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2"],barcodes).to_csv("bipartite_plasmid_and_unsorted_normalized_reads.csv",index=False)
+            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_-L2FC")
+            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_-L2FC")
+            sst.calculate_zscore(dfs[t][r],"EPCAM_-L2FC","EPCAM_Tox_Zscore")
+            sst.calculate_zscore(dfs[t][r],"CXCR4_-L2FC","CXCR4_Tox_Zscore")
+            sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2"],barcodes).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_toxicity", 
+                    "bipartite_screen_toxicity.csv"        
+                     ),index=False)
+    spinner.finish()
+
+def bipartite_read_counts():
+    spinner = sp.PieSpinner("Generating bipartite read counts... %(elapsed)ds")
+    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    targets=["EPCAM","CXCR4","Reporter"]
+    replicates=["1","2"]
+    bins=["bin_1","bin_2","bin_3","bin_4","NS"]
+
+    dfs = sst.load_dfs(
+        os.path.join("output","screen_results","processed_reads","bipartite_sorted"),
+        targets,replicates,bins)
+    spinner.next()
+    sst.discard_errors(dfs,targets,replicates,bins)
+    spinner.next()
+
+    sst.discard_negative_controls(dfs,["BC1","BC2"],barcodes,targets,replicates,bins)
+    spinner.next()
+
+    sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
+    spinner.next()
+
+    umi_traits={"UMI1":0,"UMI2":0}
+    sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
+    spinner.next()
+
+    raw_read_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.normalize_read_counts(dfs,targets,replicates,bins)
+    normalized_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    spinner.next()
+
+    if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts","bipartite_screen")):
+        os.mkdir(
+            os.path.join("output","screen_results","screen_bin_counts","bipartite_screen"))
+    for t in targets:
+        for r in replicates:
+            sst.fill_in_combinatorial_results(raw_read_dfs[t][r],["BC1","BC2"],barcodes).fillna(0).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_bin_counts",
+                    "bipartite_screen",
+                    t+"_"+r+"_raw_counts.csv"
+                ),
+                index=False
+            )
+            sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1","BC2"],barcodes).fillna(0).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_bin_counts",
+                    "bipartite_screen",
+                    t+"_"+r+"_normalized_counts.csv"
+                ),
+                index=False
+            )
     spinner.finish()
 
 def tripartite_score():
@@ -305,12 +439,13 @@ def tripartite_score():
     sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
     spinner.next()
 
+
     sst.normalize_read_counts(dfs,targets,replicates,bins)
     spinner.next()
 
     dfs=sst.combine_bins(dfs,targets,replicates,bins)
+        
     spinner.next()
-
     sst.discard_min_bin_counts(dfs,0,targets,replicates)
     sst.discard_combined_bin_counts(dfs,493,targets,replicates)
     spinner.next()
@@ -331,10 +466,10 @@ def tripartite_score():
     sst.drop_item(dfs,"bin_4",targets,replicates)
     sst.drop_item(dfs,"NS",targets,replicates)
 
-    odf=sst.combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
+    odf = sst.combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
     odf = sst.fill_in_combinatorial_results(odf,["BC1","BC2","BC3"],barcodes)
     spinner.next()
-
+    
     odf.to_csv(
         os.path.join(
             "output",
@@ -408,17 +543,98 @@ def tripartite_toxicity():
     spinner.next()
     for t in targets:
         for r in replicates:
-            sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2","BC3"],barcodes).to_csv("tripartite_plasmid_and_unsorted_normalized_reads.csv",index=False)
+            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_-L2FC")
+            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_-L2FC")
+            sst.calculate_zscore(dfs[t][r],"EPCAM_-L2FC","EPCAM_Tox_Zscore")
+            sst.calculate_zscore(dfs[t][r],"CXCR4_-L2FC","CXCR4_Tox_Zscore")
+            sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2","BC3"],barcodes).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_toxicity", 
+                    "tripartite_screen_toxicity.csv"        
+                     ),index=False)
+            
+    spinner.finish()
+
+def tripartite_read_counts():
+    spinner = sp.PieSpinner("Generating tripartite read counts... %(elapsed)ds")
+    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    targets=["EPCAM","CXCR4","Reporter"]
+    replicates=["1","2"]
+    bins=["bin_1","bin_2","bin_3","bin_4","NS"]
+
+    dfs = sst.load_dfs(
+        os.path.join("output","screen_results","processed_reads","tripartite_sorted"),
+        targets,replicates,bins)
+    spinner.next()
+    sst.discard_errors(dfs,targets,replicates,bins)
+    spinner.next()
+
+    sst.discard_negative_controls(dfs,["BC1","BC2","BC3"],barcodes,targets,replicates,bins)
+    spinner.next()
+
+    sst.discard_high_counts_percentage_of_total(dfs,0.01,targets,replicates,bins)
+    spinner.next()
+
+    umi_traits={"UMI2":0}
+    sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
+    spinner.next()
+
+    raw_read_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.normalize_read_counts(dfs,targets,replicates,bins)
+    normalized_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    spinner.next()
+
+    if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts","tripartite_screen")):
+        os.mkdir(
+            os.path.join("output","screen_results","screen_bin_counts","tripartite_screen"))
+    for t in targets:
+        for r in replicates:
+            sst.fill_in_combinatorial_results(raw_read_dfs[t][r],["BC1","BC2","BC3"],barcodes).fillna(0).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_bin_counts",
+                    "tripartite_screen",
+                    t+"_"+r+"_raw_counts.csv"
+                ),
+                index=False
+            )
+            sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1","BC2","BC3"],barcodes).fillna(0).to_csv(
+                os.path.join(
+                    "output",
+                    "screen_results",
+                    "screen_bin_counts",
+                    "tripartite_screen",
+                    t+"_"+r+"_normalized_counts.csv"
+                ),
+                index=False
+            )
     spinner.finish()
 
 
 if __name__=="__main__":
+    if not os.path.exists(
+        os.path.join("output","screen_results","screen_scores")
+            ):
+        os.mkdir(os.path.join("output","screen_results","screen_scores"))
+    if not os.path.exists(
+        os.path.join("output","screen_results","screen_toxicity")
+            ):
+        os.mkdir(os.path.join("output","screen_results","screen_toxicity"))
+    if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts")):
+        os.mkdir(
+            os.path.join("output","screen_results","screen_bin_counts"))
     single_domain_score()
     single_domain_toxicity()
+    single_domain_read_counts()
     bipartite_score()
     bipartite_toxicity()
+    bipartite_read_counts()
     tripartite_score()
     tripartite_toxicity()
+    tripartite_read_counts()
     
     
     
