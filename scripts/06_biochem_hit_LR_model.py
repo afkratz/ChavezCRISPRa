@@ -14,24 +14,31 @@ import sys
 os.chdir(Path(__file__).resolve().parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
 
-from src import auroc_utils
+from src import logistic_regression_utils as lru
 
-import pandas as pd
 df = pd.read_csv(
-        os.path.join(
+    os.path.join(
         "output",
         "prescreen",
-        "04_manually_tested_paddle_charachterized.csv"),
-        index_col="Unnamed: 0"
-    )
+        "03_manually_tested_biochem_charachterized.csv"
+    ),
+    index_col='Unnamed: 0'
+)
 
-x = df["Score"].to_list()
-y = df["Hit on any"]
-fpr,tpr = auroc_utils.get_FPR_TPR(x,y)
-df=auroc_utils.to_df(fpr,tpr)
-df.to_csv(os.path.join(
-    "output",
-    "prescreen",
-    "05_paddle_auroc.csv"
-))
-print(auroc_utils.calculate_auc(fpr,tpr))
+result = lru.get_lr(
+    df=df,
+    independent_variables=[
+            'NCPR',
+            'Hydropathy',
+            'Omega',
+            'Disorder promoting fraction',
+            'Kappa'],
+    dependent_variable='Hit on any',
+)
+
+result.to_csv(
+    os.path.join(
+        "output",
+        "prescreen",
+        "06_LR_Model_Hit_on_any.csv"
+    ))

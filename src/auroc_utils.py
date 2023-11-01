@@ -7,6 +7,7 @@ MIT license
 --------------------------------------------------------------------------------
 """
 import numpy as np
+import pandas as pd
 from sklearn.metrics import auc
 def get_FPR_TPR(x:list,y:list):
     #In case someone passes in an np.ndarray we can listify it
@@ -41,3 +42,14 @@ def get_FPR_TPR(x:list,y:list):
 
 def calculate_auc(fpr,tpr):
     return auc(fpr,tpr)
+
+def to_df(fpr,tpr):
+    assert len(fpr)==len(tpr)
+    auc=calculate_auc(fpr,tpr)
+    if auc<0.5:
+        print("--Warning, AUC is below 0.5 - sign may have been swapped--")
+    
+    return pd.DataFrame({
+        'False positives':fpr,
+        'True positives':tpr,
+    })

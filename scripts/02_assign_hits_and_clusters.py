@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 os.chdir(Path(__file__).resolve().parent.parent)
 import pandas as pd
+import numpy as np
 import glob
 from Bio import SeqIO
 
@@ -35,9 +36,10 @@ df['Hit on any']=df[["Hit on EPCAM","Hit on CXCR4","Hit on tdTomato"]].any(axis=
 
 
 
-Num_clusters = len(glob.glob("output/preprocessing/clusters/*"))
-
-for file in glob.glob("output/preprocessing/clusters/*"):
+Num_clusters = len(glob.glob(os.path.join("output","prescreen","clusters","*")))
+df['Cluster']=np.nan
+df['Is centroid']=False
+for file in glob.glob(os.path.join("output","prescreen","clusters","*")):
     cluster = os.path.split(file)[-1]
     for cluster_member_number,record in enumerate(SeqIO.parse(file,"fasta")):
         shortID = record.id
@@ -47,6 +49,6 @@ for file in glob.glob("output/preprocessing/clusters/*"):
 df.to_csv(
         os.path.join(
         "output",
-        "preprocessing",
+        "prescreen",
         "02_manually_tested_hits_and_clusters_assigned.csv")
     )

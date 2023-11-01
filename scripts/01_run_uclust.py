@@ -24,11 +24,11 @@ while not os.path.exists(path_to_uclust):
 path_to_uclust = os.path.abspath(path_to_uclust)
 
 #Make paths for output if they don't exist
-if not os.path.exists(os.path.join("output","preprocessing")):
-    os.mkdir(os.path.join("output","preprocessing"))
+if not os.path.exists(os.path.join("output","prescreen")):
+    os.mkdir(os.path.join("output","prescreen"))
 
-if not os.path.exists(os.path.join("output","preprocessing","clusters")):
-    os.mkdir(os.path.join("output","preprocessing","clusters"))
+if not os.path.exists(os.path.join("output","prescreen","clusters")):
+    os.mkdir(os.path.join("output","prescreen","clusters"))
 
 #Load input dataframe
 df = pd.read_csv(
@@ -45,7 +45,7 @@ with open("sequences_to_cluster.fasta",'w') as fh:
         fh.write(df.at[i,"AA sequence"]+"\n")
 
 #Run uclust
-uclust_command = path_to_uclust +" -cluster_fast sequences_to_cluster.fasta -id 0.5 -centroids output/preprocessing/centroids.fasta -clusters output/preprocessing/clusters/"
+uclust_command = path_to_uclust +" -cluster_fast sequences_to_cluster.fasta -id 0.5 -centroids output/prescreen/centroids.fasta -clusters output/prescreen/clusters/"
 
 os.system(uclust_command)
 

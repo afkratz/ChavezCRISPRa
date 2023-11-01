@@ -11,12 +11,13 @@ from pathlib import Path
 import sys
 os.chdir(Path(__file__).resolve().parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
+print("Loading PADDLE model...")
 from src import paddle_interface as pi
 import pandas as pd
 df = pd.read_csv(
         os.path.join(
         "output",
-        "preprocessing",
+        "prescreen",
         "03_manually_tested_biochem_charachterized.csv"),
         index_col="Unnamed: 0"
     )
@@ -34,6 +35,6 @@ for i in range(len(df)):
 df.to_csv(
         os.path.join(
         "output",
-        "preprocessing",
+        "prescreen",
         "04_manually_tested_paddle_charachterized.csv")
     )

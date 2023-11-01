@@ -18,7 +18,7 @@ import pandas as pd
 df = pd.read_csv(
         os.path.join(
         "output",
-        "preprocessing",
+        "prescreen",
         "02_manually_tested_hits_and_clusters_assigned.csv"),
         index_col="Unnamed: 0"
     )
@@ -37,6 +37,6 @@ for i in range(len(df)):
 df.to_csv(
         os.path.join(
         "output",
-        "preprocessing",
+        "prescreen",
         "03_manually_tested_biochem_charachterized.csv")
     )
