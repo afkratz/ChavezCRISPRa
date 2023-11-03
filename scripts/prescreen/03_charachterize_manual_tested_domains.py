@@ -9,8 +9,8 @@ MIT license
 import os
 from pathlib import Path
 import sys
-os.chdir(Path(__file__).resolve().parent.parent)
-sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
+os.chdir(Path(__file__).resolve().parent.parent.parent)
+sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 from src import biochem_charachterize as bc
 
 import pandas as pd

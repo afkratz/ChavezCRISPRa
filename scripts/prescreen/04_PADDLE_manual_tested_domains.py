@@ -9,8 +9,8 @@ MIT license
 import os
 from pathlib import Path
 import sys
-os.chdir(Path(__file__).resolve().parent.parent)
-sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
+os.chdir(Path(__file__).resolve().parent.parent.parent)
+sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 print("Loading PADDLE model...")
 from src import paddle_interface as pi
 import pandas as pd
