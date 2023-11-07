@@ -11,30 +11,32 @@ from pathlib import Path
 import sys
 os.chdir(Path(__file__).resolve().parent.parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
-print("Loading PADDLE model...")
-from src import paddle_interface as pi
+from src import biochem_charachterize as bc
+
 import pandas as pd
+
 df = pd.read_csv(
         os.path.join(
         "output",
-        "prescreen",
-        "03_manually_tested_biochem_charachterized.csv"),
+        "prescreen_results",
+        "02_manually_tested_hits_and_clusters_assigned.csv"),
         index_col="Unnamed: 0"
     )
 
 from progress.bar import Bar
-bar = Bar("PADDLE predicting...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
+bar = Bar("Charachterizing...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
 for i in range(len(df)):
+    sequence = df.at[i,"AA sequence"]
+    df.at[i,"NCPR"]=bc.getNCPR(sequence)
+    df.at[i,"Hydropathy"]=bc.getHydropathy(sequence)
+    df.at[i,"Disorder promoting fraction"]=bc.getDisorderFraction(sequence)
+    df.at[i,"Kappa"]=bc.getKappa(sequence)
+    df.at[i,"Omega"]=bc.getOmega(sequence)
     bar.next()
-    res = pi.process_sequences(df.at[i,"AA sequence"],accept_short=True)[0]
-    if i==0:
-        for k in res:
-            df[k]=''
-    for k in res:
-        df.at[i,k]=str(res[k])
+
 df.to_csv(
         os.path.join(
         "output",
-        "prescreen",
-        "04_manually_tested_paddle_charachterized.csv")
+        "prescreen_results",
+        "03_manually_tested_biochem_charachterized.csv")
     )

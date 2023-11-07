@@ -24,18 +24,18 @@ while not os.path.exists(path_to_uclust):
 path_to_uclust = os.path.abspath(path_to_uclust)
 
 #Make paths for output if they don't exist
-if not os.path.exists(os.path.join("output","prescreen")):
-    os.mkdir(os.path.join("output","prescreen"))
+if not os.path.exists(os.path.join("output","prescreen_results")):
+    os.mkdir(os.path.join("output","prescreen_results"))
 
-if not os.path.exists(os.path.join("output","prescreen","clusters")):
-    os.mkdir(os.path.join("output","prescreen","clusters"))
+if not os.path.exists(os.path.join("output","prescreen_results","clusters")):
+    os.mkdir(os.path.join("output","prescreen_results","clusters"))
 
 #Load input dataframe
 df = pd.read_csv(
-    os.path.join("input_data","figure_1_manual_testing_results.csv"))
+    os.path.join("input_data","figure_1_manual_testing_results_FC.csv"))
 
 #Drop protein folding domains
-df = df[df["AD or PFD"]=="AD"].reset_index(drop=True) 
+df = df[df["PFD or AD"]=="AD"].reset_index(drop=True) 
 
 
 #Write sequences to a .fasta for clustering
@@ -45,7 +45,7 @@ with open("sequences_to_cluster.fasta",'w') as fh:
         fh.write(df.at[i,"AA sequence"]+"\n")
 
 #Run uclust
-uclust_command = path_to_uclust +" -cluster_fast sequences_to_cluster.fasta -id 0.5 -centroids output/prescreen/centroids.fasta -clusters output/prescreen/clusters/"
+uclust_command = path_to_uclust +" -cluster_fast sequences_to_cluster.fasta -id 0.5 -centroids output/prescreen_results/centroids.fasta -clusters output/prescreen_results/clusters/"
 
 os.system(uclust_command)
 

@@ -20,7 +20,7 @@ from src import biochem_charachterize as bc
 df = pd.read_csv(
     os.path.join(
         "output",
-        "prescreen",
+        "prescreen_results",
         "03_manually_tested_biochem_charachterized.csv"
     ),
     index_col='Unnamed: 0'
@@ -32,9 +32,9 @@ hit_df = only_centroids[only_centroids["Hit on any"]==True].reset_index()
 
 
 odf = pd.DataFrame()
-
 window_size = 10
 samples = 1000
+odf['Position from C to N']=np.linspace(0,1,samples)
 for trait in ("NCPR","Hydropathy"):
     xs=np.linspace(0,1,samples)
     hit_ys=[]
@@ -68,8 +68,8 @@ for trait in ("NCPR","Hydropathy"):
 
 odf.to_csv(
     os.path.join(
-        "output",
-        "prescreen",
-        "07_linear_NCPR_Hydropathy_centroids_only_hitsVmisses.csv"
+        "output",        "figures",
+        "fig2",
+        "2d - NCPR and hydropathy NtoC.csv"
     )
 )
