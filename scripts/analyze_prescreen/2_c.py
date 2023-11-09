@@ -25,8 +25,10 @@ df = pd.read_csv(
     index_col='Unnamed: 0'
 )
 
+only_centroids = df[df['Is centroid']==True]
+
 result = lru.get_lr(
-    df=df,
+    df=only_centroids,
     independent_variables=[
             'NCPR',
             'Hydropathy',

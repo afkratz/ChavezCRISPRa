@@ -25,10 +25,10 @@ df = pd.read_csv(
 )
 df['len aa']=list( map(lambda x:len(x),df['AA sequence']))
 df['fraction strong']=df['AA in strong hits']/df['len aa']
-#only_centroids = df[df['Is centroid']==True].reset_index(drop=True)
+only_centroids = df[df['Is centroid']==True].reset_index(drop=True)
 
-hits = df[df['Hit on any']==True].reset_index(drop=True)
-misses = df[df['Hit on any']==False].reset_index(drop=True)
+hits = only_centroids[only_centroids['Hit on any']==True].reset_index(drop=True)
+misses = only_centroids[only_centroids['Hit on any']==False].reset_index(drop=True)
 
 odf=pd.DataFrame({
     'Hits':hits['Full name'],

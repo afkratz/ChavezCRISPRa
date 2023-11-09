@@ -26,12 +26,16 @@ from progress.bar import Bar
 bar = Bar("PADDLE predicting...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
 for i in range(len(df)):
     bar.next()
-    res = pi.process_sequences(df.at[i,"AA sequence"],accept_short=True)[0]
+    results = pi.process_sequences(df.at[i,"AA sequence"],accept_short=True)[0]
+    
+    #if this is the first item in the dataframe, initialize all values of the result as
+    #new columns as empty strings
     if i==0:
-        for k in res:
-            df[k]=''
-    for k in res:
-        df.at[i,k]=str(res[k])
+        for key in results:
+            df['Paddle:'+key]=''
+    
+    for key in results:
+        df.at[i,'Paddle:'+key]=str(results[key])
 df.to_csv(
         os.path.join(
         "output",

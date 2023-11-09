@@ -21,12 +21,14 @@ df = pd.read_csv(
         "03_manually_tested_biochem_charachterized.csv"),
         index_col="Unnamed: 0"
     )
-
-ncpr = (-df['NCPR']).to_list()
-disorder = df['Disorder promoting fraction']
-is_hit = df['Hit on any'].to_list()
+only_centroids = df[df['Is centroid']==True]
+ncpr = (-only_centroids['NCPR']).to_list()
+disorder = only_centroids['Disorder promoting fraction']
+is_hit = only_centroids['Hit on any'].to_list()
 fpr_ncpr_any,tpr_ncpr_any = au.get_FPR_TPR(ncpr,is_hit)
+print('NCPR:',au.calculate_auc(fpr_ncpr_any,tpr_ncpr_any))
 fpr_disorder_any,tpr_disorder_any = au.get_FPR_TPR(disorder,is_hit)
+print('NCPR:',au.calculate_auc(fpr_disorder_any,tpr_disorder_any))
 
 odf = pd.DataFrame({
     'fpr NCPR predicting hit on any':fpr_ncpr_any,
