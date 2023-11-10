@@ -16,25 +16,41 @@ sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 
 from src import auroc_utils
 
-import pandas as pd
 df = pd.read_csv(
         os.path.join(
         "output",
         "prescreen_results",
-        "04_manually_tested_paddle_charachterized.csv"),
+        "05_manually_tested_PaddleAndAdpred.csv"),
         index_col="Unnamed: 0"
     )
 only_centroids = df[df['Is centroid']==True]
+paddle_x = only_centroids["Paddle:Score"].to_list()
+paddle_y = only_centroids["Hit on any"].to_list()
 
-x = only_centroids["Score"].to_list()
-y = only_centroids["Hit on any"]
-fpr,tpr = auroc_utils.get_FPR_TPR(x,y)
-odf=auroc_utils.to_df(fpr,tpr)
+has_adpred = only_centroids[only_centroids['Adpred:Is short']==False]
+adpred_x = has_adpred["Adpred:Score"].to_list()
+adpred_y = has_adpred["Hit on any"].to_list()
+
+
+paddle_fpr,paddle_tpr = auroc_utils.get_FPR_TPR(paddle_x,paddle_y)
+adpred_fpr,adpred_tpr = auroc_utils.get_FPR_TPR(adpred_x,adpred_y)
+
+odf=auroc_utils.to_df(paddle_fpr,paddle_tpr)
 odf.to_csv(
     os.path.join(
         "output",        
         "figures",
         "fig2",
-        "2e - PADDLE vs hit-any AUROC.csv"
+        "2e - Paddle AUROC.csv"
+    )
+)
+
+odf=auroc_utils.to_df(adpred_fpr,adpred_tpr)
+odf.to_csv(
+    os.path.join(
+        "output",        
+        "figures",
+        "fig2",
+        "2e - Adpred AUROC.csv"
     )
 )
