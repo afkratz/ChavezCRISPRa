@@ -32,7 +32,7 @@ if not os.path.exists(os.path.join("output","prescreen_results","clusters")):
 
 #Load input dataframe
 df = pd.read_csv(
-    os.path.join("input_data","figure_1_manual_testing_results_FC.csv"))
+    os.path.join("input_data","prescreen","figure_1_manual_testing_results_FC.csv"))
 
 #Drop protein folding domains
 df = df[df["PFD or AD"]=="AD"].reset_index(drop=True) 

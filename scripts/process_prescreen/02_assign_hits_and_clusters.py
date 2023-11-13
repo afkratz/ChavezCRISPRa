@@ -19,6 +19,7 @@ from Bio import SeqIO
 df = pd.read_csv(
     os.path.join(
         "input_data",
+        "prescreen"
         "figure_1_manual_testing_results_FC.csv"),
     index_col="Unnamed: 0")
 

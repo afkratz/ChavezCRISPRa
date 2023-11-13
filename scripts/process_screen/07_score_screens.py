@@ -99,7 +99,7 @@ def single_domain_toxicity():
         dfs[t]={}
         for r in replicates:
             dfs[t][r]={}
-    bins=["P1 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS"]
+    bins=["P1 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS","Reporter_1_NS","Reporter_2_NS"]
     for t in targets:
         for r in replicates:
             dfs[t][r]["P1 Plasmid"]=pd.read_csv(
@@ -147,10 +147,11 @@ def single_domain_toxicity():
     spinner.next()
     for t in targets:
         for r in replicates:
-            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_-L2FC")
-            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_-L2FC")
-            sst.calculate_zscore(dfs[t][r],"EPCAM_-L2FC","EPCAM_Tox_Zscore")
-            sst.calculate_zscore(dfs[t][r],"CXCR4_-L2FC","CXCR4_Tox_Zscore")
+            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_Tox")
+            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_Tox")
+            sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["Reporter_1_NS","Reporter_2_NS"],"Reporter_Tox")
+            
+            dfs[t][r]["CX&EP Average Tox"]=dfs[t][r][["EPCAM_Tox","CXCR4_Tox"]].values.mean(axis=1)
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1"],barcodes).to_csv(
                 os.path.join(
                     "output",
@@ -295,7 +296,7 @@ def bipartite_toxicity():
         dfs[t]={}
         for r in replicates:
             dfs[t][r]={}
-    bins=["P2 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS"]
+    bins=["P2 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS","Reporter_1_NS","Reporter_2_NS"]
     for t in targets:
             for r in replicates:
                 dfs[t][r]["P2 Plasmid"]=pd.read_csv(
@@ -344,10 +345,10 @@ def bipartite_toxicity():
 
     for t in targets:
         for r in replicates:
-            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_-L2FC")
-            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_-L2FC")
-            sst.calculate_zscore(dfs[t][r],"EPCAM_-L2FC","EPCAM_Tox_Zscore")
-            sst.calculate_zscore(dfs[t][r],"CXCR4_-L2FC","CXCR4_Tox_Zscore")
+            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_Tox")
+            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_Tox")
+            sst.add_ToxicityScore(dfs[t][r],"P2 Plasmid",["Reporter_1_NS","Reporter_2_NS"],"Reporter_Tox")
+            dfs[t][r]["CX&EP Average Tox"]=dfs[t][r][["EPCAM_Tox","CXCR4_Tox"]].values.mean(axis=1)
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2"],barcodes).to_csv(
                 os.path.join(
                     "output",
@@ -491,7 +492,7 @@ def tripartite_toxicity():
         dfs[t]={}
         for r in replicates:
             dfs[t][r]={}
-    bins=["P3 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS"]
+    bins=["P3 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS","Reporter_1_NS","Reporter_2_NS"]
     for t in targets:
             for r in replicates:
                 dfs[t][r]["P3 Plasmid"]=pd.read_csv(
@@ -543,10 +544,11 @@ def tripartite_toxicity():
     spinner.next()
     for t in targets:
         for r in replicates:
-            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_-L2FC")
-            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_-L2FC")
-            sst.calculate_zscore(dfs[t][r],"EPCAM_-L2FC","EPCAM_Tox_Zscore")
-            sst.calculate_zscore(dfs[t][r],"CXCR4_-L2FC","CXCR4_Tox_Zscore")
+            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_Tox")
+            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_Tox")
+            sst.add_ToxicityScore(dfs[t][r],"P3 Plasmid",["Reporter_1_NS","Reporter_2_NS"],"Reporter_Tox")
+            dfs[t][r]["CX&EP Average Tox"]=dfs[t][r][["EPCAM_Tox","CXCR4_Tox"]].values.mean(axis=1)
+            
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2","BC3"],barcodes).to_csv(
                 os.path.join(
                     "output",
@@ -626,15 +628,15 @@ if __name__=="__main__":
     if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts")):
         os.mkdir(
             os.path.join("output","screen_results","screen_bin_counts"))
-    single_domain_score()
+    #single_domain_score()
     single_domain_toxicity()
-    single_domain_read_counts()
-    bipartite_score()
+    #single_domain_read_counts()
+    #bipartite_score()
     bipartite_toxicity()
-    bipartite_read_counts()
-    tripartite_score()
+    #bipartite_read_counts()
+    #tripartite_score()
     tripartite_toxicity()
-    tripartite_read_counts()
+    #tripartite_read_counts()
     
     
     

@@ -18,7 +18,7 @@ df = pd.read_csv(
         os.path.join(
         "output",
         "prescreen_results",
-        "03_manually_tested_biochem_charachterized.csv"),
+        "02_manually_tested_hits_and_clusters_assigned.csv"),
         index_col="Unnamed: 0"
     )
 
@@ -40,5 +40,5 @@ df.to_csv(
         os.path.join(
         "output",
         "prescreen_results",
-        "04_manually_tested_paddle_charachterized.csv")
+        "04_manually_tested_Paddle.csv")
     )
