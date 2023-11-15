@@ -18,8 +18,8 @@ df = pd.read_csv(
         os.path.join(
         "output",
         "prescreen_results",
-        "02_manually_tested_hits_and_clusters_assigned.csv"),
-        index_col="Unnamed: 0"
+        "02_manually_tested_hits_and_clusters_assigned.csv"
+        ),index_col="Unnamed: 0"
     )
 
 from progress.bar import Bar

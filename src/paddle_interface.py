@@ -124,6 +124,7 @@ def get_prediction(seq:str,accept_short=False,short_samples=100,verbose = False)
     short = len(seq)<53
     if short:
         neutral_amino_acids = "AGSTNQV"
+        random.seed(42)#reproducibility
         neutral_peptides = list(map(lambda _:"".join(random.choices(neutral_amino_acids,k=53)),range(0,short_samples)))
         with contextlib.redirect_stdout(output):
             average_score = np.array(paddle_noSS_model.predict_subsequences(seq,neutral_peptides)).reshape(1)

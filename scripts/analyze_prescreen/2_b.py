@@ -22,49 +22,66 @@ df = pd.read_csv(
         index_col="Unnamed: 0"
     )
 only_centroids = df[df['Is centroid']==True]
-ncpr = (-only_centroids['NCPR']).to_list()
-disorder = only_centroids['Disorder promoting fraction']
+
+biochem_traits = {}
+biochem_traits['NCPR']=(-only_centroids['NCPR']).to_list()
+biochem_traits['Hydropathy']=only_centroids['Hydropathy'].to_list()
+biochem_traits['Omega']=(-only_centroids['Omega']).to_list()
+biochem_traits['Kappa']=(-only_centroids['Kappa']).to_list()
+biochem_traits['Disorder promoting fraction']=only_centroids['Disorder promoting fraction'].to_list()
+
 is_hit = only_centroids['Hit on any'].to_list()
-fpr_ncpr_any,tpr_ncpr_any = au.get_FPR_TPR(ncpr,is_hit)
-print('NCPR:',au.calculate_auc(fpr_ncpr_any,tpr_ncpr_any))
-fpr_disorder_any,tpr_disorder_any = au.get_FPR_TPR(disorder,is_hit)
-print('NCPR:',au.calculate_auc(fpr_disorder_any,tpr_disorder_any))
 
-odf = pd.DataFrame({
-    'fpr NCPR predicting hit on any':fpr_ncpr_any,
-    'tpr NCPR predicting hit on any':tpr_ncpr_any,
-    'fpr Disorder promoting fraction predicting hit on any':fpr_disorder_any,
-    'tpr Disorder promoting fraction predicting hit on any':tpr_disorder_any,
-
-})
+odf = pd.DataFrame()
+auroc_df = pd.DataFrame()
+for trait_name in biochem_traits:
+    fpr,tpr = au.get_FPR_TPR(biochem_traits[trait_name],is_hit)
+    odf['fpr '+trait_name+' predicting hit on any']= fpr
+    odf['tpr '+trait_name+' predicting hit on any']= tpr
+    auroc_df.at[trait_name,'AUROC']=au.calculate_auc(fpr,tpr)
 odf.to_csv(
     os.path.join(
         "output",
         "figures",
         "fig2",
-        "2b - NCPR and disorder vs hit-any AUROC.csv"
+        "2b - Biochem traits vs hit-any fpr vs tpr.csv"
+    )
+)
+auroc_df.to_csv(
+    os.path.join(
+        "output",
+        "figures",
+        "fig2",
+        "2b - Biochem traits vs hit-any AUROC.csv"
     )
 )
 
-ncpr = (-df['NCPR']).to_list()
-disorder = df['Disorder promoting fraction']
-odf = pd.DataFrame()
-for target in ['EPCAM','CXCR4','tdTomato']:
-    
-    is_hit = df['Hit on '+target].to_list()
-    fpr_ncpr_any,tpr_ncpr_any = au.get_FPR_TPR(ncpr,is_hit)
-    fpr_disorder_any,tpr_disorder_any = au.get_FPR_TPR(disorder,is_hit)
 
-    odf['fpr NCPR predicting hit on '+target]=fpr_ncpr_any
-    odf['tpr NCPR predicting hit on '+target]=tpr_ncpr_any
-    odf['fpr Disorder promoting fraction predicting hit on '+target]=fpr_disorder_any
-    odf['tpr Disorder promoting fraction predicting hit on '+target]=tpr_disorder_any
+odf = pd.DataFrame()
+auroc_df = pd.DataFrame()
+
+for target in ['EPCAM','CXCR4','tdTomato']:
+    is_hit = only_centroids['Hit on '+target].to_list()
+    for trait_name in biochem_traits:
+        fpr,tpr = au.get_FPR_TPR(biochem_traits[trait_name],is_hit)
+        odf['fpr '+trait_name+' predicting hit on '+target]= fpr
+        odf['tpr '+trait_name+' predicting hit on '+target]= tpr
+        auroc_df.at[trait_name,'predicting hit on '+target]=au.calculate_auc(fpr,tpr)
     
 odf.to_csv(
     os.path.join(
         "output",
         "figures",
         "fig2",
-        "S2b - NCPR and disorder vs all targets AUROC.csv"
+        "S2b - Biochem traits vs all targets fpr vs tpr.csv"
+    )
+)
+
+auroc_df.to_csv(
+    os.path.join(
+        "output",
+        "figures",
+        "fig2",
+        "S2b - Biochem traits vs all targets AUROC.csv"
     )
 )

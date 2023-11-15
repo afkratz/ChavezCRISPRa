@@ -37,21 +37,24 @@ tripartite_tox_df = pd.read_csv(
 
 b_df = tripartite_tox_df[['BC1','BC2','BC3','P3 Plasmid']].copy()
 b_df['EPCAM_Average_NS']=tripartite_tox_df[["EPCAM_1_NS","EPCAM_2_NS"]].values.mean(axis=1)
+b_df['CXCR4_Average_NS']=tripartite_tox_df[["CXCR4_1_NS","CXCR4_2_NS"]].values.mean(axis=1)
+b_df['Reporter_Average_NS']=tripartite_tox_df[["Reporter_1_NS","Reporter_2_NS"]].values.mean(axis=1)
+
 b_df.to_csv(
     os.path.join(
         "output",
         "figures",
         "fig4",
-        "4b.csv"
+        "4b - P3 Plasmid vs Average_NS.csv"
     ),index=False
 )
 
-c_df = tripartite_tox_df[['BC1','BC2','BC3','EPCAM_1_NS','EPCAM_2_NS']].copy()
+c_df = tripartite_tox_df[['BC1','BC2','BC3','EPCAM_1_NS','EPCAM_2_NS','CXCR4_1_NS','CXCR4_2_NS','Reporter_1_NS','Reporter_2_NS']].copy()
 c_df.to_csv(
     os.path.join(
         "output",
         "figures",
         "fig4",
-        "4c.csv"
+        "4c - NS replicate vs replicate.csv"
     ),index=False
 )

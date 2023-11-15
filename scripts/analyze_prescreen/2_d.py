@@ -35,7 +35,7 @@ odf = pd.DataFrame()
 window_size = 10
 samples = 1000
 odf['Position from C to N']=np.linspace(0,1,samples)
-for trait in ("NCPR","Hydropathy"):
+for trait in ("NCPR","Hydropathy","Omega","Kappa","Disorder promoting fraction"):
     xs=np.linspace(0,1,samples)
     hit_ys=[]
     for i in range(len(hit_df)):
