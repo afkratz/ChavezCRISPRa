@@ -170,6 +170,8 @@ def process_prediction(pred:np.ndarray)->dict:
 
         results["AA in strong hits"]=sum(map(lambda win:-win[0]+win[1]+53,_condense_windows(strong_windows,0)))    
         results["AA in medium hits"]=sum(map(lambda win:-win[0]+win[1]+53,_condense_windows(medium_windows,0)))
+        
+        results["AA in strong or medium hits"] =max(results["AA in strong hits"],results["AA in medium hits"])
 
         results["Strong domain indexes"]=list(map(lambda win:(win[0],win[1]+53),strong_windows))
         results["Medium domain indexes"]=list(map(lambda win:(win[0],win[1]+53),medium_windows))
@@ -213,8 +215,10 @@ def process_prediction(pred:np.ndarray)->dict:
     results["N strong hits"]=len(condensed_strong_windows)
     results["N medium hits"]=len(checked_medium_windows)
 
-    results["AA in strong hits"]=sum(map(lambda win:-win[0]+win[1]+53,_condense_windows(condensed_strong_windows,0)))    
-    results["AA in medium hits"]=sum(map(lambda win:-win[0]+win[1]+53,_condense_windows(checked_medium_windows,0)))
+    results["AA in strong hits"]=_count_in_windows(list(map(lambda win:(win[0],win[1]+53),condensed_strong_windows)))
+    results["AA in medium hits"]=_count_in_windows(list(map(lambda win:(win[0],win[1]+53),checked_medium_windows)))
+    results["AA in strong or medium hits"]=_count_in_windows(list(map(lambda win:(win[0],win[1]+53),condensed_strong_windows+checked_medium_windows)))
+    
 
     results["Strong domain indexes"]=list(map(lambda win:(win[0],win[1]+53),condensed_strong_windows))
     results["Medium domain indexes"]=list(map(lambda win:(win[0],win[1]+53),checked_medium_windows))
@@ -243,6 +247,8 @@ def process_sequences(sequences:List[str],accept_short=False)->List[dict]:
         
         result["AA in strong hits"]=min(result["AA in strong hits"],len(seq))
         result["AA in medium hits"]=min(result["AA in medium hits"],len(seq))
+        result["AA in strong or medium hits"]=min(result["AA in strong or medium hits"],len(seq))
+        
         results.append(result)
     return results
     
@@ -277,6 +283,29 @@ def _get_overlap(a:tuple,b:tuple)->float:
             b[1]-a[0]
             ))
         ))
+
+def _count_in_windows(windows:List[Tuple[int]]):
+    """
+    Counts how many amino acids are in a list of windows, handling duplicates
+    example: 
+    [
+        (0,10),
+        (9,12),
+    ]
+    would return 12, not counting the duplicated 9 and 10 that are in both windows
+    """
+    if len(windows)==0:
+        return 0
+    upper_bound = max(map(lambda x:x[1],windows))
+    count = 0
+    for aa in range(0,upper_bound):
+        for window in windows:
+            if aa>=window[0] and aa<window[1]:
+                count+=1
+                break
+    return count
+        
+
 
 def _consec_trues(arr:np.ndarray,min_len : int)->List[Tuple[int]]:
     """

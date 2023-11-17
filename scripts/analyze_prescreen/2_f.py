@@ -25,6 +25,9 @@ df = pd.read_csv(
 )
 df['len aa']=list( map(lambda x:len(x),df['AA sequence']))
 df['Paddle:fraction strong']=df['Paddle:AA in strong hits']/df['len aa']
+df['Paddle:fraction strong or medium']=df['Paddle:AA in strong or medium hits']/df['len aa']
+
+
 only_centroids = df[df['Is centroid']==True].reset_index(drop=True)
 
 hits = only_centroids[only_centroids['Hit on any']==True].reset_index(drop=True)
@@ -33,8 +36,11 @@ misses = only_centroids[only_centroids['Hit on any']==False].reset_index(drop=Tr
 odf=pd.DataFrame({
     'Hits':hits['Full name'],
     'Hits fraction strong':hits['Paddle:fraction strong'],
+    'Hits fraction strong or medium':hits['Paddle:fraction strong or medium'],
+    
     'Misses':misses['Full name'],
-    'Misses fraction strong':misses['Paddle:fraction strong']
+    'Misses fraction strong':misses['Paddle:fraction strong'],
+    'Misses fraction strong or medium':misses['Paddle:fraction strong or medium'],
     }).replace(np.nan,None)
 
 odf.to_csv(
