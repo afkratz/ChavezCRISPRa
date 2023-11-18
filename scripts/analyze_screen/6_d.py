@@ -21,6 +21,7 @@ tripartite_top_hit_testing = pd.read_csv(
     os.path.join(
         "input_data",
         "top_hit_validation",
+        "flow",
         "tripartite_top_25_4_target_flow_panel_HEK.csv"
     ),index_col='Construct'
 )

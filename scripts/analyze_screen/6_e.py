@@ -46,6 +46,7 @@ hbg1_qpcr_df = pd.read_csv(
     os.path.join(
         "input_data",
         "top_hit_validation",
+        "qpcr",
         "final_2_qpcr_HBG1_HEK.csv"
     )
 )
@@ -54,6 +55,7 @@ neurod1_qpcr_df = pd.read_csv(
     os.path.join(
         "input_data",
         "top_hit_validation",
+        "qpcr",
         "final_2_qpcr_NEUROD1_HEK.csv"
     )
 )
@@ -62,6 +64,7 @@ rhoxf2_qpcr_df = pd.read_csv(
     os.path.join(
         "input_data",
         "top_hit_validation",
+        "qpcr",
         "final_2_qpcr_RHOXF2_HEK.csv"
     )
 )
@@ -70,6 +73,7 @@ ttn_qpcr_df = pd.read_csv(
     os.path.join(
         "input_data",
         "top_hit_validation",
+        "qpcr",
         "final_2_qpcr_TTN_HEK.csv"
     )
 )
@@ -81,7 +85,7 @@ dfs={
     'TTN':ttn_qpcr_df,
 }
 
-activators = ['MHV','MMH','SAM-DARPA','SAM-published','MCP-empty']
+activators = ['MHV','MMH','SAM','SAM-published','MCP-empty']
 
 activator_target_average_ct = pd.DataFrame()
 
@@ -100,7 +104,13 @@ for target in dfs.keys():
                 })
             
             #Should have 3 qPCR replicates
-            assert(len(activator_target_results)==3)
+            try:
+                assert len(activator_target_results)==3
+            except:
+                print("Error with {},{},{},{}".format(
+                    target,activator,replicate,'B-actin'
+                ))
+                quit()
 
             average_cq_against_target = activator_target_results['Cq'].values.mean()
 
@@ -114,8 +124,13 @@ for target in dfs.keys():
                 })
             
             #Should have 3 qPCR replicates
-            assert(len(activator_target_results)==3)
-
+            try:
+                assert len(activator_target_results)==3
+            except:
+                print("Error with {},{},{},{}".format(
+                    target,activator,replicate,'B-actin'
+                ))
+                quit()
             average_cq_against_beta_actin = activator_target_results['Cq'].values.mean()
 
             delta_ct = average_cq_against_target - average_cq_against_beta_actin

@@ -39,6 +39,7 @@ hbb_bh1_qpcr_df = pd.read_csv(
     os.path.join(
         "input_data",
         "top_hit_validation",
+        'qpcr',
         "final_2_qpcr_HBB-BH1_N2A.csv"
     )
 )
