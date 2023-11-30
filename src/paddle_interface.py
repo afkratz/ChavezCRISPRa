@@ -104,7 +104,7 @@ with contextlib.redirect_stdout(None):
 
 os.chdir(root_dir)
 
-def get_prediction(seq:str,accept_short=False,short_samples=100,verbose = False)->np.ndarray:
+def get_prediction(seq:str,accept_short=False,SHORT_SAMPLES=100,verbose = False)->np.ndarray:
     if len(seq)<53 and not accept_short:
         raise ValueError('If you are passing a sequence of length less than 53 you must call this with "accept_short=True"\n-See src/paddle_interface.py for explanation-')
         """
@@ -113,7 +113,7 @@ def get_prediction(seq:str,accept_short=False,short_samples=100,verbose = False)
         in a random sequence composed of "AGSTNQV" to pad out to 53 amino acids. 
         If you call this function with predict_seq
         Since this introduces some randomness, they recommend doing this sampling many times. 
-        We default to short_samples=100, but this can be modified. 
+        We default to SHORT_SAMPLES=100, but this can be modified. 
         """
 
     if verbose:
@@ -125,7 +125,7 @@ def get_prediction(seq:str,accept_short=False,short_samples=100,verbose = False)
     if short:
         neutral_amino_acids = "AGSTNQV"
         random.seed(42)#reproducibility
-        neutral_peptides = list(map(lambda _:"".join(random.choices(neutral_amino_acids,k=53)),range(0,short_samples)))
+        neutral_peptides = list(map(lambda _:"".join(random.choices(neutral_amino_acids,k=53)),range(0,SHORT_SAMPLES)))
         with contextlib.redirect_stdout(output):
             average_score = np.array(paddle_noSS_model.predict_subsequences(seq,neutral_peptides)).reshape(1)
         if verbose:output.close()
