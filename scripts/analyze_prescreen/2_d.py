@@ -68,7 +68,8 @@ for trait in ("NCPR","Hydropathy","Omega","Kappa","Disorder promoting fraction")
 
 odf.to_csv(
     os.path.join(
-        "output",        "figures",
+        "output",        
+        "figures",
         "fig2",
         "2d - NCPR and hydropathy NtoC.csv"
     )
