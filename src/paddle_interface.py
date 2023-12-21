@@ -176,7 +176,7 @@ def process_prediction(pred:np.ndarray)->dict:
         results["Strong domain indexes"]=list(map(lambda win:(win[0],win[1]+53),strong_windows))
         results["Medium domain indexes"]=list(map(lambda win:(win[0],win[1]+53),medium_windows))
 
-        results["Score"] = score
+        results["Score"] = float(score)
 
         return results
     ###### - end of "Is short" section - #####
@@ -230,7 +230,7 @@ def process_prediction(pred:np.ndarray)->dict:
             )
         )
 
-    results["Score"] = score
+    results["Score"] = float(score)
 
     return results
 

@@ -17,8 +17,32 @@ import pandas as pd
 from progress.bar import Bar
 
 
-from src import paddle_interface as pi
+#from src import paddle_interface as pi
 from src import biochem_charachterize as bc
+
+import json
+class StringCache:
+    def __init__(self, cache_directory):
+        self.cache_directory = cache_directory
+        if not os.path.exists(cache_directory):
+            os.makedirs(cache_directory)
+
+    def add_item(self, key, value):
+            file_path = os.path.join(self.cache_directory, f"{key}.json")
+            with open(file_path, 'w') as file:
+                json.dump(value, file)
+
+    def has_item(self, key):
+        file_path = os.path.join(self.cache_directory, f"{key}.json")
+        return os.path.exists(file_path)
+
+    def retrieve_item(self, key):
+        if not self.has_item(key):
+            raise KeyError(f"Key '{key}' not found in the cache")
+
+        file_path = os.path.join(self.cache_directory, f"{key}.json")
+        with open(file_path, 'r') as file:
+            return json.load(file)
 
 def load_data_sets()->dict[pd.DataFrame]:
     hanh_df = pd.read_csv(
@@ -61,7 +85,7 @@ def sub_process_hanh_dataset(df:pd.DataFrame)->pd.DataFrame:
 
 def main():
     #biochem()
-    paddle()
+    run_paddle()
 
 def biochem():
     dfs = load_data_sets()
@@ -84,32 +108,37 @@ def biochem():
             bar.next()
 
         bar.finish()
-        df.to_csv("{}__bc_output.csv".format(screen),index=False)
+        df.to_csv("{}_bc_output.csv".format(screen),index=False)
 
-def paddle():
-    PARRALEL_SEQS = 5
 
+def run_paddle():
     dfs = load_data_sets()
     dfs['hanh'] = sub_process_hanh_dataset(dfs['hanh'])
     dfs['hanh'].to_csv("50k_hanh.csv",index=False)
     for screen in dfs:
         df = dfs[screen]
         bar = Bar("Charachterizing...{}".format(screen),max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
-
-        for i in range(0,len(df),PARRALEL_SEQS):
-            bar.next(PARRALEL_SEQS)
-            seqs = df.iloc[i:i+PARRALEL_SEQS]['sequence'].to_list()
-            results=pi.process_sequences(seqs,accept_short=True)
+        cache = StringCache(os.path.join(
+                "output",
+                "extrascreen_analysis",
+                "{}_paddle_cache".format(screen)))
+        
+        for i in range(0,len(df)):
+            bar.next(1)
+            seq = df.iloc[i]['sequence']
+            try:
+                result = cache.retrieve_item(seq)
+            except:
+                assert False
+                result=pi.process_sequences(seq,accept_short=True)[0]
+                cache.add_item(seq,result)
 
             if i==0:
-                for key in results[0]:
+                for key in result:
                     df['Paddle:'+key]=''
-
-            for j in range(len(results)):
-                index = i+j
-                for key in results[j]:
-                    df.at[index,'Paddle:'+key]=str(results[j][key])
-
+            for key in result:
+                df.at[i,'Paddle:'+key]=str(result[key])
+        bar.finish()
         df.to_csv("{}_paddle_output.csv".format(screen),index=False)
 
 if __name__=='__main__':

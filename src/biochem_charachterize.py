@@ -24,6 +24,8 @@ def getOmega(AAseq):
     SeqOb=SequenceParameters(AAseq)
     return SeqOb.get_kappa_X(['W','F','Y','L'],['D','E'])
 
+
+
 def getHydropathy(AAseq):
     SeqOb = SequenceParameters(AAseq)
     return(SeqOb.get_mean_hydropathy())
@@ -43,33 +45,27 @@ def getAromaticity(AAseq):
 
 #-------------------------Positional charachterization--------------------------
 
-def getLinearNCPR(AAseq):
-    SeqOb=SequenceParameters(AAseq)
-    values = SeqOb.get_linear_NCPR(blobLen=1)
-    return values[1]
 
-def getLinearHydropathy(AAseq):
+def getLinearTrait(AAseq:str,trait:str,rolling_window_size:int=1):
     SeqOb=SequenceParameters(AAseq)
-    values = SeqOb.get_linear_hydropathy(blobLen=1)
-    return values[1]
-
-def getLinearTrait(AAseq,trait):
     if trait=='NCPR':
-        return getLinearNCPR(AAseq)
+        values = SeqOb.get_linear_NCPR(blobLen=1)[1]
     elif trait=='Hydropathy':
-        return getLinearHydropathy(AAseq)
+        values = SeqOb.get_linear_hydropathy(blobLen=1)[1]
+    elif trait=='FDP':
+        values = SeqOb.get_linear_sequence_composition(blobLen=1,grps=["TAGRDHQKSEP"])[1]
     else:
-        raise ValueError
-    
+        raise ValueError("Error, {} is not either 'NCPR', 'Hydropathy', or 'FDP'".format(trait))
+    return values
 
-def rollingAverage(array,n):
+def rollingAverage(array:np.ndarray,n:int):
     averages=[]
     for start in range(0,len(array)-n+1):
         average = array[start:start+n].mean()
         averages.append(average)
     return np.stack(averages)
 
-def samplePoints(array,n):
+def samplePoints(array:np.ndarray,n:int):
     xs = np.linspace(0,len(array),n+1)
     ys = []
     for x in xs[:-1]:

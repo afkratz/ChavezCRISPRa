@@ -628,15 +628,15 @@ if __name__=="__main__":
     if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts")):
         os.mkdir(
             os.path.join("output","screen_results","screen_bin_counts"))
-    #single_domain_score()
+    single_domain_score()
     single_domain_toxicity()
-    #single_domain_read_counts()
-    #bipartite_score()
+    single_domain_read_counts()
+    bipartite_score()
     bipartite_toxicity()
-    #bipartite_read_counts()
-    #tripartite_score()
+    bipartite_read_counts()
+    tripartite_score()
     tripartite_toxicity()
-    #tripartite_read_counts()
+    tripartite_read_counts()
     
     
     

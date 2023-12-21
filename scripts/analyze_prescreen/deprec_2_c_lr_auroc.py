@@ -14,35 +14,29 @@ import sys
 os.chdir(Path(__file__).resolve().parent.parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 
-from src import logistic_regression_utils as lru
+from src import auroc_utils
 
 df = pd.read_csv(
-    os.path.join(
-        "output",
-        "prescreen_results",
-        "03_manually_tested_biochem_charachterized.csv"
-    ),
-    index_col='Unnamed: 0'
-)
-
-only_centroids = df[df['Is centroid']==True]
-
-result = lru.get_lr(
-    df=only_centroids,
-    independent_variables=[
-            'NCPR',
-            'Hydropathy',
-            'Omega',
-            'Disorder promoting fraction',
-            'Kappa'],
-    dependent_variable='Hit on any',
-)
-
-result.to_csv(
-    os.path.join(
+        os.path.join(
         "output",
         "figures",
         "fig2",
-        "2c - hitVmiss Logistic Regression.csv"
+        "2c - lr preds.csv"
+        ),
+        index_col="Unnamed: 0"
     )
+lr_x = df['Logistic regression predictions'].to_list()
+lr_y = df["Hit on any"].to_list()
+lr_fpr,lr_tpr = auroc_utils.get_FPR_TPR(lr_x,lr_y)
+
+area = auroc_utils.calculate_auc(lr_fpr,lr_tpr)
+print(area)
+odf=auroc_utils.to_df(lr_fpr,lr_tpr)
+odf.to_csv(
+    os.path.join(
+        "output",        
+        "figures",
+        "fig2",
+        "2c - LR AUROC.csv"
     )
+)
