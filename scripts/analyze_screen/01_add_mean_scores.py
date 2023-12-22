@@ -50,9 +50,10 @@ p3_score['Has EPCAM score']=(p3_score[["EPCAM_1","EPCAM_2"]].values!=None).all(a
 p3_score['Has CXCR4 score']=(p3_score[["CXCR4_1","CXCR4_2"]].values!=None).all(axis=1)
 p3_score['Has Reporter score']=(p3_score[["Reporter_1","Reporter_2"]].values!=None).all(axis=1)
 p3_score['Has all scores']=p3_score[['Has EPCAM score','Has CXCR4 score','Has Reporter score']].values.all(axis=1)
+
+
 if not os.path.exists(os.path.join("output","screen_analysis")):
     os.mkdir(os.path.join("output","screen_analysis"))
-
 if not os.path.exists(os.path.join("output","screen_analysis","activity_analysis")):
     os.mkdir(os.path.join("output","screen_analysis","activity_analysis"))
 
@@ -71,7 +72,7 @@ p1_score.to_csv(
         "output",
         "screen_analysis",
         "activity_analysis",
-        "01_single_domain_screen_scored.csv"
+        "single_domain_screen_scored_with_means.csv"
     ),
     index=False
 )
@@ -81,7 +82,7 @@ p2_score.to_csv(
         "output",
         "screen_analysis",
         "activity_analysis",
-        "01_bipartite_screen_scored.csv"
+        "bipartite_screen_scored_with_means.csv"
     ),
     index=False
 )
@@ -91,7 +92,7 @@ p3_score.to_csv(
         "output",
         "screen_analysis",
         "activity_analysis",
-        "01_tripartite_screen_scored.csv"
+        "tripartite_screen_scored_with_means.csv"
     ),
     index=False
 )

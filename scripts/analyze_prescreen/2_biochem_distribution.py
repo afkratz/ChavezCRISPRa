@@ -71,6 +71,6 @@ odf.to_csv(
         "output",        
         "figures",
         "fig2",
-        "2d - NCPR_hydropathy_FDP NtoC.csv"
+        "2d - NCPR_hydropathy_FDP_NtoC.csv"
     )
 )
