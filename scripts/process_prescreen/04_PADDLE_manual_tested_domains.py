@@ -18,24 +18,19 @@ df = pd.read_csv(
         os.path.join(
         "output",
         "prescreen_results",
-        "02_manually_tested_hits_and_clusters_assigned.csv"
-        ),index_col="Unnamed: 0"
+        "02_manually_tested_hits_and_clusters_assigned.csv"),
+        index_col="Domain ID"
     )
 
 from progress.bar import Bar
 bar = Bar("PADDLE predicting...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
-for i in range(len(df)):
+for i in df.index:
     bar.next()
     results = pi.process_sequences(df.at[i,"AA sequence"],accept_short=True)[0]
-    
-    #if this is the first item in the dataframe, initialize all values of the result as
-    #new columns as empty strings
-    if i==0:
-        for key in results:
-            df['Paddle:'+key]=''
-    
     for key in results:
+        if 'Paddle:'+key not in df.columns:df['Paddle:'+key]=''
         df.at[i,'Paddle:'+key]=str(results[key])
+
 df.to_csv(
         os.path.join(
         "output",

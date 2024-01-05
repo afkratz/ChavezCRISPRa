@@ -23,8 +23,14 @@ df = pd.read_csv(
         "prescreen_results",
         "03_manually_tested_biochem_charachterized.csv"
     ),
-    index_col='Unnamed: 0'
+    index_col="Domain ID"
 )
+
+if not os.path.exists(os.path.join("output","figures")):
+    os.mkdir(os.path.join("output","figures"))
+
+if not os.path.exists(os.path.join("output","figures","prescreen_figs")):
+    os.mkdir(os.path.join("output","figures","prescreen_figs"))
 
 only_centroids = df[df['Is centroid']==True]
 miss_df = only_centroids[only_centroids["Hit on any"]==False].reset_index()
@@ -70,7 +76,7 @@ odf.to_csv(
     os.path.join(
         "output",        
         "figures",
-        "fig2",
-        "2d - NCPR_hydropathy_FDP_NtoC.csv"
+        "prescreen_figs",
+        "3sa - NCPR hydropathy FDP NtoC.csv"
     )
 )

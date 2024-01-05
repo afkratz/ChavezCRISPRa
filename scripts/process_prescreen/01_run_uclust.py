@@ -31,17 +31,20 @@ if not os.path.exists(os.path.join("output","prescreen_results","clusters")):
     os.mkdir(os.path.join("output","prescreen_results","clusters"))
 
 #Load input dataframe
-df = pd.read_csv(
-    os.path.join("input_data","prescreen","figure_1_manual_testing_results_FC.csv"))
+df = pd.read_excel(
+    os.path.join("input_data","Supplementary Table 1.xlsx"),
+    index_col = "Domain ID"
+    )
 
 #Drop protein folding domains
-df = df[df["PFD or AD"]=="AD"].reset_index(drop=True) 
+df = df[df["Role"]=="Activator"]
 
 
 #Write sequences to a .fasta for clustering
 with open("sequences_to_cluster.fasta",'w') as fh:
-    for i in range(len(df)):
-        fh.write(">"+df.at[i,"ShortID"]+"\n")
+    for i in df.index:
+        print(i)
+        fh.write(">{}\n".format(i))
         fh.write(df.at[i,"AA sequence"]+"\n")
 
 #Run uclust

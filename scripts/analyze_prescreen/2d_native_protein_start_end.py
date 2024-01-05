@@ -18,9 +18,14 @@ df = pd.read_csv(
         os.path.join(
         "output",
         "prescreen_results",
-        "02_manually_tested_hits_and_clusters_assigned.csv"),
-        index_col="Unnamed: 0"
+        "02_manually_tested_hits_and_clusters_assigned.csv")
     )
+
+if not os.path.exists(os.path.join("output","figures")):
+    os.mkdir(os.path.join("output","figures"))
+
+if not os.path.exists(os.path.join("output","figures","prescreen_figs")):
+    os.mkdir(os.path.join("output","figures","prescreen_figs"))
 
 only_centroids = df[df['Is centroid']==True]
 natural_centroids = only_centroids[only_centroids['Designed or found']=='Found']
@@ -29,11 +34,11 @@ hits = natural_centroids[natural_centroids['Hit on any']==True].reset_index(drop
 misses = natural_centroids[natural_centroids['Hit on any']==False].reset_index(drop=True)
 
 odf=pd.DataFrame({
-    'Hits':hits['Full name'],
+    'Hits':hits['Domain ID'],
     'Hits starting position':hits['Start'],
     'Hits ending position':hits['End'],
     
-    'Misses':misses['Full name'],
+    'Misses':misses['Domain ID'],
     'Misses starting position':misses['Start'],
     'Misses ending position':misses['End']
     }).replace(np.nan,None)
@@ -42,8 +47,8 @@ odf.to_csv(
     os.path.join(
         "output",
         "figures",
-        "fig2",
-        "2h - native protein start and end.csv"
+        "prescreen_figs",
+        "2d - native protein start and end.csv"
     ),
     index=False
     )

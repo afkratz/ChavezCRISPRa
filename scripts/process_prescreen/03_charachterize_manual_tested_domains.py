@@ -20,12 +20,12 @@ df = pd.read_csv(
         "output",
         "prescreen_results",
         "02_manually_tested_hits_and_clusters_assigned.csv"),
-        index_col="Unnamed: 0"
+        index_col="Domain ID"
     )
 
 from progress.bar import Bar
 bar = Bar("Charachterizing...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
-for i in range(len(df)):
+for i in df.index:
     sequence = df.at[i,"AA sequence"]
     df.at[i,"NCPR"]=bc.getNCPR(sequence)
     df.at[i,"Hydropathy"]=bc.getHydropathy(sequence)
@@ -33,7 +33,7 @@ for i in range(len(df)):
     df.at[i,"Kappa"]=bc.getKappa(sequence)
     df.at[i,"Omega"]=bc.getOmega(sequence)
     bar.next()
-
+bar.finish()
 df.to_csv(
         os.path.join(
         "output",

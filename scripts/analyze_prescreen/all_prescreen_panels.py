@@ -1,4 +1,4 @@
-# 00_run_all_scripts.py
+# 2_all_panels.py
 
 import subprocess
 import os
@@ -16,11 +16,13 @@ def run_script(script_name):
 if __name__ == "__main__":
     # List of scripts to be executed in order
     scripts_to_run = [
-        "01_run_uclust.py",
-        "02_assign_hits_and_clusters.py",
-        "03_charachterize_manual_tested_domains.py",
-        "04_PADDLE_manual_tested_domains.py"
-                      ]
+        "2abc3sde_biochem_hits_v_misses.py",
+        "2d_native_protein_start_end.py",
+        "2e_native_protein_midpoint.py",
+        "2sa_scatterplot.py",
+        "2sb_homolog_families.py",
+        "3sa_biochem_distribution.py",
+        ]
 
     for script in scripts_to_run:
         run_script(script)
