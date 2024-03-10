@@ -128,7 +128,7 @@ def process_prediction(pred:np.ndarray)->dict:
         score = pred.mean()
         if score>6:
             strong=True
-            medium = False
+            medium = True
         
         elif score>4:
             strong = False
@@ -169,7 +169,7 @@ def process_prediction(pred:np.ndarray)->dict:
     
     if score>6:
         strong=True
-        medium = False
+        medium = True
         
     elif score>4:
         strong = False
@@ -180,7 +180,7 @@ def process_prediction(pred:np.ndarray)->dict:
         medium = False
     
     results = {}
-    results["Is short"]=True
+    results["Is short"]=False
 
     results["Has strong hit"]=strong
 

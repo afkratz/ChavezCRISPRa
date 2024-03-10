@@ -28,19 +28,19 @@ if not os.path.exists(os.path.join("output","figures","prescreen_figs")):
     os.mkdir(os.path.join("output","figures","prescreen_figs"))
 
 only_centroids = df[df['Is centroid']==True]
-natural_centroids = only_centroids[only_centroids['Designed or found']=='Found']
+has_start_end = only_centroids[only_centroids['Origin protein start position'].notna()]
 
-hits = natural_centroids[natural_centroids['Hit on any']==True].reset_index(drop=True)
-misses = natural_centroids[natural_centroids['Hit on any']==False].reset_index(drop=True)
+hits = has_start_end[has_start_end['Hit on any']==True].reset_index(drop=True)
+misses = has_start_end[has_start_end['Hit on any']==False].reset_index(drop=True)
 
 odf=pd.DataFrame({
     'Hits':hits['Domain ID'],
-    'Hits starting position':hits['Start'],
-    'Hits ending position':hits['End'],
+    'Hits starting position':hits['Origin protein start position'],
+    'Hits ending position':hits['Origin protein end position'],
     
     'Misses':misses['Domain ID'],
-    'Misses starting position':misses['Start'],
-    'Misses ending position':misses['End']
+    'Misses starting position':misses['Origin protein start position'],
+    'Misses ending position':misses['Origin protein end position']
     }).replace(np.nan,None)
 
 odf.to_csv(

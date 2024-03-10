@@ -32,51 +32,61 @@ if not os.path.exists(os.path.join("output","figures")):
 if not os.path.exists(os.path.join("output","figures","prescreen_figs")):
     os.mkdir(os.path.join("output","figures","prescreen_figs"))
 
-only_centroids = df[df['Is centroid']==True]
-miss_df = only_centroids[only_centroids["Hit on any"]==False].reset_index()
-hit_df = only_centroids[only_centroids["Hit on any"]==True].reset_index()
+df['len aa sequence']=0
+for i in df.index:
+    df.at[i,'len aa sequence'] = len(df.at[i,'AA sequence'])
 
+for name,size in [('small',(0,80)),('medium',(81,150)),('large',(151,1000)),('all',(0,1000))]:
+    only_centroids = df[df['Is centroid']==True]
+    only_centroids = only_centroids[only_centroids['len aa sequence']>size[0]]
+    only_centroids = only_centroids[only_centroids['len aa sequence']<=size[1]]
+    
+    
+    miss_df = only_centroids[only_centroids["Hit on any"]==False].reset_index()
+    
+    hit_df = only_centroids[only_centroids["Hit on any"]==True].reset_index()
+    print(name,len(hit_df),len(miss_df))
 
-odf = pd.DataFrame()
-window_size = 10
-samples = 1000
-odf['Position from C to N']=np.linspace(0,1,samples)
-for trait in ("NCPR","Hydropathy","FDP"):
-    xs=np.linspace(0,1,samples)
-    hit_ys=[]
-    for i in range(len(hit_df)):
-        hit_ys.append(
-            bc.samplePoints(
-                bc.rollingAverage(
-                    bc.getLinearTrait(
-                        hit_df.at[i,"AA sequence"],
-                        trait
-                        ),
-                    window_size),
-                samples)
-            )
-    hit_ys=np.stack(hit_ys).mean(axis=0)
-    odf['Hits_'+trait]=hit_ys
-    miss_ys=[]
-    for i in range(len(miss_df)):
-        miss_ys.append(
-            bc.samplePoints(
-                bc.rollingAverage(
-                    bc.getLinearTrait(
-                        miss_df.at[i,"AA sequence"],
-                        trait
-                        ),
-                    window_size),
-                samples)
-            )
-    miss_ys=np.stack(miss_ys).mean(axis=0)
-    odf['Miss_'+trait]=miss_ys
+    odf = pd.DataFrame()
+    window_size = 10
+    samples = 1000
+    odf['Position from C to N']=np.linspace(0,1,samples)
+    for trait in ("NCPR","Hydropathy","FDP"):
+        xs=np.linspace(0,1,samples)
+        hit_ys=[]
+        for i in range(len(hit_df)):
+            hit_ys.append(
+                bc.samplePoints(
+                    bc.rollingAverage(
+                        bc.getLinearTrait(
+                            hit_df.at[i,"AA sequence"],
+                            trait
+                            ),
+                        window_size),
+                    samples)
+                )
+        hit_ys=np.stack(hit_ys).mean(axis=0)
+        odf['Hits_'+trait]=hit_ys
+        miss_ys=[]
+        for i in range(len(miss_df)):
+            miss_ys.append(
+                bc.samplePoints(
+                    bc.rollingAverage(
+                        bc.getLinearTrait(
+                            miss_df.at[i,"AA sequence"],
+                            trait
+                            ),
+                        window_size),
+                    samples)
+                )
+        miss_ys=np.stack(miss_ys).mean(axis=0)
+        odf['Miss_'+trait]=miss_ys
 
-odf.to_csv(
-    os.path.join(
-        "output",        
-        "figures",
-        "prescreen_figs",
-        "3sa - NCPR hydropathy FDP NtoC.csv"
+    odf.to_csv(
+        os.path.join(
+            "output",        
+            "figures",
+            "prescreen_figs",
+            "3sa - NCPR hydropathy FDP NtoC {}.csv".format(name)
+        )
     )
-)

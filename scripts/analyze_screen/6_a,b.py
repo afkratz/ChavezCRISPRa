@@ -34,16 +34,16 @@ bipartite_score_df = pd.read_csv(
         "output",
         "screen_analysis",
         "activity_analysis",
-        "01_bipartite_screen_scored.csv"
+        "bipartite_screen_scored_with_means.csv"
     )
-)
+).dropna()
 
 tripartite_score_df = pd.read_csv(
     os.path.join(
         "output",
         "screen_analysis",
         "activity_analysis",
-        "01_tripartite_screen_scored.csv"
+        "tripartite_screen_scored_with_means.csv"
     )
 )
 

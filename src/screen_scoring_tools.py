@@ -25,9 +25,30 @@ def discard_errors(dfs,targets,replicates,bins):
     for t in targets:
         for r in replicates:
             for b in bins:
-                dfs[t][r][b]=dfs[t][r][b][dfs[t][r][b]["Errors"]==0]
+                dfs[t][r][b]=dfs[t][r][b][
+                    dfs[t][r][b]["Errors"]==0
+                    ]
                 dfs[t][r][b].drop("Errors",axis=1,inplace=True)
+
                 dfs[t][r][b]=dfs[t][r][b].reset_index(drop=True)
+
+def assign_classes(dfs,targets,replicates,bins,classes,spinner=None):
+    for t in targets:
+        for r in replicates:
+            for b in bins:
+                if spinner!=None:spinner.next()
+                df = dfs[t][r][b]
+                df['class']=""
+                for i,row in df.iterrows():
+                    matched_class = "None"
+                    for class_name,class_data in classes.items():
+                        if all(row[col] in class_data[col] for col in class_data):
+                            matched_class = class_name
+                            break
+                    df.loc[i,'class'] = matched_class
+                dfs[t][r][b]=df[df['class']!='None']
+
+
 
 def discard_negative_controls(dfs,columns,keep,targets,replicates,bins):
     for t in targets:
@@ -37,25 +58,37 @@ def discard_negative_controls(dfs,columns,keep,targets,replicates,bins):
                     for bc in set(dfs[t][r][b][column]):
                         if bc in keep:
                             continue
-                        dfs[t][r][b]=dfs[t][r][b][dfs[t][r][b][column]!=bc]
+                        else:
+                            dfs[t][r][b]=dfs[t][r][b][
+                                dfs[t][r][b][column]!=bc
+                                ]
                     dfs[t][r][b]=dfs[t][r][b].reset_index(drop=True)
         
 
 def discard_high_counts_percentage_of_total(dfs,percentage,targets,replicates,bins):
+    """
+    Discards any row whose reads make up more than a certain percentage of that column
+    """
     for t in targets:
         for r in replicates:
             for b in bins:
-                limit= int(sum(dfs[t][r][b]["count"])*percentage)
-                dfs[t][r][b]=dfs[t][r][b][dfs[t][r][b]["count"]<limit].reset_index(drop=True)
+                limit = int(sum(dfs[t][r][b]["count"])*percentage)
+                dfs[t][r][b]=dfs[t][r][b][
+                    (dfs[t][r][b]["count"]<limit) | (dfs[t][r][b]['class']!='experimental') #keep all negative controls and not-high-count-umis
+                    ].reset_index(drop=True)
 
 def normalize_read_counts(dfs,targets,replicates,bins):
+    """
+    Normalizes the reads within each bin to an average of 100
+    
+    """
     for t in targets:
         for r in replicates:
             for b in bins:
                 df=dfs[t][r][b]
                 df['count']=df['count'].astype(float)
                 total_reads=sum(df["count"])
-                for i in range(0,len(df)):
+                for i in df.index:
                     df.at[i,"count"]=float((df.at[i,"count"]*100*len(df))/total_reads)
 
 def bin_on_traits(dfs,binning_rules:dict,targets,replicates,bins):
@@ -88,7 +121,7 @@ def bin_on_traits(dfs,binning_rules:dict,targets,replicates,bins):
             A02     10
 
     For non-zero values, we will bin based on that many
-    charachters of the column, discarding the rest
+    charachters of the value in that column,
     Example:
         input:
             BC1     umi1       count
@@ -98,7 +131,7 @@ def bin_on_traits(dfs,binning_rules:dict,targets,replicates,bins):
             A02     CGTAGT     1
             A02     GTACAT     9
             A02     CGGGAG     14
-    Run with traits = {'umi1':2}
+    Run with traits = {'umi1':2} (Use first 2 bases of column umi1)
         output:
             BC1     umi1       count
             A01     AA     25
@@ -191,7 +224,7 @@ def combine_bins(dfs,targets,replicates,bins):
                 dics[b]={}
             for b in bins:
                 df=dfs[t][r][b]
-                for i in range(0,len(df)):
+                for i in df.index:
                     label=""
                     for col in dfs[t][r][bins[0]].columns:
                         if col=="count":
@@ -216,7 +249,7 @@ def discard_combined_bin_counts(dfs,mincount,targets,replicates):
         for r in replicates:
             df=dfs[t][r]
             keep_indexes=[]
-            for i in range(0,len(dfs[t][r])):
+            for i in dfs[t][r].index:
                 if df.at[i,"bin_1"]+df.at[i,"bin_2"]+df.at[i,"bin_3"]+df.at[i,"bin_4"]>mincount:
                     keep_indexes.append(i)
             dfs[t][r]=dfs[t][r].iloc[keep_indexes].reset_index(drop=True)
@@ -226,7 +259,7 @@ def discard_min_bin_counts(dfs,mincount,targets,replicates):
         for r in replicates:
             df=dfs[t][r]
             keep_indexes=[]
-            for i in range(0,len(dfs[t][r])):
+            for i in dfs[t][r].index:
                 if df.at[i,"bin_1"]>mincount:
                     if df.at[i,"bin_2"]>mincount:
                         if df.at[i,"bin_3"]>mincount:
@@ -238,18 +271,27 @@ def load_mfis(filename):
     return pd.read_csv(filename,index_col="Condition")
 
 def add_FluorescentProductScore(dfs,mfis,targets,replicates,bins):
+    """
+    Scores a row by applying the following operation to it:
+    score = sum(bin i fluorescence * bin i count) / sum(bin i count) for bins 1,2,3 and 4
+
+    """
     for t in targets:
         for r in replicates:
             dfs[t][r]["FluorescentProductScore"]=np.nan
-
-            for i in range(len(dfs[t][r])):
-                score=0
+            for i in dfs[t][r].index:
+                numerator=0
                 for b in bins:
                     if b=="NS":continue
-                    score+=mfis.at[t+"_"+r,b]*dfs[t][r].at[i,b]
-                if(sum(dfs[t][r].iloc[i][["bin_1","bin_2","bin_3","bin_4"]])>0):
-                    score=score/sum(dfs[t][r].iloc[i][["bin_1","bin_2","bin_3","bin_4"]])
-                    dfs[t][r].at[i,"FluorescentProductScore"]=score
+                    numerator+=mfis.at[t+"_"+r,b]*dfs[t][r].at[i,b]
+                
+                denominator = sum(dfs[t][r].loc[i][["bin_1","bin_2","bin_3","bin_4"]])
+                if denominator > 0:
+                    score = numerator/denominator
+                else:
+                    score = 0
+
+                dfs[t][r].at[i,"FluorescentProductScore"]=score
 
 def add_ToxicityScore(df,pre_selection,post_selection,tox_column_name:str,psuedoreads:int=1):
     """
@@ -261,7 +303,7 @@ def add_ToxicityScore(df,pre_selection,post_selection,tox_column_name:str,psuedo
         )
     The psuedoreads are added to every value, and are included
     to limit the impact of low-read counts, without which,
-    certain activators reach infinite toxicity 
+    certain activators reach infinite toxicity
     """
     if isinstance(pre_selection,str):
         pre_selection=[pre_selection]
@@ -275,6 +317,7 @@ def add_ToxicityScore(df,pre_selection,post_selection,tox_column_name:str,psuedo
     df[tox_column_name]=np.log2(numerator / denominator)
 
 def calculate_zscore(df,input_col,output_col):
+    raise NotImplementedError
     mean = df[input_col].mean()
     std_dev = df[input_col].std()
     df[output_col]=(df[input_col]-mean)/std_dev
@@ -284,7 +327,7 @@ def drop_item(dfs,trait,targets,replicates):
         for r in replicates:
             dfs[t][r].drop(trait,axis=1,inplace=True)
             
-def mean_x_over_y(dfs,x,y,min_count,targets,replicates,bins):
+def mean_x_over_y(dfs,x,y,targets,replicates,bins):
     for t in targets:
         for r in replicates:
             df=dfs[t][r]
@@ -319,7 +362,7 @@ def mean_x_over_y(dfs,x,y,min_count,targets,replicates,bins):
                     dics[x][label]=[]
                 if(df.at[i,x]!=""):dics[x][label].append(df.at[i,x])
             for label in dics[x].keys():
-                if len(dics[x][label])>min_count:
+                if len(dics[x][label])>0:
                     dics[x][label]=np.mean(dics[x][label])
                 else:
                     dics[x][label]=None
@@ -347,7 +390,7 @@ def combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore'):
                     odf.at[label,name]=df.at[i,keep]
     return odf
 
-def _generate_combinations(columns, options, current_combo=[]):
+def _generate_combinations(columns, options):
     if not columns:
         return [[]]
     current_column = columns[0]
@@ -414,7 +457,10 @@ def fill_in_combinatorial_results(df,key_columns,entries):
     all_possible_labels = _generate_combinations(key_columns,entries)
 
     full_df = pd.DataFrame()
-
+    
+    for (key_column,value) in all_possible_labels[0]:
+        full_df[key_column]="" #Initialize all of our key columns as string
+        
     for label in all_possible_labels:
         str_label = str(label)#using this an index
         for (key_column,value) in label:

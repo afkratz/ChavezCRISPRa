@@ -17,7 +17,6 @@ import pandas as pd
 os.chdir(Path(__file__).resolve().parent.parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 
-from src import screen_scoring_tools as sst
 
 p1_score = pd.read_csv(
     os.path.join(

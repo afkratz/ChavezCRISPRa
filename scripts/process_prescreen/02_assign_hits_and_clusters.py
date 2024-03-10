@@ -18,7 +18,7 @@ from Bio import SeqIO
 
 #Load input dataframe
 df = pd.read_excel(
-    os.path.join("input_data","Supplementary Table 1.xlsx"),
+    os.path.join("input_data","Supplementary Table 1. Domain origins and sequences.xlsx"),
     index_col = "Domain ID"
     )
 
@@ -27,9 +27,11 @@ score_df = pd.read_excel(
     os.path.join("input_data","Figure 1 and Supplementary Figures 1-2.xlsx"),
     index_col = "Domain ID"
 )
+score_df['Hit on any'] = score_df[['Activated 1 target gene 2-fold?','Activated 2 target genes 2-fold?','Activated 3 target genes 2-fold?']].values.any(axis=1)
+
+assert set(df.index)==set(score_df.index)
 
 df = df.join(score_df)
-df.to_csv('test.csv')
 
 #Drop protein folding domains
 df = df[df["Role"]=="Activator"]

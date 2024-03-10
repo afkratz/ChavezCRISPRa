@@ -144,7 +144,7 @@ def save_results(res:dict,rules:List[Rule],condition_name:str):
         odf['Errors'][i]=0
         for j,rule in enumerate(rules):
             odf[rule.name][i]=key[j]
-            if key[j] in ["Missing header","Length failed","Missing tail","Unknown BC"]:
+            if key[j] in ["Missing header","Length failed","Missing tail","Unknown BC","No BCs in window","Multiple BC"]:
                 odf['Errors'][i]+=1
         odf["count"][i]=res[key]
     odf = pd.DataFrame(odf)

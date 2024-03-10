@@ -1,2 +1,2 @@
 condition,fw reads,rv reads
-single_domain_plasmid,screen_data/reads/single_domain_plasmid_reads/single_domain_plasmid_fw.fastq.gz,
+single_domain_plasmid,NGS/screen_reads/single_domain_plasmid/single_domain_plasmid_fw.fastq.gz,

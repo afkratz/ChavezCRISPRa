@@ -19,14 +19,97 @@ sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 
 from src import screen_scoring_tools as sst
 
+barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+single_domain_neg_control_classes = {
+        "experimental":{
+            "BC1":barcodes,
+        },
+        "mcpmut_neg_control":{
+            "BC1":["MCP_MUTATION1"],
+        },
+        "puro_neg_control":{
+            "BC1":["PuroR1"],
+        },
+        "supernatant_neg_control":{
+            "BC1":["SUPERNATANT1"],
+        },
+    }
 
-def single_domain_score():
+single_domain_no_control_classes = {
+        "experimental":{
+            "BC1":barcodes,
+        },
+    }
+
+bipartite_neg_control_classes = {
+        "experimental":{
+            "BC1":barcodes,
+            "BC2":barcodes,
+        },
+        "mcpmut_neg_control":{
+            "BC1":["MCP_MUTATION1"],
+            "BC2":["MCP_MUTATION2"],
+        },
+        "puro_neg_control":{
+            "BC1":["PuroR1"],
+            "BC2":["PuroR2"],
+        },
+        "supernatant_neg_control":{
+            "BC1":["SUPERNATANT1"],
+            "BC2":["SUPERNATANT2"],
+        },
+    }
+
+bipartite_no_control_classes = {
+        "experimental":{
+            "BC1":barcodes,
+            "BC2":barcodes,
+        },
+    }
+
+tripartite_neg_control_classes = {
+        "experimental":{
+            "BC1":barcodes,
+            "BC2":barcodes,
+            "BC3":barcodes,
+        },
+        "mcpmut_neg_control":{
+            "BC1":["MCP_MUTATION1"],
+            "BC2":["MCP_MUTATION2"],
+            "BC3":["MCP_MUTATION3"],
+        },
+        "puro_neg_control":{
+            "BC1":["PuroR1"],
+            "BC2":["PuroR2"],
+            "BC3":["PuroR3"],
+        },
+        "supernatant_neg_control":{
+            "BC1":["SUPERNATANT1"],
+            "BC2":["SUPERNATANT2"],
+            "BC3":["SUPERNATANT3"],
+        },
+    }
+
+tripartite_no_control_classes = {
+        "experimental":{
+            "BC1":barcodes,
+            "BC2":barcodes,
+            "BC3":barcodes,
+        },
+    }
+
+
+def single_domain_score(include_negative_controls = False):
     spinner = sp.PieSpinner("Processing single domain screen... %(elapsed)ds")
+    
+    if include_negative_controls:
+        classes = single_domain_neg_control_classes
+    else:
+        classes = single_domain_no_control_classes    
 
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
     targets=["EPCAM","CXCR4","Reporter"]
     replicates=["1","2"]
-    bins=["bin_1","bin_2","bin_3","bin_4","NS"]
+    bins=["bin_1","bin_2","bin_3","bin_4"]
 
     dfs = sst.load_dfs(
         os.path.join("output","screen_results","processed_reads","single_domain_sorted"),
@@ -36,7 +119,7 @@ def single_domain_score():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
@@ -69,9 +152,9 @@ def single_domain_score():
     sst.drop_item(dfs,"bin_2",targets,replicates)
     sst.drop_item(dfs,"bin_3",targets,replicates)
     sst.drop_item(dfs,"bin_4",targets,replicates)
-    sst.drop_item(dfs,"NS",targets,replicates)
+    sst.drop_item(dfs,'class',targets,replicates)
 
-    sst.mean_x_over_y(dfs,"FluorescentProductScore","UMI1",3,targets,replicates,bins)
+    sst.mean_x_over_y(dfs,"FluorescentProductScore","UMI1",targets,replicates,bins)
     spinner.next()
 
     odf=sst.combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
@@ -88,10 +171,13 @@ def single_domain_score():
         index=False)
     spinner.finish()
 
-def single_domain_toxicity():
+def single_domain_toxicity(include_negative_controls = False):
     spinner = sp.PieSpinner("Processing single domain toxicity... %(elapsed)ds")
+    if include_negative_controls:
+        classes = single_domain_neg_control_classes
+    else:
+        classes = single_domain_no_control_classes    
 
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
     dfs={}
     targets=["Plasmid"]
     replicates=["1"]
@@ -100,6 +186,7 @@ def single_domain_toxicity():
         for r in replicates:
             dfs[t][r]={}
     bins=["P1 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS","Reporter_1_NS","Reporter_2_NS"]
+
     for t in targets:
         for r in replicates:
             dfs[t][r]["P1 Plasmid"]=pd.read_csv(
@@ -109,8 +196,7 @@ def single_domain_toxicity():
                         "processed_reads",
                         "single_domain_plasmid",
                         "single_domain_plasmid.csv"
-                    )
-                )
+                    ))
             
             for b in bins[1:]:
                 dfs[t][r][b] = pd.read_csv(
@@ -127,15 +213,13 @@ def single_domain_toxicity():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins[1:])
     spinner.next()
 
-    umi_traits={
-            "UMI1":0,
-            }
+    umi_traits={"UMI1":0}
     sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
     spinner.next()
     
@@ -143,6 +227,8 @@ def single_domain_toxicity():
     spinner.next()
 
     dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.drop_item(dfs,'class',targets,replicates)
+
 
     spinner.next()
     for t in targets:
@@ -150,8 +236,8 @@ def single_domain_toxicity():
             sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["EPCAM_1_NS","EPCAM_2_NS"],"EPCAM_Tox")
             sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["CXCR4_1_NS","CXCR4_2_NS"],"CXCR4_Tox")
             sst.add_ToxicityScore(dfs[t][r],"P1 Plasmid",["Reporter_1_NS","Reporter_2_NS"],"Reporter_Tox")
-            
             dfs[t][r]["CX&EP Average Tox"]=dfs[t][r][["EPCAM_Tox","CXCR4_Tox"]].values.mean(axis=1)
+
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1"],barcodes).to_csv(
                 os.path.join(
                     "output",
@@ -159,11 +245,16 @@ def single_domain_toxicity():
                     "screen_toxicity", 
                     "single_domain_toxicity.csv"        
                      ),index=False)
+            
     spinner.finish()
 
-def single_domain_read_counts():
+def single_domain_read_counts(include_negative_controls = False):
     spinner = sp.PieSpinner("Generating single domain read counts... %(elapsed)ds")
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    if include_negative_controls:
+        classes = single_domain_neg_control_classes
+    else:
+        classes = single_domain_no_control_classes
+
     targets=["EPCAM","CXCR4","Reporter"]
     replicates=["1","2"]
     bins=["bin_1","bin_2","bin_3","bin_4","NS"]
@@ -171,11 +262,12 @@ def single_domain_read_counts():
     dfs = sst.load_dfs(
         os.path.join("output","screen_results","processed_reads","single_domain_sorted"),
         targets,replicates,bins)
+    
     spinner.next()
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
@@ -185,9 +277,10 @@ def single_domain_read_counts():
     sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
     spinner.next()
 
-    raw_read_dfs=sst.combine_bins(dfs,targets,replicates,bins)
     sst.normalize_read_counts(dfs,targets,replicates,bins)
     normalized_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.drop_item(normalized_dfs,'class',targets,replicates)
+
     spinner.next()
 
     if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts","single_domain")):
@@ -195,16 +288,6 @@ def single_domain_read_counts():
             os.path.join("output","screen_results","screen_bin_counts","single_domain"))
     for t in targets:
         for r in replicates:
-            sst.fill_in_combinatorial_results(raw_read_dfs[t][r],["BC1"],barcodes).fillna(0).to_csv(
-                os.path.join(
-                    "output",
-                    "screen_results",
-                    "screen_bin_counts",
-                    "single_domain",
-                    t+"_"+r+"_raw_counts.csv"
-                ),
-                index=False
-            )
             sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1"],barcodes).fillna(0).to_csv(
                 os.path.join(
                     "output",
@@ -217,13 +300,17 @@ def single_domain_read_counts():
             )
     spinner.finish()
 
-def bipartite_score():
+def bipartite_score(include_negative_controls = False):
     spinner = sp.PieSpinner("Processing bipartite score... %(elapsed)ds")
 
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
     targets=["EPCAM","CXCR4","Reporter"]
     replicates=["1","2"]
-    bins=["bin_1","bin_2","bin_3","bin_4","NS"]
+    bins=["bin_1","bin_2","bin_3","bin_4"]
+
+    if include_negative_controls:
+        classes = bipartite_neg_control_classes
+    else:
+        classes = bipartite_no_control_classes    
 
     dfs = sst.load_dfs(
         os.path.join("output","screen_results","processed_reads","bipartite_sorted"),
@@ -233,7 +320,7 @@ def bipartite_score():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,['BC1','BC2'],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
@@ -266,9 +353,9 @@ def bipartite_score():
     sst.drop_item(dfs,"bin_2",targets,replicates)
     sst.drop_item(dfs,"bin_3",targets,replicates)
     sst.drop_item(dfs,"bin_4",targets,replicates)
-    sst.drop_item(dfs,"NS",targets,replicates)
+    sst.drop_item(dfs,'class',targets,replicates)
 
-    sst.mean_x_over_y(dfs,"FluorescentProductScore","UMI2",3,targets,replicates,bins)
+    sst.mean_x_over_y(dfs,"FluorescentProductScore","UMI2",targets,replicates,bins)
     spinner.next()
 
     odf=sst.combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
@@ -280,15 +367,19 @@ def bipartite_score():
             "output",
             "screen_results",
             "screen_scores", 
-            "bipartite_screen_scored.csv"        
-                     )
-        ,index=False)
+            "bipartite_screen_scored.csv"),
+        index=False)
     spinner.finish()
 
-def bipartite_toxicity():
+def bipartite_toxicity(include_negative_controls=False):
     spinner = sp.PieSpinner("Processing bipartite toxicity... %(elapsed)ds")
 
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    if include_negative_controls:
+        classes = bipartite_neg_control_classes
+    else:
+        classes = bipartite_no_control_classes  
+    
+
     dfs={}
     targets=["Plasmid"]
     replicates=["1"]
@@ -296,6 +387,7 @@ def bipartite_toxicity():
         dfs[t]={}
         for r in replicates:
             dfs[t][r]={}
+            
     bins=["P2 Plasmid","EPCAM_1_NS","EPCAM_2_NS","CXCR4_1_NS","CXCR4_2_NS","Reporter_1_NS","Reporter_2_NS"]
     for t in targets:
             for r in replicates:
@@ -324,7 +416,7 @@ def bipartite_toxicity():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1","BC2"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins[1:])
@@ -341,6 +433,8 @@ def bipartite_toxicity():
     spinner.next()
 
     dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.drop_item(dfs,'class',targets,replicates)
+
     spinner.next()
 
     for t in targets:
@@ -358,9 +452,15 @@ def bipartite_toxicity():
                      ),index=False)
     spinner.finish()
 
-def bipartite_read_counts():
+def bipartite_read_counts(include_negative_controls = False):
     spinner = sp.PieSpinner("Generating bipartite read counts... %(elapsed)ds")
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    
+    if include_negative_controls:
+        classes = bipartite_neg_control_classes
+    else:
+        classes = bipartite_no_control_classes  
+
+
     targets=["EPCAM","CXCR4","Reporter"]
     replicates=["1","2"]
     bins=["bin_1","bin_2","bin_3","bin_4","NS"]
@@ -372,7 +472,7 @@ def bipartite_read_counts():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1","BC2"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.0005,targets,replicates,bins)
@@ -382,26 +482,16 @@ def bipartite_read_counts():
     sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
     spinner.next()
 
-    raw_read_dfs=sst.combine_bins(dfs,targets,replicates,bins)
     sst.normalize_read_counts(dfs,targets,replicates,bins)
     normalized_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.drop_item(normalized_dfs,'class',targets,replicates)
     spinner.next()
 
     if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts","bipartite_screen")):
-        os.mkdir(
-            os.path.join("output","screen_results","screen_bin_counts","bipartite_screen"))
+        os.mkdir(os.path.join("output","screen_results","screen_bin_counts","bipartite_screen"))
+    
     for t in targets:
         for r in replicates:
-            sst.fill_in_combinatorial_results(raw_read_dfs[t][r],["BC1","BC2"],barcodes).fillna(0).to_csv(
-                os.path.join(
-                    "output",
-                    "screen_results",
-                    "screen_bin_counts",
-                    "bipartite_screen",
-                    t+"_"+r+"_raw_counts.csv"
-                ),
-                index=False
-            )
             sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1","BC2"],barcodes).fillna(0).to_csv(
                 os.path.join(
                     "output",
@@ -414,13 +504,17 @@ def bipartite_read_counts():
             )
     spinner.finish()
 
-def tripartite_score():
+def tripartite_score(include_negative_controls=False):
     spinner = sp.PieSpinner("Processing tripartite score... %(elapsed)ds")
 
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    if include_negative_controls:
+        classes = tripartite_neg_control_classes
+    else:
+        classes = tripartite_no_control_classes  
+
     targets=["EPCAM","CXCR4","Reporter"]
     replicates=["1","2"]
-    bins=["bin_1","bin_2","bin_3","bin_4","NS"]
+    bins=["bin_1","bin_2","bin_3","bin_4"]
 
     dfs = sst.load_dfs(
         os.path.join("output","screen_results","processed_reads","tripartite_sorted"),
@@ -430,7 +524,7 @@ def tripartite_score():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,['BC1','BC2','BC3'],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.01,targets,replicates,bins)
@@ -440,15 +534,18 @@ def tripartite_score():
     sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
     spinner.next()
 
-
     sst.normalize_read_counts(dfs,targets,replicates,bins)
+
     spinner.next()
 
     dfs=sst.combine_bins(dfs,targets,replicates,bins)
         
     spinner.next()
     sst.discard_min_bin_counts(dfs,0,targets,replicates)
-    sst.discard_combined_bin_counts(dfs,493,targets,replicates)
+    if include_negative_controls:
+        sst.discard_combined_bin_counts(dfs,200,targets,replicates)
+    else:
+        sst.discard_combined_bin_counts(dfs,493,targets,replicates)
     spinner.next()
 
     mfis=sst.load_mfis(
@@ -465,7 +562,8 @@ def tripartite_score():
     sst.drop_item(dfs,"bin_2",targets,replicates)
     sst.drop_item(dfs,"bin_3",targets,replicates)
     sst.drop_item(dfs,"bin_4",targets,replicates)
-    sst.drop_item(dfs,"NS",targets,replicates)
+    sst.drop_item(dfs,'class',targets,replicates)
+
 
     odf = sst.combine_replicates(dfs,targets,replicates,keep='FluorescentProductScore')
     odf = sst.fill_in_combinatorial_results(odf,["BC1","BC2","BC3"],barcodes)
@@ -481,10 +579,15 @@ def tripartite_score():
         ,index=False)
     spinner.finish()
 
-def tripartite_toxicity():
+
+def tripartite_toxicity(include_negative_controls=False):
     spinner = sp.PieSpinner("Processing tripartite toxicity... %(elapsed)ds")
 
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    if include_negative_controls:
+        classes = tripartite_neg_control_classes
+    else:
+        classes = tripartite_no_control_classes
+
     dfs={}
     targets=["Plasmid"]
     replicates=["1"]
@@ -520,10 +623,11 @@ def tripartite_toxicity():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1","BC2","BC3"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.01,targets,replicates,bins[1:])
+
     spinner.next()
 
     for b in bins[1:]:
@@ -541,6 +645,8 @@ def tripartite_toxicity():
     spinner.next()
 
     dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.drop_item(dfs,'class',targets,replicates)
+
     spinner.next()
     for t in targets:
         for r in replicates:
@@ -559,9 +665,13 @@ def tripartite_toxicity():
             
     spinner.finish()
 
-def tripartite_read_counts():
+def tripartite_read_counts(include_negative_controls=False):
     spinner = sp.PieSpinner("Generating tripartite read counts... %(elapsed)ds")
-    barcodes = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
+    if include_negative_controls:
+        classes = tripartite_neg_control_classes
+    else:
+        classes = tripartite_no_control_classes
+
     targets=["EPCAM","CXCR4","Reporter"]
     replicates=["1","2"]
     bins=["bin_1","bin_2","bin_3","bin_4","NS"]
@@ -573,7 +683,7 @@ def tripartite_read_counts():
     sst.discard_errors(dfs,targets,replicates,bins)
     spinner.next()
 
-    sst.discard_negative_controls(dfs,["BC1","BC2","BC3"],barcodes,targets,replicates,bins)
+    sst.assign_classes(dfs,targets,replicates,bins,classes,spinner=spinner)
     spinner.next()
 
     sst.discard_high_counts_percentage_of_total(dfs,0.01,targets,replicates,bins)
@@ -583,9 +693,9 @@ def tripartite_read_counts():
     sst.bin_on_traits(dfs,umi_traits,targets,replicates,bins)
     spinner.next()
 
-    raw_read_dfs=sst.combine_bins(dfs,targets,replicates,bins)
     sst.normalize_read_counts(dfs,targets,replicates,bins)
     normalized_dfs=sst.combine_bins(dfs,targets,replicates,bins)
+    sst.drop_item(normalized_dfs,'class',targets,replicates)
     spinner.next()
 
     if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts","tripartite_screen")):
@@ -593,16 +703,6 @@ def tripartite_read_counts():
             os.path.join("output","screen_results","screen_bin_counts","tripartite_screen"))
     for t in targets:
         for r in replicates:
-            sst.fill_in_combinatorial_results(raw_read_dfs[t][r],["BC1","BC2","BC3"],barcodes).fillna(0).to_csv(
-                os.path.join(
-                    "output",
-                    "screen_results",
-                    "screen_bin_counts",
-                    "tripartite_screen",
-                    t+"_"+r+"_raw_counts.csv"
-                ),
-                index=False
-            )
             sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1","BC2","BC3"],barcodes).fillna(0).to_csv(
                 os.path.join(
                     "output",
@@ -628,15 +728,18 @@ if __name__=="__main__":
     if not os.path.exists(os.path.join("output","screen_results","screen_bin_counts")):
         os.mkdir(
             os.path.join("output","screen_results","screen_bin_counts"))
-    single_domain_score()
-    single_domain_toxicity()
-    single_domain_read_counts()
-    bipartite_score()
-    bipartite_toxicity()
-    bipartite_read_counts()
-    tripartite_score()
-    tripartite_toxicity()
-    tripartite_read_counts()
     
+    INCLUDE_NEGATIVE_CONTROLS=False
+
+    single_domain_score(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    single_domain_toxicity(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    single_domain_read_counts(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    bipartite_score(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    bipartite_toxicity(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    bipartite_read_counts(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    tripartite_score(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    tripartite_toxicity(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+    tripartite_read_counts(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+
     
     

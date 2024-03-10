@@ -6,6 +6,20 @@ Created on Thu Dec 21 14:06:01 2023
 """
 
 import pandas as pd
+import numpy as np
+from scipy.stats import pearsonr
+import os
+from pathlib import Path
+
+os.chdir(
+    os.path.join(
+        Path(__file__).resolve().parent.parent.parent,
+        "output",
+        "screen_analysis",
+        "biochem_analysis"
+        )
+    )
+
 df1 = pd.read_csv('single_domain_screen_biochem_charachterized.csv',index_col='Unnamed: 0')
 df2 = pd.read_csv('bipartite_screen_biochem_charachterized.csv',index_col='Unnamed: 0')
 df3 = pd.read_csv('tripartite_screen_biochem_charachterized.csv',index_col='Unnamed: 0')
@@ -37,8 +51,15 @@ def find_correls(dfs):
     for target in ['EPCAM_average','CXCR4_average','Reporter_average','CX&EP Average Tox']:
         for trait in ['NCPR', 'Hydropathy', 'Disorder promoting fraction','Kappa','Omega']:
             for n,df in enumerate(dfs):
-                correl = df.corr().at[target,trait]
-                odf.at["Screen_"+str(n+1)"_"+target,trait]=correl
+                x = df[target].values
+                y = df[trait].values
+                valid_indices = ~np.isnan(x) & ~np.isnan(y)
+                filtered_x=x[valid_indices]
+                filtered_y=y[valid_indices]
+                (scipyr,scipyp) = pearsonr(filtered_x,filtered_y)
+                odf.at["Screen_"+str(n+1)+"_"+target,"scipy_r_"+trait]=scipyr
+                odf.at["Screen_"+str(n+1)+"_"+target,"scipy_p_"+trait]=scipyp
+                
     return odf
 
 dfs = [df1,df2,df3]

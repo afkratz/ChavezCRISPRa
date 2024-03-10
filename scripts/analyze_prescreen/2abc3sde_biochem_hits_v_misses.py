@@ -32,8 +32,8 @@ if not os.path.exists(os.path.join("output","figures","prescreen_figs")):
 
 only_centroids = df[df['Is centroid']==True]
 
-hit_df = df[df['Hit on any']==True].reset_index(drop=True)
-miss_df = df[df['Hit on any']==False].reset_index(drop=True)
+hit_df = only_centroids[only_centroids['Hit on any']==True].reset_index(drop=True)
+miss_df = only_centroids[only_centroids['Hit on any']==False].reset_index(drop=True)
 
 odf=pd.DataFrame({
     'Hits':hit_df['Domain ID'],

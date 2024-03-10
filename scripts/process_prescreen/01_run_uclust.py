@@ -32,7 +32,7 @@ if not os.path.exists(os.path.join("output","prescreen_results","clusters")):
 
 #Load input dataframe
 df = pd.read_excel(
-    os.path.join("input_data","Supplementary Table 1.xlsx"),
+    os.path.join("input_data","Supplementary Table 1. Domain origins and sequences.xlsx"),
     index_col = "Domain ID"
     )
 
@@ -43,7 +43,6 @@ df = df[df["Role"]=="Activator"]
 #Write sequences to a .fasta for clustering
 with open("sequences_to_cluster.fasta",'w') as fh:
     for i in df.index:
-        print(i)
         fh.write(">{}\n".format(i))
         fh.write(df.at[i,"AA sequence"]+"\n")
 

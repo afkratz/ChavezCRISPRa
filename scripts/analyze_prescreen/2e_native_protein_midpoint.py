@@ -27,14 +27,15 @@ if not os.path.exists(os.path.join("output","figures")):
 if not os.path.exists(os.path.join("output","figures","prescreen_figs")):
     os.mkdir(os.path.join("output","figures","prescreen_figs"))
 
+
 only_centroids = df[df['Is centroid']==True]
-natural_centroids = only_centroids[only_centroids['Designed or found']=='Found']
-natural_centroids=natural_centroids.copy()
-natural_centroids['mid_point'] = natural_centroids[['Start','End']].mean(axis=1)
+has_start_end = only_centroids[only_centroids['Origin protein start position'].notna()]
+has_start_end=has_start_end.copy()
+has_start_end['mid_point'] = has_start_end[['Origin protein start position','Origin protein end position']].mean(axis=1)
 
 
-hits = natural_centroids[natural_centroids['Hit on any']==True].reset_index(drop=True)
-misses = natural_centroids[natural_centroids['Hit on any']==False].reset_index(drop=True)
+hits = has_start_end[has_start_end['Hit on any']==True].reset_index(drop=True)
+misses = has_start_end[has_start_end['Hit on any']==False].reset_index(drop=True)
 
 odf=pd.DataFrame({
     'Hits':hits['Domain ID'],
