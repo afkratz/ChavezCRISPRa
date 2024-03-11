@@ -73,10 +73,7 @@ bundled_code_path = os.path.join(
 root_dir = Path(__file__).resolve().parent.parent
 
 os.chdir(
-    os.path.join(
-        bundled_code_path,
-        "paddle",
-    )
+    os.path.join(bundled_code_path,"paddle")
 )
 
 sys.path.insert(0,os.getcwd())
@@ -125,30 +122,13 @@ def get_prediction(seq:str,accept_short=False,SHORT_SAMPLES=100,verbose = False)
 from typing import List
 def process_prediction(pred:np.ndarray)->dict:
     if len(pred)<5:
-        score = pred.mean()
-        if score>6:
-            strong=True
-            medium = True
-        
-        elif score>4:
-            strong = False
-            medium = True
-
-        else:
-            strong = False
-            medium = False
-
-        strong_windows=[]
+        score = float(pred.mean())
         
         results = {}
         results["Is short"]=True
-
-        results["Has strong hit"]=strong
-
-        results["Has medium hit"]=medium
-
-        results["Score"] = float(score)
-
+        results["Has strong hit"]=score>=6
+        results["Has medium hit"]=score>=4
+        results["Score"] = score
         return results
     
     ###### - end of "Is short" section - #####
@@ -161,35 +141,17 @@ def process_prediction(pred:np.ndarray)->dict:
     )
     
     #Find the highest 
-    score = max(
+    score = float(max(
         map(lambda x:min(x),
             [smoothed_prediction[i:i+5] for i in range(0,len(smoothed_prediction)-4)]
             )
-        )
-    
-    if score>6:
-        strong=True
-        medium = True
+        ))
         
-    elif score>4:
-        strong = False
-        medium = True
-
-    else:
-        strong = False
-        medium = False
-    
     results = {}
-    results["Is short"]=False
-
-    results["Has strong hit"]=strong
-
-    results["Has medium hit"]=medium
-
-    results["Score"] = float(score)
-
-    results["Score"] = float(score)
-
+    results["Is short"]=True
+    results["Has strong hit"]=score>=6
+    results["Has medium hit"]=score>=4
+    results["Score"] = score
     return results
 
 def process_sequences(sequences:List[str],accept_short=False)->List[dict]:

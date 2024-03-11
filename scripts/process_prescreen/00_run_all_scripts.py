@@ -1,26 +1,8 @@
 # 00_run_all_scripts.py
 
-import subprocess
-import os
-from pathlib import Path
+import importlib
+for file in "01_run_uclust","02_assign_hits_and_clusters","03_charachterize_manual_tested_domains","04_PADDLE_manual_tested_domains":
+    print("Running {}".format(file))
+    importlib.import_module(file).main()
+    print("File {} completed".format(file))
 
-os.chdir(Path(__file__).resolve().parent)
-
-
-def run_script(script_name):
-    try:
-        subprocess.run(["python", script_name], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing {script_name}: {e}")
-
-if __name__ == "__main__":
-    # List of scripts to be executed in order
-    scripts_to_run = [
-        "01_run_uclust.py",
-        "02_assign_hits_and_clusters.py",
-        "03_charachterize_manual_tested_domains.py",
-        "04_PADDLE_manual_tested_domains.py"
-                      ]
-
-    for script in scripts_to_run:
-        run_script(script)

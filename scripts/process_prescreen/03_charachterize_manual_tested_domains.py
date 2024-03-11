@@ -9,34 +9,41 @@ MIT license
 import os
 from pathlib import Path
 import sys
-os.chdir(Path(__file__).resolve().parent.parent.parent)
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent.parent))
 from src import biochem_charachterize as bc
 
 import pandas as pd
 
-df = pd.read_csv(
-        os.path.join(
-        "output",
-        "prescreen_results",
-        "02_manually_tested_hits_and_clusters_assigned.csv"),
-        index_col="Domain ID"
-    )
+def main():
+    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    df = pd.read_csv(
+            os.path.join(
+            ChavezCIRSPRa_root_dir,
+            "output",
+            "prescreen_results",
+            "02_manually_tested_hits_and_clusters_assigned.csv"),
+            index_col="Domain ID"
+        )
 
-from progress.bar import Bar
-bar = Bar("Charachterizing...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
-for i in df.index:
-    sequence = df.at[i,"AA sequence"]
-    df.at[i,"NCPR"]=bc.getNCPR(sequence)
-    df.at[i,"Hydropathy"]=bc.getHydropathy(sequence)
-    df.at[i,"Disorder promoting fraction"]=bc.getDisorderFraction(sequence)
-    df.at[i,"Kappa"]=bc.getKappa(sequence)
-    df.at[i,"Omega"]=bc.getOmega(sequence)
-    bar.next()
-bar.finish()
-df.to_csv(
-        os.path.join(
-        "output",
-        "prescreen_results",
-        "03_manually_tested_biochem_charachterized.csv")
-    )
+    from progress.bar import Bar
+    bar = Bar("Charachterizing...",max=len(df),suffix='%(index)i / %(max)i - %(eta)ds')
+    for i in df.index:
+        sequence = df.at[i,"AA sequence"]
+        df.at[i,"NCPR"]=bc.getNCPR(sequence)
+        df.at[i,"Hydropathy"]=bc.getHydropathy(sequence)
+        df.at[i,"Disorder promoting fraction"]=bc.getDisorderFraction(sequence)
+        df.at[i,"Kappa"]=bc.getKappa(sequence)
+        df.at[i,"Omega"]=bc.getOmega(sequence)
+        bar.next()
+    bar.finish()
+    df.to_csv(
+            os.path.join(
+            ChavezCIRSPRa_root_dir,
+            "output",
+            "prescreen_results",
+            "03_manually_tested_biochem_charachterized.csv")
+        )
+
+
+if __name__ == "__main__":
+    main()

@@ -131,7 +131,7 @@ def call_uclust():
     uclust_command = uclust_path +" -cluster_fast {} -id 0.5 -centroids {} -clusters {}".format(
         os.path.join(ChavezCIRSPRa_root_dir,"sequences_to_cluster.fasta"),
         os.path.join(ChavezCIRSPRa_root_dir,"output","prescreen_results","centroids.fasta"),
-        os.path.join(ChavezCIRSPRa_root_dir,"output","prescreen_results","clusters","cluster"),
+        os.path.join(ChavezCIRSPRa_root_dir,"output","prescreen_results","clusters/"),
     )
 
     os.system(uclust_command)
@@ -139,6 +139,9 @@ def call_uclust():
     #Clean up after ourselves
     os.remove(os.path.join(ChavezCIRSPRa_root_dir,"sequences_to_cluster.fasta"))
 
-if __name__=="__main__":
+def main():
     download_uclust()
     call_uclust()
+
+if __name__=="__main__":
+    main()
