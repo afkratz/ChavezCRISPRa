@@ -57,7 +57,7 @@ def download_uclust():
                     print("Continuing with un-verified uclust.exe")
             decompress_gzip(uclust_path+'.gz')
             return 
-    if os.name == 'posix':
+    if os.name == 'posix':#We are in linux
         uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust')
         if not os.path.exists(uclust_path):
             download_file(
@@ -77,7 +77,7 @@ def download_uclust():
                 else:
                     print("Continuing with un-verified uclust.exe")
             decompress_gzip(uclust_path+'.gz')
-            os.chmod(filename, os.stat(uclust_path).st_mode | 0o111)
+            os.chmod(uclust_path, os.stat(uclust_path).st_mode | 0o111)
             return 
     else:
         print("Sorry, we only natively support windows or linux")
@@ -100,6 +100,9 @@ def call_uclust():
 
 
     #Make paths for output if they don't exist
+    if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output")):
+        os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output"))
+
     if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","prescreen_results")):
         os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","prescreen_results"))
 
