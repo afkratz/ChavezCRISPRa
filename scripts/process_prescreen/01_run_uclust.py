@@ -57,7 +57,7 @@ def download_uclust():
                     print("Continuing with un-verified uclust.exe")
             decompress_gzip(uclust_path+'.gz')
             return 
-    if os.name == 'posix':#We are in linux
+    elif os.name == 'posix':#We are in linux
         uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust')
         if not os.path.exists(uclust_path):
             download_file(
