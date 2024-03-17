@@ -29,18 +29,27 @@ def main():
 
     df = pd.read_csv(
         os.path.join(
-            ChavezCIRSPRa_root_dir,'screen_data','table_download.tsv'
+            ChavezCIRSPRa_root_dir,'screen_data','screen_download_files.tsv'
         ),
         sep = '\t')
 
+    if os.name == 'nt':
+        prefetch_path = os.path.expanduser("~/Documents/GitHub/sratoolkit.3.1.0-win64/bin/prefetch.exe")
+        fasterq_dump_path = os.path.expanduser("~/Documents/GitHub/sratoolkit.3.1.0-win64/bin/fasterq-dump.EXE")
+    elif os.name == 'posix':
+        prefetch_path = os.path.expanduser("~/sratoolkit.3.1.0-ubuntu64/bin/prefetch")
+        fasterq_dump_path = os.path.expanduser("~/sratoolkit.3.1.0-ubuntu64/bin/fasterq-dump")
+    if not os.path.exists(prefetch_path):
+        print("Cant find prefect executable at {}, Quitting".format(prefetch_path))
+        quit()
+    if not os.path.exists(fasterq_dump_path):
+        print("Cant find fasterq_dump_path executable at {}, Quitting".format(fasterq_dump_path))
+        quit()
     
-    prefetch_path = os.path.expanduser("~/sratoolkit.3.1.0-ubuntu64/bin/prefetch")
-    fasterq_dump_path = os.path.expanduser("~/sratoolkit.3.1.0-ubuntu64/bin/fasterq-dump")
-
     for i in df.index:
 
         srr = df.at[i,'Accession']
-        download_path = os.path.join(screen_reads_dir,'{}.sra'.format(srr))
+        download_path = os.path.join(screen_reads_dir,srr,'{}.sra'.format(srr))
         condition_name = df.at[i,'SRA.filename']
         
         paired_reads = "," in condition_name
@@ -52,13 +61,16 @@ def main():
                 print("{} Already present".format(final_fastq_gz_location))
                 continue
             else:
-                subprocess.run([prefetch_path,srr,'-o',download_path ,'-p'])
+                subprocess.run([prefetch_path,srr,'-O',screen_reads_dir ,'-p'])
+                
                 subprocess.run([fasterq_dump_path,download_path,'--split-files','-O',screen_reads_dir])
+                
                 print("Compressing reads...")
                 gzip_file(
                     infile = os.path.join(screen_reads_dir,'{}.fastq'.format(srr)),
                     outfile = os.path.join(screen_reads_dir,final_fastq_gz_location)
                     )
+                shutil.rmtree(os.path.join(screen_reads_dir,srr))
 
         else:
             final_fastq_location_1,final_fastq_location_2 = condition_name.split(",")
@@ -81,6 +93,7 @@ def main():
                     infile = os.path.join(screen_reads_dir,'{}_2.fastq'.format(srr)),
                     outfile = os.path.join(screen_reads_dir,final_fastq_location_2)
                     )
+                os.remove(os.path.join(screen_reads_dir,srr))
         print()
 
         
