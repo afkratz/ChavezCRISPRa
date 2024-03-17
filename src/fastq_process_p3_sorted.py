@@ -27,32 +27,36 @@ def revcom(ori):
     return ori.upper().translate(trans)[::-1]
 
 class ScreenReads:
-    def __init__(self,fw_read_file=None,rv_read_file=None):
+    def __init__(self,reads_dir,fw_read_file=None,rv_read_file=None):
         if fw_read_file==None and rv_read_file==None:
             raise ValueError("Need to pass in at least one of fw_read_file or rv_read_file")
+        
         self._has_fw=False
         if fw_read_file!=None:
             self._has_fw=True
-            path_to_fw = Path(fw_read_file)
+            path_to_fw = os.path.join(reads_dir,fw_read_file)
             if not os.path.exists(path_to_fw):
                 raise FileNotFoundError("Could not find file {}".format(path_to_fw))
-            if path_to_fw.suffix=='.gz':
+            if path_to_fw[-3:]=='.gz':
                 self._fwfh=gzip.open(path_to_fw,mode='rt')
-            else:
-                assert path_to_fw.suffix=='.fastq'
+            elif path_to_rv[-6:]=='.fastq':
                 self._fwfh=open(path_to_fw,mode='rt')
+            else:
+                raise TypeError("Filepath should be a .fastq or a .gz, recieved {}".format(path_to_fw))
             self._fw_records = SeqIO.parse(self._fwfh,'fastq')
+
         self._has_rv=False
         if rv_read_file!=None:
             self._has_rv=True
-            path_to_rv = Path(rv_read_file)
+            path_to_rv = os.path.join(reads_dir,rv_read_file)
             if not os.path.exists(path_to_rv):
                 raise FileNotFoundError("Could not find file {}".format(rv_read_file))
-            if path_to_rv.suffix=='.gz':
+            if path_to_rv[-3:]=='.gz':
                 self._rvfh=gzip.open(path_to_rv,mode='rt')
-            else:
-                assert path_to_rv.suffix=='.fastq'
+            elif path_to_rv[-6:]=='.fastq':
                 self._rvfh=open(path_to_rv,mode='rt')
+            else:
+                raise TypeError("Filepath should be a .fastq or a .gz, recieved {}".format(path_to_rv))
             self._rv_records = SeqIO.parse(self._rvfh,'fastq')
         
     def __iter__(self):
@@ -151,6 +155,7 @@ def save_results(res:dict,rules:List[Rule],condition_name:str):
 
 
 def df_to_rules(df:pd.DataFrame)->List[Rule]:
+    ChavezCIRSPRa_root_dir = Path(__file__).resolve().parent.parent
     rules = []
     for i in range(len(df)):
         length = df.at[i,"length"]
@@ -162,7 +167,7 @@ def df_to_rules(df:pd.DataFrame)->List[Rule]:
         if df.at[i,"rename?"]==1:
             rename_dict ={}
             rename_file = df.at[i,"rename dict"]
-            rename_df=pd.read_csv(rename_file)
+            rename_df=pd.read_csv(os.path.join(ChavezCIRSPRa_root_dir,rename_file))
             for j in range(0,len(rename_df)):
                 From = rename_df.at[j,"from"]
                 To = rename_df.at[j,"to"]
