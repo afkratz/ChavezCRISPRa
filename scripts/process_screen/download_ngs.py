@@ -81,7 +81,7 @@ def main():
                 print("{},{} Already present".format(final_fastq_location_1,final_fastq_location_2))
                 continue
             else:
-                subprocess.run([prefetch_path,srr,'-o',download_path ,'-p'])
+                subprocess.run([prefetch_path,srr,'-O',screen_reads_dir ,'-p'])
                 subprocess.run([fasterq_dump_path,download_path,'--split-files','-O',screen_reads_dir])
                 print("Compressing fw reads...")
                 gzip_file(
