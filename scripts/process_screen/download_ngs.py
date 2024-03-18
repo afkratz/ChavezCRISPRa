@@ -93,7 +93,7 @@ def main():
                     infile = os.path.join(screen_reads_dir,'{}_2.fastq'.format(srr)),
                     outfile = os.path.join(screen_reads_dir,final_fastq_location_2)
                     )
-                os.remove(os.path.join(screen_reads_dir,srr))
+                shutil.rmtree(os.path.join(screen_reads_dir,srr))
         print()
 
         
