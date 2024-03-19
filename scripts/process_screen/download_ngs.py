@@ -63,7 +63,7 @@ def main():
             else:
                 subprocess.run([prefetch_path,srr,'-O',screen_reads_dir ,'-p'])
                 
-                subprocess.run([fasterq_dump_path,download_path,'--split-files','-O',screen_reads_dir])
+                subprocess.run([fasterq_dump_path,download_path,'--split-files','-O',screen_reads_dir,'--size-check','off','-p'])
                 
                 print("Compressing reads...")
                 gzip_file(
@@ -82,7 +82,7 @@ def main():
                 continue
             else:
                 subprocess.run([prefetch_path,srr,'-O',screen_reads_dir ,'-p'])
-                subprocess.run([fasterq_dump_path,download_path,'--split-files','-O',screen_reads_dir])
+                subprocess.run([fasterq_dump_path,download_path,'--split-files','-O',screen_reads_dir,'--size-check','off','-p'])
                 print("Compressing fw reads...")
                 gzip_file(
                     infile = os.path.join(screen_reads_dir,'{}_1.fastq'.format(srr)),
