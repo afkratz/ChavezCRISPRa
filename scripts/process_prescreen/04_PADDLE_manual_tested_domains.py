@@ -5,6 +5,12 @@ Copyright 2023 Alexander Kratz, Alejandro Chavez lab
 All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
+This script runs the activation domain prediction algorithm PADDLE
+https://paddle.stanford.edu/
+In brief, this algorithm divides a sequence into 53 amino acid windows and
+assigns a score to each window that correlates with the strength of the domain
+as an activator. 
+For precise details on the algorithm, see src/paddle_interface.py
 """
 import os
 from pathlib import Path

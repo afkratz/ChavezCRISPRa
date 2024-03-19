@@ -5,6 +5,9 @@ Copyright 2023 Alexander Kratz, Alejandro Chavez lab
 All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
+Uses UCLUST (https://drive5.com/usearch/manual/uclust_algo.html) to cluster our 
+screen sequences at an identity of 0.5
+
 """
 
 import os
@@ -34,7 +37,12 @@ def calculate_md5(filename):
             md5_hash.update(chunk)
         return md5_hash.hexdigest()
 uclust_path = ""
+
 def download_uclust():
+    permission = input("This script will download usearch for windows or linux and place the executable in the ChavezCRISPRa directory. Please type \"okay\" to give permission:")
+    if permission != "okay":
+        print("Quitting")
+        quit()
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
     if os.name =='nt':#We are in windows
         uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust.exe')

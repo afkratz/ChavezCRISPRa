@@ -5,6 +5,9 @@ Copyright 2023 Alexander Kratz, Alejandro Chavez lab
 All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
+Analyzes UCLUST output to assign sequences to clusters of similar activators,
+annotate them as either being the centroid of their cluster or not, as well as 
+assign them as either being hits or misses on the three targets
 """
 
 import os

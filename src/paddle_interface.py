@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 --------------------------------------------------------------------------------
 Copyright 2023 Alexander Kratz, Alejandro Chavez lab
@@ -80,8 +79,9 @@ sys.path.insert(0,os.getcwd())
 import paddle
 with contextlib.redirect_stdout(None):
     paddle_noSS_model = paddle.PADDLE_noSS()
-
-os.chdir(root_dir)
+os.chdir(
+    root_dir
+    )
 
 def get_prediction(seq:str,accept_short=False,SHORT_SAMPLES=100,verbose = False)->np.ndarray:
     if len(seq)<53 and not accept_short:

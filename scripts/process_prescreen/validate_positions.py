@@ -5,6 +5,14 @@ Copyright 2023 Alexander Kratz, Alejandro Chavez lab
 All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
+This script compares our sequences from Supp table 1 to uniprot to confirm
+that the domains which are annotated as "found" rather than designed match
+the listed uniprot at the location that they say
+For three sequences, those named BAHV1_ICP4, BPV1_NS1, & HS_P65, our sequences
+had slight differences compared to the uniprot versions. We address these 
+sequences explicitly by finding the location of the wild-type sequence, which
+differs by one amino acid in all three cases.
+
 """
 import os
 from pathlib import Path
