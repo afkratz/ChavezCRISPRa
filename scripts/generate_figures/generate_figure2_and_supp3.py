@@ -25,15 +25,15 @@ def main():
         ),
         engine='xlsxwriter')
     
-    import Main2bcde_Supp3a
+    from fig2s3 import Main2bcde_Supp3a
     sheet_one = Main2bcde_Supp3a.main()
     sheet_one.to_excel(writer,sheet_name='Main 2b,c,d,e; Supp 3a',index=False)
 
-    import Main2f
+    from fig2s3 import Main2f
     sheet_two = Main2f.main()
     sheet_two.to_excel(writer,sheet_name='Main 2f',index=False)
 
-    import Supp3b
+    from fig2s3 import Supp3b
     sheet_three = Supp3b.main()
     sheet_three.to_excel(writer,sheet_name='Supp 3b',index=False)
 

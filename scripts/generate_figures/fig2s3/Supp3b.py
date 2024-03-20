@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 
 def main()->pd.DataFrame:
-    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent.parent
 
     df = pd.read_csv(
             os.path.join(

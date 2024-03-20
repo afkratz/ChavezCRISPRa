@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 def main()->pd.DataFrame:
-    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent.parent
     all_bcs = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
 
     
@@ -114,5 +114,4 @@ def main()->pd.DataFrame:
     res = pd.concat([single_domain,bipartite,tripartite],ignore_index=True)
     return res
 
-if __name__=="__main__":
-    main()
+

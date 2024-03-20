@@ -13,9 +13,9 @@ from pathlib import Path
 
 
 def main()->pd.DataFrame:
-    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent.parent
+    
     all_bcs = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
-
     
     contents = list()
     for bc in all_bcs:
@@ -99,8 +99,31 @@ def main()->pd.DataFrame:
     for target in ['EPCAM','CXCR4','Reporter']:
         tripartite['{}_average'.format(target)] = tripartite[["{}_1".format(target),"{}_2".format(target)]].values.mean(axis=1)
     
-    res = pd.concat([single_domain,bipartite,tripartite],ignore_index=True)
-    return res
+    combined_screen_results = pd.concat([single_domain,bipartite,tripartite],ignore_index=True)
 
-if __name__=="__main__":
-    main()
+    manual_testing = pd.read_csv(
+        os.path.join(
+            ChavezCIRSPRa_root_dir,
+            "input_data",
+            "Manual_validation_random_clones.csv"
+        )
+    )
+
+    for target in ['EPCAM','CXCR4','Reporter']:
+        manual_testing["Screen {}_1".format(target)]="NA"
+        manual_testing["Screen {}_2".format(target)]="NA"
+        manual_testing["Screen {}_average".format(target)]="NA"
+    
+    for i in manual_testing.index:
+        construct = manual_testing.at[i,'Construct']
+        activator_type =manual_testing.at[i,'Activator type']
+        subdf =combined_screen_results[combined_screen_results['Construct']==construct]
+        for target in ['EPCAM','CXCR4','Reporter']:
+            if activator_type=='Single-domain' and target=='Reporter':continue
+            manual_testing.at[i,'Screen {}_1'.format(target)]=subdf.iloc[0]["{}_1".format(target)]
+            manual_testing.at[i,'Screen {}_2'.format(target)]=subdf.iloc[0]["{}_2".format(target)]
+            manual_testing.at[i,'Screen {}_average'.format(target)]=subdf.iloc[0]["{}_average".format(target)]
+    
+    return manual_testing
+
+
