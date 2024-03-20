@@ -52,15 +52,6 @@ def main():
     df['True strong negative'] = ~df['Paddle:Has strong hit'] & ~df['Hit on any']
     df['False strong negative'] = ~df['Paddle:Has strong hit'] & df['Hit on any']
     
-    df.to_csv(
-            os.path.join(
-            ChavezCIRSPRa_root_dir,
-            "output",
-            "prescreen_results",
-            "04_manually_tested_Paddle.csv"
-            )
-        )
-
     only_centroids = df[df['Is centroid']]
 
 
@@ -81,12 +72,24 @@ def main():
     odf.at["Medium","Precision"] = only_centroids['True medium positive'].to_list().count(True)/only_centroids['Paddle:Has medium hit'].to_list().count(True)
     odf.at["Medium","Recall"] = only_centroids['True medium positive'].to_list().count(True)/only_centroids['Hit on any'].to_list().count(True)
 
+    if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","figures_and_tables")):
+        os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","figures_and_tables"))
+
+    df.to_csv(
+            os.path.join(
+            ChavezCIRSPRa_root_dir,
+            "output",
+            "figures_and_tables",
+            "Supplementary Table 2. PADDLE efficacy on manual activation data.csv"
+            )
+        )
+
     odf.to_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
             "output",
-            "prescreen_results",
-            "04_Paddle_precision_recall.csv"
+            "figures_and_tables",
+            "Supplementary Table 2.b. PADDLE precision and recall data.csv"
         )
         )
 
