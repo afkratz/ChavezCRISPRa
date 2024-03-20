@@ -7,7 +7,6 @@ MIT license
 --------------------------------------------------------------------------------
 Uses UCLUST (https://drive5.com/usearch/manual/uclust_algo.html) to cluster our 
 screen sequences at an identity of 0.5
-
 """
 
 import os

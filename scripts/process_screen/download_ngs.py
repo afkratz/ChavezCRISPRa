@@ -9,7 +9,22 @@ Downloads NGS reads from SRA using the file
 ChavezCRISPRa/screen_data/screen_download_files.tsv as a guide for which SRR 
 numbers to download
 The steps are:
-Locate the SRA tools, which 
+
+1) Locate the SRA tools, and if they are not present, download them
+
+2) Use a file at screen_data/screen_download_files.tsv to identify which SRR 
+files to download
+
+3) For each file, if the output .fastq.gz is not already present:
+    a) Use prefetch to download the .sra file
+    b) For Use fasterq-dump to unpaack the .sra to a .fastq file
+    c) Recompress the .fastq to a .fastq.gz file
+
+The final disk size is ~60 gb, and this script takes ~36 hours on my machine
+If you would like to, you may be able to get the reads faster by manually 
+downloading them, but that may lead to you having to manually edit files such 
+as config.json to ensure that all scripts can find their targets
+
 """
 import pandas as pd
 import os
@@ -144,7 +159,6 @@ def main():
                     )
                 shutil.rmtree(os.path.join(screen_reads_dir,srr))
         print()
-
 
 if __name__ == "__main__":
     main()

@@ -61,24 +61,25 @@ def main():
             )
         )
 
+    only_centroids = df[df['Is centroid']]
 
 
     odf = pd.DataFrame()
 
-    odf.at["Strong","True positives"] = df['True strong positive'].to_list().count(True)
-    odf.at["Strong","False positives"] = df['False strong positive'].to_list().count(True)
-    odf.at["Strong","True negatives"] = df['True strong negative'].to_list().count(True)
-    odf.at["Strong","False negatives"] = df['False strong negative'].to_list().count(True)
+    odf.at["Strong","True positives"] = only_centroids['True strong positive'].to_list().count(True)
+    odf.at["Strong","False positives"] = only_centroids['False strong positive'].to_list().count(True)
+    odf.at["Strong","True negatives"] = only_centroids['True strong negative'].to_list().count(True)
+    odf.at["Strong","False negatives"] = only_centroids['False strong negative'].to_list().count(True)
 
-    odf.at["Medium","True positives"] = df['True medium positive'].to_list().count(True)
-    odf.at["Medium","False positives"] = df['False medium positive'].to_list().count(True)
-    odf.at["Medium","True negatives"] = df['True medium negative'].to_list().count(True)
-    odf.at["Medium","False negatives"] = df['False medium negative'].to_list().count(True)
+    odf.at["Medium","True positives"] = only_centroids['True medium positive'].to_list().count(True)
+    odf.at["Medium","False positives"] = only_centroids['False medium positive'].to_list().count(True)
+    odf.at["Medium","True negatives"] = only_centroids['True medium negative'].to_list().count(True)
+    odf.at["Medium","False negatives"] = only_centroids['False medium negative'].to_list().count(True)
 
-    odf.at["Strong","Precision"] = df['True strong positive'].to_list().count(True)/df['Paddle:Has strong hit'].to_list().count(True)
-    odf.at["Strong","Recall"] = df['True strong positive'].to_list().count(True)/df['Hit on any'].to_list().count(True)
-    odf.at["Medium","Precision"] = df['True medium positive'].to_list().count(True)/df['Paddle:Has medium hit'].to_list().count(True)
-    odf.at["Medium","Recall"] = df['True medium positive'].to_list().count(True)/df['Hit on any'].to_list().count(True)
+    odf.at["Strong","Precision"] = only_centroids['True strong positive'].to_list().count(True)/only_centroids['Paddle:Has strong hit'].to_list().count(True)
+    odf.at["Strong","Recall"] = only_centroids['True strong positive'].to_list().count(True)/only_centroids['Hit on any'].to_list().count(True)
+    odf.at["Medium","Precision"] = only_centroids['True medium positive'].to_list().count(True)/only_centroids['Paddle:Has medium hit'].to_list().count(True)
+    odf.at["Medium","Recall"] = only_centroids['True medium positive'].to_list().count(True)/only_centroids['Hit on any'].to_list().count(True)
 
     odf.to_csv(
         os.path.join(

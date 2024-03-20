@@ -715,12 +715,11 @@ def tripartite_read_counts(include_negative_controls=False):
             )
     spinner.finish()
 
-
-if __name__=="__main__":
+def main():
     if not os.path.exists(
-        os.path.join("output","screen_results","screen_scores")
-            ):
-        os.mkdir(os.path.join("output","screen_results","screen_scores"))
+            os.path.join("output","screen_results","screen_scores")
+                ):
+            os.mkdir(os.path.join("output","screen_results","screen_scores"))
     if not os.path.exists(
         os.path.join("output","screen_results","screen_toxicity")
             ):
@@ -740,6 +739,9 @@ if __name__=="__main__":
     tripartite_score(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
     tripartite_toxicity(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
     tripartite_read_counts(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
+
+if __name__=="__main__":
+    main()
 
     
     

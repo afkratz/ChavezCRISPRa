@@ -148,7 +148,7 @@ def process_prediction(pred:np.ndarray)->dict:
         ))
         
     results = {}
-    results["Is short"]=True
+    results["Is short"]=False
     results["Has strong hit"]=score>=6
     results["Has medium hit"]=score>=4
     results["Score"] = score
