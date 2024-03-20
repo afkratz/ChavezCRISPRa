@@ -28,7 +28,7 @@ def main()->pd.DataFrame:
     hit_df=pd.DataFrame({
         'Hits':hit_df['Domain ID'],
         'NCPR':hit_df['NCPR'],
-        'Hydropathy':hit_df['Hydropathy'],
+        'Hydrophobicity':hit_df['Hydropathy'],
         'Disorder promoting fraction':hit_df['Disorder promoting fraction'],
         'Kappa':hit_df['Kappa'],
         'Omega':hit_df['Omega'],
@@ -38,7 +38,7 @@ def main()->pd.DataFrame:
     miss_df = pd.DataFrame({
         'Misses':miss_df['Domain ID'],
         'NCPR':miss_df['NCPR'],
-        'Hydropathy':miss_df['Hydropathy'],
+        'Hydrophobicity':miss_df['Hydropathy'],
         'Disorder promoting fraction':miss_df['Disorder promoting fraction'],
         'Kappa':miss_df['Kappa'],
         'Omega':miss_df['Omega'],
