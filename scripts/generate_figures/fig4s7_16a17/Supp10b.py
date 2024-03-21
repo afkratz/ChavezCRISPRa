@@ -61,6 +61,3 @@ def main()->pd.DataFrame:
     return gfp_competition_results
 
  
-
-if __name__=="__main__":
-    main()

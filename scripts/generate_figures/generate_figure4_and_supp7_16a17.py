@@ -66,6 +66,25 @@ def main():
     sheet_ten = Supp14a.main()
     sheet_ten.to_excel(writer,sheet_name="Supp 14a",index=False)
 
+    from fig4s7_16a17 import Supp14b
+    sheet_eleven = Supp14b.main()
+    sheet_eleven.to_excel(writer,sheet_name="Supp 14b",index=False)
+
+    from fig4s7_16a17 import Supp15a
+    sheet_twelve = Supp15a.main()
+    sheet_twelve.to_excel(writer,sheet_name="Supp 15a",index=False)
+
+    from fig4s7_16a17 import Supp16a
+    sheet_thirteen = Supp16a.main()
+    sheet_thirteen.to_excel(writer,sheet_name="Supp 16a",index=False)
+    
+    from fig4s7_16a17 import Supp17ab
+    sheet_fourteen = Supp17ab.main()
+    sheet_fourteen.to_excel(writer,sheet_name="Supp 17a,b",index=False)
+    
+    
+    
+
     workbook=writer.book
     cell_format = workbook.add_format({'bold': False})
     for col_num, value in enumerate(sheet_one.columns.values):
@@ -97,6 +116,20 @@ def main():
     
     for col_num, value in enumerate(sheet_ten.columns.values):
         writer.sheets['Supp 14a'].write(0, col_num, value, cell_format)
+    
+    for col_num, value in enumerate(sheet_eleven.columns.values):
+        writer.sheets['Supp 14b'].write(0, col_num, value, cell_format)
+
+    for col_num, value in enumerate(sheet_twelve.columns.values):
+        writer.sheets['Supp 15a'].write(0, col_num, value, cell_format)
+
+    for col_num, value in enumerate(sheet_thirteen.columns.values):
+        writer.sheets['Supp 16a'].write(0, col_num, value, cell_format)
+
+    for col_num, value in enumerate(sheet_fourteen.columns.values):
+        writer.sheets['Supp 17a,b'].write(0, col_num, value, cell_format)
+    
+    
     
     
     
