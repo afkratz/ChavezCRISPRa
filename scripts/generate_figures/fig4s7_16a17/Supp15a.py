@@ -55,8 +55,8 @@ def main()->pd.DataFrame:
                 "Type":"Bipartite",
                 "P1":bipartite_tox_df['BC1'],
                 "P2":bipartite_tox_df['BC2'],
-                "Toxicity":bipartite_tox_df['CX&EP Average Tox'],
                 "P3":np.nan,
+                "Toxicity":bipartite_tox_df['CX&EP Average Tox'],
                 "":""#Buffer
              }
         ),
