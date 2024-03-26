@@ -25,7 +25,6 @@ def getOmega(AAseq):
     return SeqOb.get_kappa_X(['W','F','Y','L'],['D','E'])
 
 
-
 def getHydropathy(AAseq):
     SeqOb = SequenceParameters(AAseq)
     return(SeqOb.get_mean_hydropathy())

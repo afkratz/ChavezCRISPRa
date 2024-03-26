@@ -89,13 +89,13 @@ def main()->pd.DataFrame:
     bar = Bar("Biochem charachterizing tripartite sequences...",max=len(tripartite_sequence_df)+len(bipartite_sequence_df)+len(single_domain_sequence_df),suffix='%(index)i / %(max)i - %(eta)ds')
     for i in single_domain_sequence_df.index: 
         bar.next()
-        single_domain_sequence_df.at[i,'Hydrophobicity'] = bc.getHydropathy(tripartite_sequence_df.at[i,'AA sequence'])
-        single_domain_sequence_df.at[i,'Disorder promoting fraction'] = bc.getDisorderFraction(tripartite_sequence_df.at[i,'AA sequence'])
+        single_domain_sequence_df.at[i,'Hydrophobicity'] = bc.getHydropathy(single_domain_sequence_df.at[i,'AA sequence'])
+        single_domain_sequence_df.at[i,'Disorder promoting fraction'] = bc.getDisorderFraction(single_domain_sequence_df.at[i,'AA sequence'])
     
     for i in bipartite_sequence_df.index: 
         bar.next()
-        bipartite_sequence_df.at[i,'Hydrophobicity'] = bc.getHydropathy(tripartite_sequence_df.at[i,'AA sequence'])
-        bipartite_sequence_df.at[i,'Disorder promoting fraction'] = bc.getDisorderFraction(tripartite_sequence_df.at[i,'AA sequence'])
+        bipartite_sequence_df.at[i,'Hydrophobicity'] = bc.getHydropathy(bipartite_sequence_df.at[i,'AA sequence'])
+        bipartite_sequence_df.at[i,'Disorder promoting fraction'] = bc.getDisorderFraction(bipartite_sequence_df.at[i,'AA sequence'])
 
     for i in tripartite_sequence_df.index: 
         bar.next()
