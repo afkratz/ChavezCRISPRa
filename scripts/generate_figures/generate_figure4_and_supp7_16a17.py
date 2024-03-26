@@ -44,7 +44,7 @@ def main():
 
     from fig4s7_16a17 import Supp9
     sheet_five = Supp9.main()
-    sheet_five.to_excel(writer,sheet_name="Supp 9,24",index=False)
+    sheet_five.to_excel(writer,sheet_name="Supp 9",index=False)
 
     from fig4s7_16a17 import Supp10b
     sheet_six = Supp10b.main()
@@ -100,7 +100,7 @@ def main():
         writer.sheets['Main 4f'].write(0, col_num, value, cell_format)
     
     for col_num, value in enumerate(sheet_five.columns.values):
-        writer.sheets['Supp 9,24'].write(0, col_num, value, cell_format)
+        writer.sheets['Supp 9'].write(0, col_num, value, cell_format)
 
     for col_num, value in enumerate(sheet_six.columns.values):
         writer.sheets['Supp 10b'].write(0, col_num, value, cell_format)

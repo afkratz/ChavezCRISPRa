@@ -74,7 +74,7 @@ def main()->pd.DataFrame:
             "Construct":tripartite_tox_df['Construct'],
             'Type':"Tripartite",
             "P1":tripartite_tox_df['BC1'],
-            "P2":tripartite_tox_df['BC3'],
+            "P2":tripartite_tox_df['BC2'],
             "P3":tripartite_tox_df['BC3'],
         })),
         ignore_index=True
