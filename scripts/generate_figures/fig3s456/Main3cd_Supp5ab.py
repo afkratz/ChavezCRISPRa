@@ -79,7 +79,7 @@ def main()->pd.DataFrame:
     tripartite = pd.DataFrame(
         {
             "Construct":contents,
-            "Activator type":"tripartite"
+            "Activator type":"Tripartite"
         }
     )
     df = pd.read_csv(
