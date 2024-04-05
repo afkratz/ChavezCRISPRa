@@ -25,6 +25,7 @@ def main()->pd.DataFrame:
         )
     )
     single_domain_tox_df['Construct'] = single_domain_tox_df['BC1']
+    single_domain_tox_df['Average_Tox']=single_domain_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     bipartite_tox_df = pd.read_csv(
         os.path.join(
@@ -35,6 +36,8 @@ def main()->pd.DataFrame:
                 'bipartite_screen_toxicity.csv')
     )
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
+    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
+
 
 
     tripartite_tox_df = pd.read_csv(
@@ -46,6 +49,8 @@ def main()->pd.DataFrame:
                 'tripartite_screen_toxicity.csv')
     )
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
+
 
     single_domain_scores = pd.read_csv(
         os.path.join(
@@ -96,7 +101,7 @@ def main()->pd.DataFrame:
         pd.DataFrame({
              "Construct":single_domain_scores['Construct'],
              "Activator type":"Single-domain",
-             "Toxicity":single_domain_tox_df['CX&EP Average Tox'],
+             "Toxicity":single_domain_tox_df['Average_Tox'],
              "EPCAM_average":single_domain_scores['EPCAM_average'],
              "CXCR4_average":single_domain_scores['CXCR4_average'],
              "Reporter_average":single_domain_scores['Reporter_average'],
@@ -105,7 +110,7 @@ def main()->pd.DataFrame:
         pd.DataFrame({
              "Construct":bipartite_tox_df['Construct'],
              "Activator type":"Bipartite",
-             "Toxicity":bipartite_tox_df['CX&EP Average Tox'],
+             "Toxicity":bipartite_tox_df['Average_Tox'],
              "EPCAM_average":bipartite_scores['EPCAM_average'],
              "CXCR4_average":bipartite_scores['CXCR4_average'],
              "Reporter_average":bipartite_scores['Reporter_average'],
@@ -114,7 +119,7 @@ def main()->pd.DataFrame:
         pd.DataFrame({
              "Construct":tripartite_tox_df['Construct'],
              "Activator type":"Tripartite",
-             "Toxicity":tripartite_tox_df['CX&EP Average Tox'],
+             "Toxicity":tripartite_tox_df['Average_Tox'],
              "EPCAM_average":tripartite_scores['EPCAM_average'],
              "CXCR4_average":tripartite_scores['CXCR4_average'],
              "Reporter_average":tripartite_scores['Reporter_average'],
@@ -123,3 +128,5 @@ def main()->pd.DataFrame:
 
     return res
 
+if __name__=="__main__":
+    main()

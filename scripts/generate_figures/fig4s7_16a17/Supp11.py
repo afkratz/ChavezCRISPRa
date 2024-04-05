@@ -16,7 +16,7 @@ def main()->pd.DataFrame:
     single_domain_sequences = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "input_data",
+            "InputData",
             "screen_sequences",
             "p1_sequences.csv"
         )
@@ -27,7 +27,7 @@ def main()->pd.DataFrame:
     bipartite_sequences = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "input_data",
+            "InputData",
             "screen_sequences",
             "p2_sequences.csv"
         )
@@ -40,7 +40,7 @@ def main()->pd.DataFrame:
     tripartite_sequences = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "input_data",
+            "InputData",
             "screen_sequences",
             "p3_sequences.csv"
         )
@@ -58,6 +58,7 @@ def main()->pd.DataFrame:
         )
     )
     single_domain_tox_df['Construct'] = single_domain_tox_df['BC1']
+    single_domain_tox_df['Average_Tox']=single_domain_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     bipartite_tox_df = pd.read_csv(
         os.path.join(
@@ -68,6 +69,7 @@ def main()->pd.DataFrame:
                 'bipartite_screen_toxicity.csv')
     )
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
+    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
 
     tripartite_tox_df = pd.read_csv(
@@ -79,6 +81,7 @@ def main()->pd.DataFrame:
                 'tripartite_screen_toxicity.csv')
     )
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     assert (single_domain_sequences['Construct']==single_domain_tox_df['Construct']).all()
     assert (bipartite_sequences['Construct']==bipartite_tox_df['Construct']).all()
@@ -89,19 +92,19 @@ def main()->pd.DataFrame:
              "Construct":single_domain_sequences['Construct'],
              "Activator type":"Single-domain",
              "Total AD length":single_domain_sequences['AA Len'],
-             "Toxicity":single_domain_tox_df['CX&EP Average Tox']
+             "Toxicity":single_domain_tox_df['Average_Tox']
         }),
         pd.DataFrame({
              "Construct":bipartite_sequences['Construct'],
              "Activator type":"Bipartite",
              "Total AD length":bipartite_sequences['AA Len'],
-             "Toxicity":bipartite_tox_df['CX&EP Average Tox']
+             "Toxicity":bipartite_tox_df['Average_Tox']
         }),
         pd.DataFrame({
              "Construct":tripartite_sequences['Construct'],
              "Activator type":"Tripartite",
              "Total AD length":tripartite_sequences['AA Len'],
-             "Toxicity":tripartite_tox_df['CX&EP Average Tox']
+             "Toxicity":tripartite_tox_df['Average_Tox']
         }),
     ),ignore_index=True)
 

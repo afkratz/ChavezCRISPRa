@@ -24,7 +24,8 @@ def main()->pd.DataFrame:
         )
     )
     single_domain_tox_df['Construct'] = single_domain_tox_df['BC1']
-
+    single_domain_tox_df['Average_Tox']=single_domain_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
+    
     bipartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
@@ -34,6 +35,7 @@ def main()->pd.DataFrame:
                 'bipartite_screen_toxicity.csv')
     )
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
+    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     tripartite_tox_df = pd.read_csv(
         os.path.join(
@@ -44,21 +46,22 @@ def main()->pd.DataFrame:
                 'tripartite_screen_toxicity.csv')
     )
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     construct_to_tox = dict()
     for i in single_domain_tox_df.index:
         construct = single_domain_tox_df.at[i,'Construct']
-        tox = single_domain_tox_df.at[i,'CX&EP Average Tox']
+        tox = single_domain_tox_df.at[i,'Average_Tox']
         construct_to_tox[construct]=tox
 
     for i in bipartite_tox_df.index:
         construct = bipartite_tox_df.at[i,'Construct']
-        tox = bipartite_tox_df.at[i,'CX&EP Average Tox']
+        tox = bipartite_tox_df.at[i,'Average_Tox']
         construct_to_tox[construct]=tox
 
     for i in tripartite_tox_df.index:
         construct = tripartite_tox_df.at[i,'Construct']
-        tox = tripartite_tox_df.at[i,'CX&EP Average Tox']
+        tox = tripartite_tox_df.at[i,'Average_Tox']
         construct_to_tox[construct]=tox
 
     res = pd.concat((

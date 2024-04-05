@@ -104,7 +104,7 @@ def main()->pd.DataFrame:
     manual_testing = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "input_data",
+            "InputData",
             "Manual_validation_random_clones.csv"
         )
     )

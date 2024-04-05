@@ -26,6 +26,7 @@ def main()->pd.DataFrame:
         )
     )
     single_domain_tox_df['Construct'] = single_domain_tox_df['BC1']
+    single_domain_tox_df['Average_Tox']=single_domain_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     bipartite_tox_df = pd.read_csv(
         os.path.join(
@@ -36,6 +37,8 @@ def main()->pd.DataFrame:
                 'bipartite_screen_toxicity.csv')
     )
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
+    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
+
 
     tripartite_tox_df = pd.read_csv(
         os.path.join(
@@ -46,6 +49,8 @@ def main()->pd.DataFrame:
                 'tripartite_screen_toxicity.csv')
     )
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
+
 
     
     left_part = pd.concat((
@@ -56,7 +61,7 @@ def main()->pd.DataFrame:
                 "P1":bipartite_tox_df['BC1'],
                 "P2":bipartite_tox_df['BC2'],
                 "P3":np.nan,
-                "Toxicity":bipartite_tox_df['CX&EP Average Tox'],
+                "Toxicity":bipartite_tox_df['Average_Tox'],
                 "":""#Buffer
              }
         ),
@@ -67,7 +72,7 @@ def main()->pd.DataFrame:
                 "P1":tripartite_tox_df['BC1'],
                 "P2":tripartite_tox_df['BC2'],
                 "P3":tripartite_tox_df['BC3'],
-                "Toxicity":tripartite_tox_df['CX&EP Average Tox'],
+                "Toxicity":tripartite_tox_df['Average_Tox'],
                 "":""#Buffer
              }
         )),ignore_index=True
@@ -82,23 +87,23 @@ def main()->pd.DataFrame:
         triparte_median_tox_by_position.at[i,'Tripartite AD']=bc
         
         biparte_median_tox_by_position.at[i,'P1 median toxicity']=np.median(
-            bipartite_tox_df[bipartite_tox_df['BC1']==bc]['CX&EP Average Tox'].values
+            bipartite_tox_df[bipartite_tox_df['BC1']==bc]['Average_Tox'].values
         )
         triparte_median_tox_by_position.at[i,'P1 median toxicity']=np.median(
-            tripartite_tox_df[tripartite_tox_df['BC1']==bc]['CX&EP Average Tox'].values
+            tripartite_tox_df[tripartite_tox_df['BC1']==bc]['Average_Tox'].values
         )
         
 
         biparte_median_tox_by_position.at[i,'P2 median toxicity']=np.median(
-            bipartite_tox_df[bipartite_tox_df['BC2']==bc]['CX&EP Average Tox'].values
+            bipartite_tox_df[bipartite_tox_df['BC2']==bc]['Average_Tox'].values
         )
         triparte_median_tox_by_position.at[i,'P2 median toxicity']=np.median(
-            tripartite_tox_df[tripartite_tox_df['BC2']==bc]['CX&EP Average Tox'].values
+            tripartite_tox_df[tripartite_tox_df['BC2']==bc]['Average_Tox'].values
         )
         
         biparte_median_tox_by_position.at[i,""]=""#Buffer column
         triparte_median_tox_by_position.at[i,'P3 median toxicity']=np.median(
-            tripartite_tox_df[tripartite_tox_df['BC3']==bc]['CX&EP Average Tox'].values
+            tripartite_tox_df[tripartite_tox_df['BC3']==bc]['Average_Tox'].values
         )
     
 

@@ -23,11 +23,11 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'single_domain_toxicity.csv')
-    )#Columns = [BC1,P1 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
-    
+    )#Columns = [BC1,P1 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
+    single_domain_tox_df['Average_Tox']=single_domain_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
     ad_to_tox = dict()
     for i in single_domain_tox_df.index:
-        tox = single_domain_tox_df.at[i,'CX&EP Average Tox']
+        tox = single_domain_tox_df.at[i,'Average_Tox']
 
         bc1 = single_domain_tox_df.at[i,'BC1']    
         if bc1 not in ad_to_tox:
@@ -45,11 +45,11 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
-    
+    )#Columns = [BC1,BC2,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
+    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
     ad_to_tox = dict()
     for i in bipartite_tox_df.index:
-        tox = bipartite_tox_df.at[i,'CX&EP Average Tox']
+        tox = bipartite_tox_df.at[i,'Average_Tox']
 
         bc1 = bipartite_tox_df.at[i,'BC1']    
         if bc1 not in ad_to_tox:
@@ -72,11 +72,12 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,BC3,P3 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,BC2,BC3,P3 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     ad_to_tox = dict()
     for i in tripartite_tox_df.index:
-        tox = tripartite_tox_df.at[i,'CX&EP Average Tox']
+        tox = tripartite_tox_df.at[i,'Average_Tox']
 
         bc1 = tripartite_tox_df.at[i,'BC1']    
         if bc1 not in ad_to_tox:
@@ -98,3 +99,5 @@ def main()->pd.DataFrame:
     
     return res
 
+if __name__=="__main__":
+    main()

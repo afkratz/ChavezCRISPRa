@@ -17,7 +17,7 @@ def main()->pd.DataFrame:
     gfp_competition_results = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "input_data",
+            "InputData",
             "GFP_competition_results.csv"
         ),index_col='Construct'
     )
@@ -43,12 +43,14 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,BC3,P3 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,BC2,BC3,P3 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
+
     tripartite_construct_to_tox = dict()
     for i in tripartite_tox_df.index:
         construct = tripartite_tox_df.at[i,'Construct']
-        tox = tripartite_tox_df.at[i,'CX&EP Average Tox']
+        tox = tripartite_tox_df.at[i,'Average_Tox']
         assert construct not in tripartite_construct_to_tox
         tripartite_construct_to_tox[construct]=tox
 
@@ -61,3 +63,5 @@ def main()->pd.DataFrame:
     return gfp_competition_results
 
  
+if __name__=="__main__":
+    main()

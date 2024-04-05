@@ -26,8 +26,9 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'single_domain_toxicity.csv')
-    )#Columns = [BC1,P1 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]    
+    )#Columns = [BC1,P1 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]    
     single_domain_tox_df['Construct']=single_domain_tox_df['BC1']
+    single_domain_tox_df['Average_Tox']=single_domain_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     bipartite_tox_df = pd.read_csv(
         os.path.join(
@@ -36,8 +37,9 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,BC2,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
+    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
 
     tripartite_tox_df = pd.read_csv(
@@ -47,13 +49,14 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,BC3,P3 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,BC2,BC3,P3 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1)
 
     single_domain_sequence_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'input_data',
+            'InputData',
             'screen_sequences',
             'p1_sequences.csv'
         )
@@ -64,7 +67,7 @@ def main()->pd.DataFrame:
     bipartite_sequence_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'input_data',
+            'InputData',
             'screen_sequences',
             'p2_sequences.csv'
         )
@@ -75,7 +78,7 @@ def main()->pd.DataFrame:
     tripartite_sequence_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'input_data',
+            'InputData',
             'screen_sequences',
             'p3_sequences.csv'
         )
@@ -109,21 +112,21 @@ def main()->pd.DataFrame:
         pd.DataFrame({
         "Activator":single_domain_tox_df['Construct'],
         "Type":"Single-domain",
-        "Toxicity":single_domain_tox_df['CX&EP Average Tox'],
+        "Toxicity":single_domain_tox_df['Average_Tox'],
         "Hydrophobicity":single_domain_sequence_df['Hydrophobicity'],
         "Disorder promoting fraction":single_domain_sequence_df['Disorder promoting fraction']
     }),
     pd.DataFrame({
         "Activator":bipartite_tox_df['Construct'],
         "Type":"Bipartite",
-        "Toxicity":bipartite_tox_df['CX&EP Average Tox'],
+        "Toxicity":bipartite_tox_df['Average_Tox'],
         "Hydrophobicity":bipartite_sequence_df['Hydrophobicity'],
         "Disorder promoting fraction":bipartite_sequence_df['Disorder promoting fraction']
     }),
     pd.DataFrame({
         "Activator":tripartite_tox_df['Construct'],
         "Type":"Tripartite",
-        "Toxicity":tripartite_tox_df['CX&EP Average Tox'],
+        "Toxicity":tripartite_tox_df['Average_Tox'],
         "Hydrophobicity":tripartite_sequence_df['Hydrophobicity'],
         "Disorder promoting fraction":tripartite_sequence_df['Disorder promoting fraction']
     })),

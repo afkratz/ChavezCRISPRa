@@ -22,7 +22,7 @@ def main()->pd.DataFrame:
             'screen_results',
             'screen_toxicity',
             'single_domain_toxicity.csv')
-    )#Columns = [BC1,P1 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,P1 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
     
     single_domain_plasmid_NS = pd.DataFrame(
         {
@@ -55,7 +55,7 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,BC2,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
 
     bipartite_plasmid_NS = pd.DataFrame(
@@ -89,7 +89,7 @@ def main()->pd.DataFrame:
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
-    )#Columns = [BC1,BC2,BC3,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox,CX&EP Average Tox]
+    )#Columns = [BC1,BC2,BC3,P2 Plasmid,EPCAM_1_NS,EPCAM_2_NS,CXCR4_1_NS,CXCR4_2_NS,Reporter_1_NS,Reporter_2_NS,EPCAM_Tox,CXCR4_Tox,Reporter_Tox]
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
 
     tripartite_score_df = pd.read_csv(
@@ -135,3 +135,5 @@ def main()->pd.DataFrame:
         ],ignore_index=True)
     return res
 
+if __name__=="__main__":
+    main()
