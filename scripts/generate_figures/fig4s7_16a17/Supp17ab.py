@@ -82,7 +82,7 @@ def main()->pd.DataFrame:
     )
     tripartite_sequence_df['Construct'] = tripartite_sequence_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
     
-    assert(single_domain_sequence_df['Construct']==single_domain_sequence_df['Construct']).all()
+    assert(single_domain_sequence_df['Construct']==single_domain_tox_df['Construct']).all()
     assert(bipartite_sequence_df['Construct']==bipartite_tox_df['Construct']).all()
     assert(tripartite_sequence_df['Construct']==tripartite_tox_df['Construct']).all()
     
