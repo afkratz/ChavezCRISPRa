@@ -1,0 +1,4 @@
+Screen,Cutoff to be considered UMI outlier,Bin UMI on N bases to create group,Total UMI groups,Discard if any sorted condition equals,Discard if sum of UMI group reads across sorted conditions is less than
+Single-domain,0.05% of total population,3,64,NA,4
+Bipartite,0.05% of total population,2,16,NA,20
+Tripartite,1% of total population,0,0,0,493
