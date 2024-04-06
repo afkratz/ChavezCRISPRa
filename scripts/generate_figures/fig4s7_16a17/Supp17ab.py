@@ -89,7 +89,7 @@ def main()->pd.DataFrame:
     assert(bipartite_sequence_df['Construct']==bipartite_tox_df['Construct']).all()
     assert(tripartite_sequence_df['Construct']==tripartite_tox_df['Construct']).all()
     
-    bar = Bar("Biochem charachterizing tripartite sequences...",max=len(tripartite_sequence_df)+len(bipartite_sequence_df)+len(single_domain_sequence_df),suffix='%(index)i / %(max)i - %(eta)ds')
+    bar = Bar("Biochem charachterizing screen sequences...",max=len(tripartite_sequence_df)+len(bipartite_sequence_df)+len(single_domain_sequence_df),suffix='%(index)i / %(max)i - %(eta)ds')
     for i in single_domain_sequence_df.index: 
         bar.next()
         single_domain_sequence_df.at[i,'Hydrophobicity'] = bc.getHydropathy(single_domain_sequence_df.at[i,'AA sequence'])
