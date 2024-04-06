@@ -17,7 +17,7 @@ def main()->pd.DataFrame:
             ChavezCIRSPRa_root_dir,
             "output",
             "prescreen_results",
-            "03_manually_tested_biochem_charachterized.csv")
+            "4_manually_tested_biochem_charachterized.csv")
         )
 
     only_centroids = df[df['Is centroid']==True]
@@ -45,3 +45,6 @@ def main()->pd.DataFrame:
         })
     result = pd.concat([hit_df, miss_df], axis=1)
     return result
+
+if __name__=="__main__":
+    main()

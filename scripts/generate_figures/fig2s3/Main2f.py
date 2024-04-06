@@ -38,7 +38,7 @@ def main()->pd.DataFrame:
             ChavezCIRSPRa_root_dir,
             "output",
             "prescreen_results",
-            "02_manually_tested_hits_and_clusters_assigned.csv")
+            "3_manually_tested_hits_and_clusters_assigned.csv")
         )
 
     only_centroids = df[df['Is centroid']==True]
@@ -94,3 +94,6 @@ def main()->pd.DataFrame:
     result = pd.concat([hits, misses,bin_count], axis=1)
 
     return result
+
+if __name__=="__main__":
+    main()
