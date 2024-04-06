@@ -16,12 +16,12 @@ def main()->pd.DataFrame:
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent.parent
     
     all_bcs = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
-    contents = list()
+    constructs = list()
     for bc in all_bcs:
-        contents.append(bc)
+        constructs.append(bc)
     single_domain = pd.DataFrame(
         {
-            "Construct":contents,
+            "Construct":constructs,
             "Activator type":"Single-domain"
         }
     )
@@ -43,13 +43,13 @@ def main()->pd.DataFrame:
 
     #END OF SINGLE DOMAIN
     
-    contents = list()
+    constructs = list()
     for bc1 in all_bcs:
         for bc2 in all_bcs:
-            contents.append("{}_{}".format(bc1,bc2))
+            constructs.append("{}_{}".format(bc1,bc2))
     bipartite = pd.DataFrame(
         {
-            "Construct":contents,
+            "Construct":constructs,
             "Activator type":"Bipartite"
         }
     )
@@ -71,14 +71,14 @@ def main()->pd.DataFrame:
     
     #END OF BIPARTITE
     
-    contents = list()
+    constructs = list()
     for bc1 in all_bcs:
         for bc2 in all_bcs:
             for bc3 in all_bcs:
-                contents.append("{}_{}_{}".format(bc1,bc2,bc3))
+                constructs.append("{}_{}_{}".format(bc1,bc2,bc3))
     tripartite = pd.DataFrame(
         {
-            "Construct":contents,
+            "Construct":constructs,
             "Activator type":"Tripartite"
         }
     )
@@ -100,3 +100,7 @@ def main()->pd.DataFrame:
     
     res = pd.concat([single_domain,bipartite,tripartite],ignore_index=True)
     return res
+
+
+if __name__=="__main__":
+    main()

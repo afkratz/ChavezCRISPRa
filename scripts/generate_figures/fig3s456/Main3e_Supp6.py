@@ -107,7 +107,7 @@ def main()->pd.DataFrame:
             "InputData",
             "Manual_validation_random_clones.csv"
         )
-    )
+    ).replace(np.nan,'NA')
 
     for target in ['EPCAM','CXCR4','Reporter']:
         manual_testing["Screen {}_1".format(target)]="NA"
@@ -126,4 +126,6 @@ def main()->pd.DataFrame:
     
     return manual_testing
 
+if __name__=="__main__":
+    main()
 
