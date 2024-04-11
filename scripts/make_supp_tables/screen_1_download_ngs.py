@@ -45,24 +45,28 @@ def download_file(url,filename):
 def download_sra_tools():
     print("Did not find the sratoolkit in the default path this script expects them to be in")
     print("You can either download them manually and edit this scripts prefetch_path and fasterq_dump_path to point to them, or let us try to download and run them")
-    permission = input("Please type \"okay\" if you give this script permission to download the sra-toolkit to chavez_CRISPR/sratookit.3.1.0/:")
+    permission = input("Please type \"okay\" if you give this script permission to download the sra-toolkit to chavezCRISPR/external_code/sratookit.3.1.0/:")
     if permission != "okay":
         print("Quitting")
         quit()
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    external_code_dir = os.path.join(ChavezCIRSPRa_root_dir,'external_code')
+    
+    if not os.path.exists(external_code_dir):os.mkdir(external_code_dir)
+
     if os.name =='nt':
         download_file(
             "https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.1.0/sratoolkit.3.1.0-win64.zip",
             os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-win64.zip')
         )
-        shutil.unpack_archive(os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-win64.zip'),ChavezCIRSPRa_root_dir)
+        shutil.unpack_archive(os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-win64.zip'),external_code_dir)
         os.remove(os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-win64.zip'))
     elif os.name == 'posix':
         download_file(
             "https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.1.0/sratoolkit.3.1.0-ubuntu64.tar.gz",
             os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-ubuntu64.tar.gz')
         )
-        shutil.unpack_archive(os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-ubuntu64.tar.gz'),ChavezCIRSPRa_root_dir)
+        shutil.unpack_archive(os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-ubuntu64.tar.gz'),external_code_dir)
         os.remove(os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-ubuntu64.tar.gz'))
     else:
         raise(NotImplementedError("We only support windows and linux, and your os seems to be neither"))
@@ -85,6 +89,8 @@ def main():
 
 
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    external_code_dir = os.path.join(ChavezCIRSPRa_root_dir,'external_code')
+
 
     df = pd.read_csv(
         os.path.join(
@@ -93,13 +99,13 @@ def main():
         sep = '\t')
 
     if os.name == 'nt':
-        prefetch_path = os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-win64','bin','prefetch.exe')
-        fasterq_dump_path = os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-win64','bin','fasterq-dump.exe')
+        prefetch_path = os.path.join(external_code_dir,'sratoolkit.3.1.0-win64','bin','prefetch.exe')
+        fasterq_dump_path = os.path.join(external_code_dir,'sratoolkit.3.1.0-win64','bin','fasterq-dump.exe')
         if not os.path.exists(prefetch_path):
             download_sra_tools()
     elif os.name == 'posix':
-        prefetch_path = os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-ubuntu64','bin','prefetch')
-        fasterq_dump_path = os.path.join(ChavezCIRSPRa_root_dir,'sratoolkit.3.1.0-ubuntu64','bin','fasterq-dump')
+        prefetch_path = os.path.join(external_code_dir,'sratoolkit.3.1.0-ubuntu64','bin','prefetch')
+        fasterq_dump_path = os.path.join(external_code_dir,'sratoolkit.3.1.0-ubuntu64','bin','fasterq-dump')
         if not os.path.exists(prefetch_path):
             download_sra_tools()
 

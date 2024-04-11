@@ -84,14 +84,14 @@ def download_paddle():
 
 
 root_dir = Path(__file__).resolve().parent.parent
-bundled_code_dir = os.path.join(
+external_code = os.path.join(
     root_dir,
-    "bundled_code"
+    "external_code"
 )
-if not os.path.exists(bundled_code_dir):
-    os.mkdir(bundled_code_dir)
+if not os.path.exists(external_code):
+    os.mkdir(external_code)
 
-paddle_dir = os.path.join(bundled_code_dir,'paddle')
+paddle_dir = os.path.join(external_code,'paddle')
 if not os.path.exists(paddle_dir):
     download_paddle()
 
