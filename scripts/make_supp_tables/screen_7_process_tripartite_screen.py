@@ -40,7 +40,7 @@ def main():
         )
         )
     
-    for i in range(22,24):#len(tripartite_screen_conditions)):
+    for i in range(len(tripartite_screen_conditions)):
         fw_reads = tripartite_screen_conditions.at[i,"fw reads"]
         rv_reads = tripartite_screen_conditions.at[i,"rv reads"]
 
