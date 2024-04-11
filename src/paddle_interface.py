@@ -13,6 +13,9 @@ pretrained model published by
  diversity and dynamic, fuzzy binding to Mediator 
  https://doi.org/10.7554/eLife.68068
 
+It will automatically clone the paddle github repository into a directory
+for ease of access
+
 In addition to wrappers around their prediction functions, this provides a
 processing function, "process_predictions", implementing the following rules,
 which were outlined by Sanborn et al
@@ -64,24 +67,45 @@ import sys
 import contextlib
 import numpy as np
 import random
+import subprocess
 
-bundled_code_path = os.path.join(
-    Path(__file__).resolve().parent.parent,
+def download_paddle():
+    print("Did not find the paddle code in bundled_code/paddle.")
+    permission = input('This script will clone the github repo found at https://github.com/asanborn/PADDLE into {} Please type "okay" to give permission:'.format(paddle_dir))
+    if permission != "okay":
+        print("Quitting")
+        quit()
+    try:
+        subprocess.run(['git', 'clone','https://github.com/asanborn/PADDLE', '{}'.format(paddle_dir)])
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Failed to clone repository: {e}")
+        quit()
+
+
+
+root_dir = Path(__file__).resolve().parent.parent
+bundled_code_dir = os.path.join(
+    root_dir,
     "bundled_code"
 )
-root_dir = Path(__file__).resolve().parent.parent
+if not os.path.exists(bundled_code_dir):
+    os.mkdir(bundled_code_dir)
 
-os.chdir(
-    os.path.join(bundled_code_path,"paddle")
-)
+paddle_dir = os.path.join(bundled_code_dir,'paddle')
+if not os.path.exists(paddle_dir):
+    download_paddle()
 
-sys.path.insert(0,os.getcwd())
+inital_wd = os.getcwd()
+os.chdir(paddle_dir)
+sys.path.insert(0,paddle_dir)
+
 import paddle
 with contextlib.redirect_stdout(None):
     paddle_noSS_model = paddle.PADDLE_noSS()
-os.chdir(
-    root_dir
-    )
+
+os.chdir(inital_wd)
+
+
 
 def get_prediction(seq:str,accept_short=False,SHORT_SAMPLES=100,verbose = False)->np.ndarray:
     if len(seq)<53 and not accept_short:
@@ -119,8 +143,8 @@ def get_prediction(seq:str,accept_short=False,SHORT_SAMPLES=100,verbose = False)
         if verbose:output.close()
         return(scores)
 
-from typing import List
-def process_prediction(pred:np.ndarray)->dict:
+from typing import List,Dict
+def process_prediction(pred:np.ndarray)->Dict:
     if len(pred)<5:
         score = float(pred.mean())
         
