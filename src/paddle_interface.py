@@ -76,11 +76,12 @@ def download_paddle():
         print("Quitting")
         quit()
     try:
-        subprocess.run(['git', 'clone','https://github.com/asanborn/PADDLE', '{}'.format(paddle_dir)])
+        subprocess.run(['git', 'clone','-c','core.longpaths=true','-c','core.protectNTFS=false','https://github.com/asanborn/PADDLE', '{}'.format(paddle_dir)])
     except subprocess.CalledProcessError as e:
         print(f"Error: Failed to clone repository: {e}")
         quit()
-
+    if not os.path.exists(os.path.join(paddle_dir,'paddle.py')):
+        raise FileNotFoundError("Clone failed")
 
 
 root_dir = Path(__file__).resolve().parent.parent
@@ -92,7 +93,7 @@ if not os.path.exists(external_code):
     os.mkdir(external_code)
 
 paddle_dir = os.path.join(external_code,'paddle')
-if not os.path.exists(paddle_dir):
+if not os.path.exists(os.path.join(paddle_dir,'paddle.py')):
     download_paddle()
 
 inital_wd = os.getcwd()
