@@ -44,6 +44,7 @@ def download_uclust():
         quit()
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
     external_code_dir = os.path.join(ChavezCIRSPRa_root_dir,'external_code')
+    if not os.path.exists(external_code_dir):os.mkdir(external_code_dir)
     if os.name =='nt':#We are in windows
         uclust_path = os.path.join(external_code_dir,'uclust.exe')
         if not os.path.exists(uclust_path):
