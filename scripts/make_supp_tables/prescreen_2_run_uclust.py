@@ -38,13 +38,14 @@ def calculate_md5(filename):
 uclust_path = ""
 
 def download_uclust():
-    permission = input('This script will download uclust for windows or linux and place the executable in the ChavezCRISPRa directory. Please type "okay" to give permission:')
+    permission = input('This script will download uclust for windows or linux and place the executable in the external_code directory. Please type "okay" to give permission:')
     if permission != "okay":
         print("Quitting")
         quit()
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    external_code_dir = os.path.join(ChavezCIRSPRa_root_dir,'external_code')
     if os.name =='nt':#We are in windows
-        uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust.exe')
+        uclust_path = os.path.join(external_code_dir,'uclust.exe')
         if not os.path.exists(uclust_path):
             download_file(
                 'https://drive5.com/downloads/usearch11.0.667_win32.exe.gz',
@@ -65,7 +66,7 @@ def download_uclust():
             decompress_gzip(uclust_path+'.gz')
             return 
     elif os.name == 'posix':#We are in linux
-        uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust')
+        uclust_path = os.path.join(external_code_dir,'uclust')
         if not os.path.exists(uclust_path):
             download_file(
                 'https://drive5.com/downloads/usearch11.0.667_i86linux32.gz',
@@ -92,11 +93,13 @@ def download_uclust():
 
 def call_uclust():
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
+    external_code_dir = os.path.join(ChavezCIRSPRa_root_dir,'external_code')
+
     if os.name =='nt':#We are in windows
-        uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust.exe')
+        uclust_path = os.path.join(external_code_dir,'uclust.exe')
 
     elif os.name =='posix':#We are in windows
-        uclust_path = os.path.join(ChavezCIRSPRa_root_dir,'uclust')
+        uclust_path = os.path.join(external_code_dir,'uclust')
 
     else:
         print("Sorry, I only wrote the code to support windows or linux")
