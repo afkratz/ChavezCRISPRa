@@ -23,7 +23,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "traits",
             "single_domain_sorted_traits.csv"
             )
@@ -34,7 +34,7 @@ def main():
     single_domain_condition = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "conditions",
             "single_domain_sorted.csv"
         )

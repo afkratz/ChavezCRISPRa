@@ -1,5 +1,0 @@
-trait name,in read,window start,window end,header,tail,length,rename?,rename dict
-BC1,r,38,64,TAGGG,AACAC,"6,8",1,screen_data/traits/screen_BC_decode.csv
-BC2,f,56,76,TAGGG,AACAC,"6,8",1,screen_data/traits/screen_BC_decode.csv
-UMI2,r,16,45,ATTAG,GCTAG,6,0,
-BC3,f,19,30,TAGGG,AACAC,"6,8",1,screen_data/traits/screen_BC_decode.csv

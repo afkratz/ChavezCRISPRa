@@ -23,7 +23,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "traits",
             "bipartite_sorted_traits.csv"
         )
@@ -34,7 +34,7 @@ def main():
     bipartite_condition = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "conditions",
             "bipartite_sorted.csv"
         )

@@ -1,3 +1,3 @@
 trait name,window start,window end,header,tail,length,rename?,rename dict
-BC1,10,40,CTAGGG,AACACTG,"6,8",1,screen_data/traits/screen_BC_decode.csv
+BC1,10,40,CTAGGG,AACACTG,"6,8",1,ScreenData/traits/screen_BC_decode.csv
 UMI1,40,70,ATTAG,GCTAG,6,0,
