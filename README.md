@@ -16,7 +16,7 @@ The first step covers the raw steps to process the input data, including NGS rea
 
 The code for this step is found in scripts/make_supp_tables, and can be run in the following steps:
 
-1) prescreen scripts, ordered from prescreen_1 to prescreen_5. These process the data relating to our manual screen of 231 domains fused to dCas9.
+1) prescreen scripts, ordered from prescreen_1 to prescreen_4. These process the data relating to our manual screen of 231 domains fused to dCas9.
 
 2) screen scripts, ordered from screen_1 to screen_9. These download the NGS reads from SRA, extract barcodes from them, and score screen members. 
 
