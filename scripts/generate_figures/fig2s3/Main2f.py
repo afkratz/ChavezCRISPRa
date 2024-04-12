@@ -38,7 +38,7 @@ def main()->pd.DataFrame:
             ChavezCIRSPRa_root_dir,
             "output",
             "prescreen_results",
-            "3_manually_tested_hits_and_clusters_assigned.csv")
+            "2_manually_tested_clusters_assigned.csv")
         )
 
     only_centroids = df[df['Is centroid']==True]
