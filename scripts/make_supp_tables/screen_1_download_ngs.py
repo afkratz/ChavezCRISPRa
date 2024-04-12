@@ -6,13 +6,13 @@ All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
 Downloads NGS reads from SRA using the file 
-ChavezCRISPRa/screen_data/screen_download_files.tsv as a guide for which SRR 
+ChavezCRISPRa/ScreenData/screen_download_files.tsv as a guide for which SRR 
 numbers to download
 The steps are:
 
 1) Locate the SRA tools, and if they are not present, download them
 
-2) Use a file at screen_data/screen_download_files.tsv to identify which SRR 
+2) Use a file at ScreenData/screen_download_files.tsv to identify which SRR 
 files to download
 
 3) For each file, if the output .fastq.gz is not already present:
@@ -94,7 +94,7 @@ def main():
 
     df = pd.read_csv(
         os.path.join(
-            ChavezCIRSPRa_root_dir,'screen_data','screen_download_files.tsv'
+            ChavezCIRSPRa_root_dir,'ScreenData','screen_download_files.tsv'
         ),
         sep = '\t')
 

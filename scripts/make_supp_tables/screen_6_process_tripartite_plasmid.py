@@ -24,7 +24,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "traits",
             "tripartite_plasmid_traits.csv"
         )
@@ -34,7 +34,7 @@ def main():
     tripartite_condition = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "conditions",
             "tripartite_plasmid.csv"
         )

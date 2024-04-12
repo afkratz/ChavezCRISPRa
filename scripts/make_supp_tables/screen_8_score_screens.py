@@ -141,7 +141,7 @@ def single_domain_score(include_negative_controls = False):
     mfis=sst.load_mfis(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "bin_mfis",
             "p1_sorted_mfi.csv"
             )
@@ -346,7 +346,7 @@ def bipartite_score(include_negative_controls = False):
     mfis=sst.load_mfis(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "bin_mfis",
             "p2_sorted_mfi.csv"
             )
@@ -560,7 +560,7 @@ def tripartite_score(include_negative_controls=False):
     mfis=sst.load_mfis(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "bin_mfis",
             "p3_sorted_mfi.csv"
             )

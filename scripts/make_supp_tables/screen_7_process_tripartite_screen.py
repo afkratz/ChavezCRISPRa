@@ -23,7 +23,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "traits",
             "tripartite_sorted_traits.csv"
         )
@@ -34,13 +34,13 @@ def main():
     tripartite_screen_conditions = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "screen_data",
+            "ScreenData",
             "conditions",
             "tripartite_sorted.csv"
         )
         )
     
-    for i in range(22,24):#len(tripartite_screen_conditions)):
+    for i in range(len(tripartite_screen_conditions)):
         fw_reads = tripartite_screen_conditions.at[i,"fw reads"]
         rv_reads = tripartite_screen_conditions.at[i,"rv reads"]
 
