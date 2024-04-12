@@ -14,13 +14,13 @@ Pipeline overall can be divided into two high-level steps:
 
 The first step covers the raw steps to process the input data, including NGS reads, to produce processed output files.
 
-The code for this step is found in scripts/make_supp_tables, and can be run in the following steps:
+The code for this step is found in `scripts/make_supp_tables`, and can be run in the following steps:
 
 1) prescreen scripts, ordered from prescreen_1 to prescreen_4. These process the data relating to our manual screen of 231 domains fused to dCas9.
 
 2) screen scripts, ordered from screen_1 to screen_9. These download the NGS reads from SRA, extract barcodes from them, and score screen members. 
 
-The second section, contained in scripts/generate_figures, converts the outputs from the first step into the source data tables for figures 2-5, formatted as submitted. For each of these files, there is one script in generate_figures which generates each Source Data Figure excel sheet.
+The second section, contained in `scripts/generate_figures`, converts the outputs from the first step into the source data tables for figures 2-5, formatted as submitted. For each of these files, there is one script in generate_figures which generates each Source Data Figure excel sheet.
 
 ### Requirements
 
@@ -78,7 +78,7 @@ python -script-name-.py  
 
 ### Detailed summary and run times
 
-##### make_supp_tables
+#### make_supp_tables
 
 - **prescreen_1_validate_sequences_sources.py**
   
@@ -312,7 +312,7 @@ python -script-name-.py  
   
   - Estimated run time - 1 minute
 
-##### generate_figures
+#### generate_figures
 
 - **generate_figure_2_and_supp3**
   
