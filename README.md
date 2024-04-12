@@ -8,7 +8,7 @@ This repository contains code and configuration files required to reproduce the 
 
 Pipeline overall can be divided into two high-level steps:
 
-1) Generating the Supp tables
+1) Generating the Supp tables, bin counts, activity scores, and toxicity scores
 
 2) Generating the Figure Source Data tables
 
