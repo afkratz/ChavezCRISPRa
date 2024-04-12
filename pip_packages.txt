@@ -1,0 +1,2 @@
+localcider==0.1.21
+progress==1.6
