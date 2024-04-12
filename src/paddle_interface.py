@@ -81,7 +81,7 @@ def download_paddle():
         print(f"Error: Failed to clone repository: {e}")
         quit()
     if not os.path.exists(os.path.join(paddle_dir,'paddle.py')):
-        raise FileNotFoundError("Clone failed")
+        raise FileNotFoundError("Clone failed")        
 
 
 root_dir = Path(__file__).resolve().parent.parent
@@ -100,6 +100,7 @@ inital_wd = os.getcwd()
 os.chdir(paddle_dir)
 sys.path.insert(0,paddle_dir)
 
+print("paddle.py found, loading model (may take a minute)")
 import paddle
 with contextlib.redirect_stdout(None):
     paddle_noSS_model = paddle.PADDLE_noSS()
