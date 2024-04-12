@@ -21,7 +21,7 @@ def main():
             ChavezCIRSPRa_root_dir,
             "output",
             "prescreen_results",
-            "3_manually_tested_hits_and_clusters_assigned.csv"),
+            "2_manually_tested_clusters_assigned.csv"),
             index_col="Domain ID"
         )
 
@@ -41,7 +41,7 @@ def main():
             ChavezCIRSPRa_root_dir,
             "output",
             "prescreen_results",
-            "4_manually_tested_biochem_charachterized.csv")
+            "3_manually_tested_biochem_charachterized.csv")
         )
 
 
