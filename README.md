@@ -2,13 +2,13 @@
 
 ### Summary
 
-This repository contains code and configuration files required to reproduce the findings of the Manuscript "Combinatorial protein engineering to identify improved CRISPR activators" by M. Giddins*, A Kratz*, L Wei‡, and A Chavez‡ (*: Contributed equally, ‡: Jointly supervised)
+This repository contains code and configuration files required to reproduce the findings of the manuscript "Combinatorial protein engineering to identify improved CRISPR activators" by M. Giddins*, A Kratz*, L Wei‡, and A Chavez‡ (*: Contributed equally, ‡: Jointly supervised)
 
 ### Overview
 
 Pipeline overall can be divided into two high-level steps:
 
-1) Generating the Supp tables, bin counts, activity scores, and toxicity scores
+1) Generating the Supp tables, bin counts, activation scores, and toxicity scores
 
 2) Generating the Figure Source Data tables
 
@@ -16,11 +16,11 @@ The first step covers the raw steps to process the input data, including NGS rea
 
 The code for this step is found in `scripts/make_supp_tables`, and can be run in the following steps:
 
-1) prescreen scripts, ordered from prescreen_1 to prescreen_4. These process the data relating to our manual screen of 231 domains fused to dCas9.
+1) prescreen scripts, ordered from prescreen_1 to prescreen_4. These process the data relating to our manual screen of 230 domains fused to dCas9.
 
 2) screen scripts, ordered from screen_1 to screen_9. These download the NGS reads from SRA, extract barcodes from them, and score screen members. 
 
-The second section, contained in `scripts/generate_figures`, converts the outputs from the first step into the source data tables for figures 2-5, formatted as submitted. For each of these files, there is one script in generate_figures which generates each Source Data Figure excel sheet.
+The second section, contained in `scripts/generate_figures`, converts the outputs from the first step into the source data tables for figures 2-5, formatted as submitted. There is one script in generate_figures which generates each Source Data Figure excel sheet.
 
 ### Requirements
 
@@ -82,7 +82,7 @@ python -script-name-.py  
 
 - **prescreen_1_validate_sequences_sources.py**
   
-  - Description - Confirms that prescreen sequences are found within the uniprot sequence listed in Supp 1, throws an error if it fails to locate a sequence
+  - Description - Checks that the sequences in Supp 1 are either designed (ie, human-made) or that they have a known natural source. For naturally-sourced sequences, this script checks the listed uniprot entry to confirm that the sequence is indeed found there. For a few sequences, there are minor differences to the native sequence, which the script handles explicitly by locating the original sequence.
   
   - Input files 
     
@@ -112,7 +112,7 @@ python -script-name-.py  
 
 - **prescreen_3_charachterize_domains.py**
   
-  - Description - Uses package [localCIDER](https://pappulab.github.io/localCIDER/) to calculate biochemical traits of prescreen sequences
+  - Description - Uses package [localCIDER](https://pappulab.github.io/localCIDER/) to calculate biochemical traits of prescreen sequences.
   
   - Input files
     
@@ -142,7 +142,7 @@ python -script-name-.py  
 
 - **screen_1_download_ngs.py** 
   
-  - Description - Guides the user to designate a directory to recieve the NGS reads from the screen. This is done to allow users to specify external large-storage devices. Guides the user to download the sra_toolkit. Downloads NGS reads from SRA and converts them to .fastq.gz files. Skips over existing files.
+  - Description - Guides the user to designate a directory to recieve the NGS reads from the screen. This is done to allow users to specify external large-storage devices. Guides the user to download the sra_toolkit. Downloads NGS reads from SRA and converts them to .fastq.gz files.
   
   - Input files
     
@@ -156,7 +156,7 @@ python -script-name-.py  
 
 - **screen_2_process_single_domain_plasmid.py**
   
-  - Description - Processes NGS reads to produce barcode counts for the single domain pre-selection plasmid library
+  - Description - Processes NGS reads to produce barcode counts for the single domain plasmid library.
   
   - Input files
     
@@ -174,7 +174,7 @@ python -script-name-.py  
 
 - **screen_3_process_single_domain_screen.py**
   
-  - Description - Processes NGS reads to produce barcode counts for the single domain screen results
+  - Description - Processes NGS reads to produce barcode counts for the single domain screen results.
   
   - Input files
     
@@ -192,7 +192,7 @@ python -script-name-.py  
 
 - **screen_4_process_bipartite_plasmid.py**
   
-  - Description - Processes NGS reads to produce barcode counts for the bipartite pre-selection plasmid library
+  - Description - Processes NGS reads to produce barcode counts for the bipartite plasmid library.
   
   - Input files
     
@@ -210,7 +210,7 @@ python -script-name-.py  
 
 - **screen_5_process_bipartite_screen.py**
   
-  - Description - Processes NGS reads to produce barcode counts for the bipartite screen results
+  - Description - Processes NGS reads to produce barcode counts for the bipartite screen results.
   
   - Input files
     
@@ -228,7 +228,7 @@ python -script-name-.py  
 
 - **screen_6_process_tripartite_plasmid.py**
   
-  - Description - Processes NGS reads to produce barcode counts for the tripartite pre-selection plasmid library
+  - Description - Processes NGS reads to produce barcode counts for the tripartite plasmid library.
   
   - Input files
     
@@ -246,7 +246,7 @@ python -script-name-.py  
 
 - **screen_7_process_tripartite_screen.py**
   
-  - Description - Processes NGS reads to produce barcode counts for the tripartite screen results
+  - Description - Processes NGS reads to produce barcode counts for the tripartite screen results.
   
   - Input files
     
@@ -264,7 +264,7 @@ python -script-name-.py  
 
 - **screen_8_score_screens.py**
   
-  - Description - Processes the barcode counts from the previous steps to calculate normalized bin-counts, activity scores, and toxicity scores for all 3 screens
+  - Description - Processes the barcode counts from the previous steps to calculate normalized bin-counts, activation scores, and toxicity scores for all 3 screens.
   
   - Input files
     
@@ -274,7 +274,7 @@ python -script-name-.py  
     
     - Screen bin counts, stored in `output/screen_results/screen_bin_counts/`
     
-    - Screen activity scores, stored in `output/screen_results/screen_scores/`
+    - Screen activation scores, stored in `output/screen_results/screen_scores/`
     
     - Screen tox scores, stored in `output/screen_results/screen_toxicity/`
   
@@ -282,11 +282,11 @@ python -script-name-.py  
 
 - **screen_9_make_supp4_5.py**
   
-  - Description - Generates supp table 4 and 5 from the outputs of screen_8_score_screens.py
+  - Description - Generates supp table 4 and 5 from the outputs of screen_8_score_screens.py.
   
   - Input files
     
-    - Screen activity score csv's
+    - Screen activation score csv's
     
     - Screen toxicity score csv's
   
@@ -300,7 +300,7 @@ python -script-name-.py  
 
 - **combine_supps.py**
   
-  - Description - Combines the supp table .csvs into one .xslx for easier transmission
+  - Description - Combines the supp table .csvs into one .xslx for easier transmission.
   
   - Input files
     
@@ -316,7 +316,7 @@ python -script-name-.py  
 
 - **generate_figure_2_and_supp3**
   
-  - Description - Generates `Figure 2 and Supplementary Figure 3.xlsx` which contains analysis of various elements of the prescreen results, specifically biochemical traits and native protein location
+  - Description - Generates `Figure 2 and Supplementary Figure 3.xlsx` which contains analysis of various elements of the prescreen results, specifically biochemical traits and native protein location.
   
   - Input files
     
@@ -330,15 +330,15 @@ python -script-name-.py  
   
   - Estimated run time - 1 minute
 
-- **generate_figure3_and_supp465.py**
+- **generate_figure3_and_supp456.py**
   
-  - Description - Generates `Figure 3 and Supplementary Figures 4-6.xlsx` which contains high level analysis of screen results, including the rep-rep correlations, correlation to manual validation, and distribution of activator reads in the pre-selection plasmid library.
+  - Description - Generates `Figure 3 and Supplementary Figures 4-6.xlsx` which contains high level analysis of screen results, including the rep-rep correlations, correlation to manual validation, and distribution of activator reads in the plasmid library.
   
   - Input files
     
     - Screen bin counts, stored in `output/screen_results/screen_bin_counts/`
     
-    - Screen activity scores, stored in `output/screen_results/screen_scores/`
+    - Screen activation scores, stored in `output/screen_results/screen_scores/`
     
     - Manual screen validation `InputData/Manual_validation_random_clones.csv`
   
@@ -350,7 +350,7 @@ python -script-name-.py  
 
 - **generate_figure_4_and_supp_7_16a17.py**
   
-  - Description - Generates `Figure 4 and Supplementary Figures 7-16a and 17.xlsx` which contains analysis of toxicity within the screen, including correlations between replicates, correlations between screens, toxicity as as function of copy number, as a function of target, as a function of length, as a function of activity, as a function of biochemical traits, and manual validation of toxicity.
+  - Description - Generates `Figure 4 and Supplementary Figures 7-16a and 17.xlsx` which contains analysis of toxicity within the screen, including consistency between biological replicates, correlation of toxicity when targeting different genes, toxicity as as function of copy number, as a function of target, as a function of length, as a function of activation, as a function of biochemical traits, and manual validation of toxicity.
   
   - Input files
     
@@ -366,15 +366,15 @@ python -script-name-.py  
 
 - **generate_figure5_and_supp16b18_21.py**
   
-  - Description - Generates FigureSourceData/Figure 5 and Supplementary Figures 16b and 18-21.xlsx which contains analysis of activity within the screen, including correlations between replicates, correlations between screens, activity as a function of copy number, as a function of activator position, activity as a synergistic or anti-synergistic phenomenon.
+  - Description - Generates Figure 5 and Supplementary Figures 16b and 18-21.xlsx which contains analysis of activation within the screen, including consistency between biological replicates, correlations of activity when targeting different genes, activation as a function of copy number, as a function of activator position, activation as a synergistic or anti-synergistic phenomenon.
   
   - Input files
     
-    - Screen activity scores
+    - Screen activation scores
   
   - Output files
     
-    - `Figure 5 and Supplementary Figures 16b and 18-21.xlsx`
+    - `FigureSourceData/Figure 5 and Supplementary Figures 16b and 18-21.xlsx`
   
   - Estimated run time - 1 minute
 
