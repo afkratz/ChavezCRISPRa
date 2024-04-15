@@ -20,7 +20,7 @@ The code for this step is found in `scripts/make_supp_tables`, and can be run in
 
 2) screen scripts, ordered from screen_1 to screen_9. These download the NGS reads from SRA, extract barcodes from them, and score screen members. 
 
-The second section, contained in `scripts/generate_figures`, converts the outputs from the first step into the source data tables for figures 2-5, formatted as submitted. There is one script in generate_figures which generates each Source Data Figure excel sheet.
+The second section, contained in `scripts/generate_figures`, converts the outputs from the first step into the source data tables for figures 2-5, formatted as submitted. There is one script in generate_figures for each Source Data Figure excel sheet.
 
 ### Requirements
 
@@ -64,17 +64,7 @@ Estimated install time fifteen minutes
 
 ##### Step 3: Running scripts:
 
-Before running any code, ensure that you are in the chavezcrispra environment by running
-
-```
-conda activate chavezcrispra
-```
-
-Then run any script with the command
-
-```
-python -script-name-.py  
-```
+Before running any code, ensure that you are in the chavezcrispra environment by running `conda activate chavezcrispra`, then run any script by navigating to the directory containing it and then running the command `python -script-name-.py`
 
 ### Detailed summary and run times
 
