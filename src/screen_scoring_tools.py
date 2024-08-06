@@ -293,6 +293,55 @@ def add_FluorescentProductScore(dfs,mfis,targets,replicates,bins):
 
                 dfs[t][r].at[i,"FluorescentProductScore"]=score
 
+def other_FluorescentProduceScores(dfs,mfis,targets,replicates,bins,type):
+    if type == '1v4':
+        for t in targets:
+            for r in replicates:
+                dfs[t][r]["FluorescentProductScore"]=np.nan
+                for i in dfs[t][r].index:
+                    numerator=0
+                    for b in bins:
+                        if bin in ["NS","bin_2","bin_3"]:continue
+                        numerator+=mfis.at[t+"_"+r,b]*dfs[t][r].at[i,b]
+                    
+                    denominator = sum(dfs[t][r].loc[i][["bin_1","bin_4"]])
+                    if denominator > 0:
+                        score = numerator/denominator
+                    else:
+                        score = 0
+                    dfs[t][r].at[i,"FluorescentProductScore"]=score
+
+    elif type=='simple_ratio':
+        #Calculates ratio of 1*bin_1 + 2*bin_2 + 3*bin_3 + 4*bin_4 / (sum across bins)
+        for t in targets:
+            for r in replicates:
+                dfs[t][r]["FluorescentProductScore"]=np.nan
+                for i in dfs[t][r].index:
+                    numerator=0
+                    for n,b in enumerate(bins):
+                        if bin in ["NS"]:continue
+                        numerator+=dfs[t][r].at[i,b] * (n+1)
+                    
+                    denominator = sum(dfs[t][r].loc[i][["bin_1","bin_2","bin_3","bin_4"]])
+                    if denominator > 0:
+                        score = numerator/denominator
+                    else:
+                        score = 0
+                    dfs[t][r].at[i,"FluorescentProductScore"]=score
+    elif type == '12v34':
+        for t in targets:
+            for r in replicates:
+                dfs[t][r]["FluorescentProductScore"]=np.nan
+                for i in dfs[t][r].index:
+                    numerator=mfis.at[t+"_"+r,'bin_1']*(dfs[t][r].at[i,'bin_1']+dfs[t][r].at[i,'bin_2'])+mfis.at[t+"_"+r,'bin_4']*(dfs[t][r].at[i,'bin_3']+dfs[t][r].at[i,'bin_4'])
+                    denominator = sum(dfs[t][r].loc[i][["bin_1","bin_2","bin_3","bin_4"]])
+                    if denominator > 0:
+                        score = numerator/denominator
+                    else:
+                        score = 0
+                    dfs[t][r].at[i,"FluorescentProductScore"]=score
+    else:
+        raise KeyError
 def add_ToxicityScore(df,pre_selection,post_selection,tox_column_name:str,psuedoreads:int=1):
     """
     Calculates toxicity score as 
