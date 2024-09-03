@@ -160,10 +160,9 @@ def process_prediction(pred:np.ndarray)->Dict:
     ###### - end of "Is short" section - #####
     smoothed_prediction = np.array(
         [np.mean(
-            pred[
-                max(0, int(n-(9-1)/2)):
-                int(n+(9+1)/2)])
-            for n in range(len(pred))]
+            pred[max(0,n-4):n+5]) 
+            for n in range(len(pred))
+            ]
     )
     
     #Find the highest 
