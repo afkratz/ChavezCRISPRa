@@ -52,6 +52,15 @@ def main():
     df['True strong negative'] = ~df['Paddle:Has strong hit'] & ~df['Hit on any']
     df['False strong negative'] = ~df['Paddle:Has strong hit'] & df['Hit on any']
     
+    df.to_csv(
+        os.path.join(
+            ChavezCIRSPRa_root_dir,
+            "output",
+            "prescreen_results",
+            "4_PADDLE_predictions.csv"
+        )
+    )
+    
     only_centroids = df[df['Is centroid']]
 
 
