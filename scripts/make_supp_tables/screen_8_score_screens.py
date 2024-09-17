@@ -772,7 +772,7 @@ def main():
         os.mkdir(
             os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts"))
     
-    INCLUDE_NEGATIVE_CONTROLS=True
+    INCLUDE_NEGATIVE_CONTROLS=False
 
     single_domain_score(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)
     single_domain_toxicity(include_negative_controls=INCLUDE_NEGATIVE_CONTROLS)

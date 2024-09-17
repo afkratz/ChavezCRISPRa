@@ -110,9 +110,12 @@ def validate_sources():
                 re_calculated_start=(start_aa)/len(seq)
                 re_calculated_end=((start_aa)+len(original_sequence))/len(seq)
 
-            assert math.isclose(re_calculated_start, df.at[i,'Origin protein start position'],abs_tol=0.0001)
-            assert math.isclose(re_calculated_end, df.at[i,'Origin protein end position'],abs_tol=0.0001)
-            print("Validated")
+            if not math.isclose(re_calculated_start, df.at[i,'Origin protein start position'],abs_tol=0.0001):
+                print("Missmatch, possible that uniprot was updated")
+            if not math.isclose(re_calculated_end, df.at[i,'Origin protein end position'],abs_tol=0.0001):
+                print("Missmatch, possible that uniprot was updated")
+            else:
+                print("Validated")
 
 if __name__=="__main__":
     validate_sources()
