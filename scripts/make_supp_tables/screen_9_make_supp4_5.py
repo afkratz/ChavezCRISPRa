@@ -137,23 +137,23 @@ def make_supptable_5():
         pd.DataFrame({
             'Construct':single_domain_tox['Construct'],
             'Activator type':'Single-domain',
-            'EPCAM_toxicity_score':single_domain_tox['EPCAM_Tox'],
-            'CXCR4_toxicity_score':single_domain_tox['CXCR4_Tox'],
-            'Toxicity_score_average':single_domain_tox[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1),
+            'EPCAM_toxicity_score':single_domain_tox['EPCAM_average_Tox'],
+            'CXCR4_toxicity_score':single_domain_tox['CXCR4_average_Tox'],
+            'Toxicity_score_average':single_domain_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
             }),
         pd.DataFrame({
             'Construct':bipartite_tox['Construct'],
             'Activator type':'Bipartite',
-            'EPCAM_toxicity_score':bipartite_tox['EPCAM_Tox'],
-            'CXCR4_toxicity_score':bipartite_tox['CXCR4_Tox'],
-            'Toxicity_score_average':bipartite_tox[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1),
+            'EPCAM_toxicity_score':bipartite_tox['EPCAM_average_Tox'],
+            'CXCR4_toxicity_score':bipartite_tox['CXCR4_average_Tox'],
+            'Toxicity_score_average':bipartite_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
             }),
             pd.DataFrame({
             'Construct':tripartite_tox['Construct'],
             'Activator type':'Tripartite',
-            'EPCAM_toxicity_score':tripartite_tox['EPCAM_Tox'],
-            'CXCR4_toxicity_score':tripartite_tox['CXCR4_Tox'],
-            'Toxicity_score_average':tripartite_tox[['EPCAM_Tox','CXCR4_Tox']].values.mean(axis=1),
+            'EPCAM_toxicity_score':tripartite_tox['EPCAM_average_Tox'],
+            'CXCR4_toxicity_score':tripartite_tox['CXCR4_average_Tox'],
+            'Toxicity_score_average':tripartite_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
             })
     ),ignore_index=True)
     
