@@ -81,7 +81,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   - Output files - None
   
   - Estimated run time - 10 minutes
-
 - **prescreen_2_run_uclust.py**
   
   - Description - Guides the user to download and run uclust executable to cluster prescreen sequences at 50% identity. Assigns status as either a centroid or non-centroid and cluster membership to the prescreen sequences.
@@ -99,7 +98,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - `output/prescreen_results/2_manually_tested_clusters_assigned.csv`
   
   - Estimated run time - 1 minute
-
 - **prescreen_3_charachterize_domains.py**
   
   - Description - Uses package [localCIDER](https://pappulab.github.io/localCIDER/) to calculate biochemical traits of prescreen sequences.
@@ -113,7 +111,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - `output/prescreen_results/3_manually_tested_biochem_charachterized.csv`
   
   - Estimated run time - 1 minute
-
 - **prescreen_4_run_PADDLE_make_supp2.py**
   
   - Description - Guides the user to clone the [PADDLE github repository](https://github.com/asanborn/PADDLE) which it then runs to predict if our prescreen sequences are strong or medium transactivation domains. Calculates precision and recall for PADDLE.
@@ -129,7 +126,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - `SuppTables/Supplementary Table 2.csv`
   
   - Estimated run time - 10 minutes without GPU acceleration, 4 minutes on GPU
-
 - **screen_1_download_ngs.py** 
   
   - Description - Guides the user to designate a directory to recieve the NGS reads from the screen. This is done to allow users to specify external large-storage devices. Guides the user to download the sra_toolkit. Downloads NGS reads from SRA and converts them to .fastq.gz files.
@@ -140,10 +136,9 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Output files
     
-    - 124 fastq.gz files, total size 55.8 gb
+    - 140 fastq.gz files, total size 57 gb
   
   - Estimated run time - 36 hours (Dependent on internet speed)
-
 - **screen_2_process_single_domain_plasmid.py**
   
   - Description - Processes NGS reads to produce barcode counts for the single domain plasmid library.
@@ -161,7 +156,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - `output/screen_results/processed_reads/single_domain_plasmid/single_domain_plasmid.csv`
   
   - Estimated run time - 1 minute
-
 - **screen_3_process_single_domain_screen.py**
   
   - Description - Processes NGS reads to produce barcode counts for the single domain screen results.
@@ -179,7 +173,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - barcode counts located at `output/screen_results/processed_reads/single_domain_sorted/`
   
   - Estimated run time - 1 minute
-
 - **screen_4_process_bipartite_plasmid.py**
   
   - Description - Processes NGS reads to produce barcode counts for the bipartite plasmid library.
@@ -197,7 +190,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - `output/screen_results/processed_reads/bipartite_plasmid/bipartite_plasmid.csv`
   
   - Estimated run time - 1 minute
-
 - **screen_5_process_bipartite_screen.py**
   
   - Description - Processes NGS reads to produce barcode counts for the bipartite screen results.
@@ -215,7 +207,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - barcode counts located at `output/screen_results/processed_reads/bipartite_sorted/`
   
   - Estimated run time - 5 minutes
-
 - **screen_6_process_tripartite_plasmid.py**
   
   - Description - Processes NGS reads to produce barcode counts for the tripartite plasmid library.
@@ -233,7 +224,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - `output/screen_results/processed_reads/tripartite_plasmid/tripartite_plasmid.csv`
   
   - Estimated run time - 1 minute
-
 - **screen_7_process_tripartite_screen.py**
   
   - Description - Processes NGS reads to produce barcode counts for the tripartite screen results.
@@ -251,7 +241,6 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - barcode counts located at `output/screen_results/processed_reads/tripartite_sorted/`
   
   - Estimated run time - 6 hours
-
 - **screen_8_score_screens.py**
   
   - Description - Processes the barcode counts from the previous steps to calculate normalized bin-counts, activation scores, and toxicity scores for all 3 screens.
@@ -269,27 +258,37 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - Screen tox scores, stored in `output/screen_results/screen_toxicity/`
   
   - Estimated run time - 30 minutes
-
 - **screen_9_make_supp4_5.py**
   
   - Description - Generates supp table 4 and 5 from the outputs of screen_8_score_screens.py.
-  
   - Input files
     
     - Screen activation score csv's
     
     - Screen toxicity score csv's
-  
   - Output files
     
     - `SuppTables/Supplementary Table 4.csv`
     
     - `SuppTables/Supplementary Table 5.csv`
-  
   - Estimated run time - 1 minute
-
+- **postscreen_1_process_minilib.py**
+  - Description - Processes NGS reads to produce barcode counts for the tripartite mini-screen which we performed after the main screen to validate toxicity.
+  - Input files
+    - .fastq.gz files
+    - `ScreenData/traits/tripartite_plasmid_traits.csv`
+    - `ScreenData/conditions/tripartite_minilib.csv`
+  - Output files
+    - barcode counts located at `output/screen_results/processed_reads/tripartite_minilib/`
+  - Estimated run time - 1 minute
+- **postscreen_2_calc_tox_minilib.py**
+  - Description - Calculates toxicity scores for the minilibrary constructs in multiple cell lines.
+  - Input files
+    - output files from postscreen_1_process_minilib.py
+  - Output files
+    - minilib tox scores, stored in `output/screen_results/screen_toxicity/`
+  - Estimated run time - 1 minute
 - **combine_supps.py**
-  
   - Description - Combines the supp table .csvs into one .xslx for easier transmission.
   
   - Input files
@@ -314,7 +313,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - `output/prescreen_results/3_manually_tested_biochem_charachterized.csv`
   
-  - Ouput files
+  - Output files
     
     - `FigureSourceData/Figure 2 and Supplementary Figure 3.xlsx`
   
