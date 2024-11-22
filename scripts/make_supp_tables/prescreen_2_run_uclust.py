@@ -127,10 +127,10 @@ def call_uclust():
         os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","prescreen_results","clusters"))
 
     #Load input dataframe
-    df = pd.read_excel(
-        os.path.join(ChavezCIRSPRa_root_dir,"InputData","Supplementary Table 1.xlsx"),
-        index_col = "Domain ID"
-        )
+    df = pd.read_csv(
+        os.path.join(ChavezCIRSPRa_root_dir,'SuppTables','Supplementary Table 1.csv'),
+        index_col='Domain ID'
+    )
 
     #Drop protein folding domains
     df = df[df["Role"]=="Activator"]
