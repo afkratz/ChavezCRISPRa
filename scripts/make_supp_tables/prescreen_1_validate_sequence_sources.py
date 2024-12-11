@@ -42,12 +42,11 @@ def download_fasta(uniprot_id):
 def validate_sources():
     ChavezCIRSPRa_root_dir = Path(__file__).resolve().parent.parent.parent
     
-    df = pd.read_excel(
-        os.path.join(
-            ChavezCIRSPRa_root_dir,
-            'InputData',
-            'Supplementary Table 1.xlsx'),index_col='Domain ID'
-        )
+    df = pd.read_csv(
+        os.path.join(ChavezCIRSPRa_root_dir,'SuppTables','Supplementary Table 1.csv'),
+        index_col='Domain ID'
+    )
+    
     for i in df.index:
         if df.at[i,'Designed or found']=='Found':
             print(i+"...",end="")
