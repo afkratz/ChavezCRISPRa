@@ -159,10 +159,11 @@ def call_uclust():
 def assign_clusters():
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
     #Load input dataframe
-    seq_df = pd.read_excel(
-        os.path.join(ChavezCIRSPRa_root_dir,"InputData","Supplementary Table 1.xlsx"),
-        index_col = "Domain ID"
-        )
+
+    seq_df = pd.read_csv(
+        os.path.join(ChavezCIRSPRa_root_dir,'SuppTables','Supplementary Table 1.csv'),
+        index_col='Domain ID'
+    )
 
     #Load score data
     score_df = pd.read_excel(
