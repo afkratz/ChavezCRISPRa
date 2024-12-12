@@ -23,7 +23,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "ScreenData",
+            "screen_data",
             "traits",
             "bipartite_plasmid_traits.csv"
             )
@@ -34,7 +34,7 @@ def main():
     bipartite_condition = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "ScreenData",
+            "screen_data",
             "conditions",
             "bipartite_plasmid.csv"
             )
@@ -53,23 +53,23 @@ def main():
 
         results = fqp.analyze_reads(read_handle,bipartite_rules,bipartite_condition.at[i,"condition"])
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output"))
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results"))
             
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads"))
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","bipartite_plasmid")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","bipartite_plasmid"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","bipartite_plasmid")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","bipartite_plasmid"))
         
         fqp.save_results(
             results,
             bipartite_rules,
             os.path.join(
-                ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","bipartite_plasmid",
+                ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","bipartite_plasmid",
                 bipartite_condition.at[i,"condition"])
         )
 

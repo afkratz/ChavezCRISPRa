@@ -23,7 +23,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "ScreenData",
+            "screen_data",
             "traits",
             "tripartite_sorted_traits.csv"
         )
@@ -34,7 +34,7 @@ def main():
     tripartite_screen_conditions = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "ScreenData",
+            "screen_data",
             "conditions",
             "tripartite_sorted.csv"
         )
@@ -53,22 +53,22 @@ def main():
 
         results = fqp.analyze_reads(read_handle,tripartite_screen_rules,tripartite_screen_conditions.at[i,"condition"])
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output"))
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results"))
             
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads"))
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","tripartite_sorted")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","tripartite_sorted"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","tripartite_sorted")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","tripartite_sorted"))
         
         fqp.save_results(results,
                          tripartite_screen_rules,
                          os.path.join(
-                            ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","tripartite_sorted",
+                            ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","tripartite_sorted",
                             tripartite_screen_conditions.at[i,"condition"])
         )
 

@@ -23,7 +23,7 @@ def main():
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "ScreenData",
+            "screen_data",
             "traits",
             "single_domain_sorted_traits.csv"
             )
@@ -34,7 +34,7 @@ def main():
     single_domain_condition = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "ScreenData",
+            "screen_data",
             "conditions",
             "single_domain_sorted.csv"
         )
@@ -53,23 +53,23 @@ def main():
 
         results = fqp.analyze_reads(read_handle,single_domain_rules,single_domain_condition.at[i,"condition"])
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output"))
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results"))
             
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads"))
 
-        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","single_domain_sorted")):
-            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","single_domain_sorted"))
+        if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","single_domain_sorted")):
+            os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","single_domain_sorted"))
         
         fqp.save_results(
             results,
             single_domain_rules,
             os.path.join(
-                ChavezCIRSPRa_root_dir,"output","screen_results","processed_reads","single_domain_sorted",
+                ChavezCIRSPRa_root_dir,"screen_output","screen_results","processed_reads","single_domain_sorted",
                 single_domain_condition.at[i,"condition"])
         )
 
