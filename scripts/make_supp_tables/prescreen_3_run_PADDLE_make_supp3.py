@@ -54,7 +54,7 @@ def main():
     df.to_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "Screen_output",
+            "screen_output",
             "prescreen_results",
             "3_PADDLE_predictions.csv"
         )
