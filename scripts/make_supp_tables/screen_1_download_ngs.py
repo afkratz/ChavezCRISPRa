@@ -94,7 +94,7 @@ def main():
 
     df = pd.read_csv(
         os.path.join(
-            ChavezCIRSPRa_root_dir,'ScreenData','screen_download_files.tsv'
+            ChavezCIRSPRa_root_dir,'screen_data','screen_download_files.tsv'
         ),
         sep = '\t')
 
