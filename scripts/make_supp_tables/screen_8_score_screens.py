@@ -112,7 +112,7 @@ def single_domain_score(include_negative_controls = False):
     bins=["bin_1","bin_2","bin_3","bin_4"]
 
     dfs = sst.load_dfs(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","processed_reads","single_domain_sorted"),
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","processed_reads","single_domain_sorted"),
         targets,replicates,bins)
     spinner.next()
 
@@ -165,7 +165,7 @@ def single_domain_score(include_negative_controls = False):
     odf.to_csv(
         os.path.join(
             ChavezCRISPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores", 
             "single_domain_screen_scored.csv"        
@@ -194,7 +194,7 @@ def single_domain_toxicity(include_negative_controls = False):
             dfs[t][r]["P1 Plasmid"]=pd.read_csv(
                     os.path.join(
                         ChavezCRISPRa_root_dir,
-                        "output",
+                        "screen_output",
                         "screen_results",
                         "processed_reads",
                         "single_domain_plasmid",
@@ -205,7 +205,7 @@ def single_domain_toxicity(include_negative_controls = False):
                 dfs[t][r][b] = pd.read_csv(
                     os.path.join(
                         ChavezCRISPRa_root_dir,
-                        "output",
+                        "screen_output",
                         "screen_results",
                         "processed_reads",
                         "single_domain_sorted",
@@ -255,7 +255,7 @@ def single_domain_toxicity(include_negative_controls = False):
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1"],barcodes).to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_toxicity", 
                     "single_domain_toxicity.csv"        
@@ -275,7 +275,7 @@ def single_domain_read_counts(include_negative_controls = False):
     bins=["bin_1","bin_2","bin_3","bin_4","NS"]
 
     dfs = sst.load_dfs(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","processed_reads","single_domain_sorted"),
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","processed_reads","single_domain_sorted"),
         targets,replicates,bins)
     
     spinner.next()
@@ -298,15 +298,15 @@ def single_domain_read_counts(include_negative_controls = False):
 
     spinner.next()
 
-    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts","single_domain")):
+    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts","single_domain")):
         os.mkdir(
-            os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts","single_domain"))
+            os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts","single_domain"))
     for t in targets:
         for r in replicates:
             sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1"],barcodes).fillna(0).to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_bin_counts",
                     "single_domain",
@@ -329,7 +329,7 @@ def bipartite_score(include_negative_controls = False):
         classes = bipartite_no_control_classes    
 
     dfs = sst.load_dfs(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","processed_reads","bipartite_sorted"),
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","processed_reads","bipartite_sorted"),
         targets,replicates,bins)
     spinner.next()
 
@@ -382,7 +382,7 @@ def bipartite_score(include_negative_controls = False):
     odf.to_csv(
         os.path.join(
             ChavezCRISPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores", 
             "bipartite_screen_scored.csv"),
@@ -412,7 +412,7 @@ def bipartite_toxicity(include_negative_controls=False):
                 dfs[t][r]["P2 Plasmid"]=pd.read_csv(
                         os.path.join(
                             ChavezCRISPRa_root_dir,
-                            "output",
+                            "screen_output",
                             "screen_results",
                             "processed_reads",
                             "bipartite_plasmid",
@@ -424,7 +424,7 @@ def bipartite_toxicity(include_negative_controls=False):
                     dfs[t][r][b] = pd.read_csv(
                         os.path.join(
                             ChavezCRISPRa_root_dir,
-                            "output",
+                            "screen_output",
                             "screen_results",
                             "processed_reads",
                             "bipartite_sorted",
@@ -473,7 +473,7 @@ def bipartite_toxicity(include_negative_controls=False):
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2"],barcodes).to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_toxicity", 
                     "bipartite_screen_toxicity.csv"        
@@ -494,7 +494,7 @@ def bipartite_read_counts(include_negative_controls = False):
     bins=["bin_1","bin_2","bin_3","bin_4","NS"]
 
     dfs = sst.load_dfs(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","processed_reads","bipartite_sorted"),
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","processed_reads","bipartite_sorted"),
         targets,replicates,bins)
     spinner.next()
     sst.discard_errors(dfs,targets,replicates,bins)
@@ -515,15 +515,15 @@ def bipartite_read_counts(include_negative_controls = False):
     sst.drop_item(normalized_dfs,'class',targets,replicates)
     spinner.next()
 
-    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts","bipartite_screen")):
-        os.mkdir(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts","bipartite_screen"))
+    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts","bipartite_screen")):
+        os.mkdir(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts","bipartite_screen"))
     
     for t in targets:
         for r in replicates:
             sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1","BC2"],barcodes).fillna(0).to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_bin_counts",
                     "bipartite_screen",
@@ -546,7 +546,7 @@ def tripartite_score(include_negative_controls=False):
     bins=["bin_1","bin_2","bin_3","bin_4"]
 
     dfs = sst.load_dfs(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","processed_reads","tripartite_sorted"),
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","processed_reads","tripartite_sorted"),
         targets,replicates,bins)
     spinner.next()
 
@@ -602,7 +602,7 @@ def tripartite_score(include_negative_controls=False):
     odf.to_csv(
         os.path.join(
             ChavezCRISPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores", 
             "tripartite_screen_scored.csv"        
@@ -632,7 +632,7 @@ def tripartite_toxicity(include_negative_controls=False):
                 dfs[t][r]["P3 Plasmid"]=pd.read_csv(
                         os.path.join(
                             ChavezCRISPRa_root_dir,
-                            "output",
+                            "screen_output",
                             "screen_results",
                             "processed_reads",
                             "tripartite_plasmid",
@@ -644,7 +644,7 @@ def tripartite_toxicity(include_negative_controls=False):
                     dfs[t][r][b] = pd.read_csv(
                         os.path.join(
                             ChavezCRISPRa_root_dir,
-                            "output",
+                            "screen_output",
                             "screen_results",
                             "processed_reads",
                             "tripartite_sorted",
@@ -699,7 +699,7 @@ def tripartite_toxicity(include_negative_controls=False):
             sst.fill_in_combinatorial_results(dfs[t][r],["BC1","BC2","BC3"],barcodes).to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_toxicity", 
                     "tripartite_screen_toxicity.csv"        
@@ -719,7 +719,7 @@ def tripartite_read_counts(include_negative_controls=False):
     bins=["bin_1","bin_2","bin_3","bin_4","NS"]
 
     dfs = sst.load_dfs(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","processed_reads","tripartite_sorted"),
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","processed_reads","tripartite_sorted"),
         targets,replicates,bins)
     spinner.next()
     sst.discard_errors(dfs,targets,replicates,bins)
@@ -740,15 +740,15 @@ def tripartite_read_counts(include_negative_controls=False):
     sst.drop_item(normalized_dfs,'class',targets,replicates)
     spinner.next()
 
-    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts","tripartite_screen")):
+    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts","tripartite_screen")):
         os.mkdir(
-            os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts","tripartite_screen"))
+            os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts","tripartite_screen"))
     for t in targets:
         for r in replicates:
             sst.fill_in_combinatorial_results(normalized_dfs[t][r],["BC1","BC2","BC3"],barcodes).fillna(0).to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_bin_counts",
                     "tripartite_screen",
@@ -761,16 +761,16 @@ def tripartite_read_counts(include_negative_controls=False):
 
 def main():
     if not os.path.exists(
-            os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_scores")
+            os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_scores")
                 ):
-            os.mkdir(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_scores"))
+            os.mkdir(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_scores"))
     if not os.path.exists(
-        os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_toxicity")
+        os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_toxicity")
             ):
-        os.mkdir(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_toxicity"))
-    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts")):
+        os.mkdir(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_toxicity"))
+    if not os.path.exists(os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts")):
         os.mkdir(
-            os.path.join(ChavezCRISPRa_root_dir,"output","screen_results","screen_bin_counts"))
+            os.path.join(ChavezCRISPRa_root_dir,"screen_output","screen_results","screen_bin_counts"))
     
     INCLUDE_NEGATIVE_CONTROLS=False
 
