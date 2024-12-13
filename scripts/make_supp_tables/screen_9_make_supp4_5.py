@@ -18,7 +18,7 @@ def make_supptable_4():
     single_domain_scores = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_scores',
             'single_domain_screen_scored.csv'
@@ -29,7 +29,7 @@ def make_supptable_4():
     bipartite_scores = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_scores',
             'bipartite_screen_scored.csv'
@@ -40,7 +40,7 @@ def make_supptable_4():
     tripartite_scores = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_scores',
             'tripartite_screen_scored.csv'
@@ -52,49 +52,49 @@ def make_supptable_4():
         pd.DataFrame({
             'Construct':single_domain_scores['Construct'],
             'Activator type':'Single-domain',
-            'EPCAM_activation_score_1':single_domain_scores['EPCAM_1'],
-            'EPCAM_activation_score_2':single_domain_scores['EPCAM_2'],
-            'CXCR4_activation_score_1':single_domain_scores['CXCR4_1'],
-            'CXCR4_activation_score_2':single_domain_scores['CXCR4_2'],
-            'Reporter_activation_score_1':single_domain_scores['Reporter_1'],
-            'Reporter_activation_score_2':single_domain_scores['Reporter_2'],
-            'EPCAM_activation_score_average':single_domain_scores[['EPCAM_1','EPCAM_2']].mean(axis=1),
-            'CXCR4_activation_score_average':single_domain_scores[['CXCR4_1','CXCR4_2']].mean(axis=1),
-            'Reporter_activation_score_average':single_domain_scores[['Reporter_1','Reporter_2']].mean(axis=1),  
+            'EPCAM activation score 1':single_domain_scores['EPCAM_1'],
+            'EPCAM activation score 2':single_domain_scores['EPCAM_2'],
+            'CXCR4 activation score 1':single_domain_scores['CXCR4_1'],
+            'CXCR4 activation score 2':single_domain_scores['CXCR4_2'],
+            'Reporter activation score 1':single_domain_scores['Reporter_1'],
+            'Reporter activation score 2':single_domain_scores['Reporter_2'],
+            'EPCAM activation score average':single_domain_scores[['EPCAM_1','EPCAM_2']].mean(axis=1),
+            'CXCR4 activation score average':single_domain_scores[['CXCR4_1','CXCR4_2']].mean(axis=1),
+            'Reporter activation score average':single_domain_scores[['Reporter_1','Reporter_2']].mean(axis=1),  
         }),
         pd.DataFrame({
             'Construct':bipartite_scores['Construct'],
             'Activator type':'Bipartite',
-            'EPCAM_activation_score_1':bipartite_scores['EPCAM_1'],
-            'EPCAM_activation_score_2':bipartite_scores['EPCAM_2'],
-            'CXCR4_activation_score_1':bipartite_scores['CXCR4_1'],
-            'CXCR4_activation_score_2':bipartite_scores['CXCR4_2'],
-            'Reporter_activation_score_1':bipartite_scores['Reporter_1'],
-            'Reporter_activation_score_2':bipartite_scores['Reporter_2'],
-            'EPCAM_activation_score_average':bipartite_scores[['EPCAM_1','EPCAM_2']].mean(axis=1),
-            'CXCR4_activation_score_average':bipartite_scores[['CXCR4_1','CXCR4_2']].mean(axis=1),
-            'Reporter_activation_score_average':bipartite_scores[['Reporter_1','Reporter_2']].mean(axis=1),  
+            'EPCAM activation score_1':bipartite_scores['EPCAM_1'],
+            'EPCAM activation score_2':bipartite_scores['EPCAM_2'],
+            'CXCR4 activation score_1':bipartite_scores['CXCR4_1'],
+            'CXCR4 activation score_2':bipartite_scores['CXCR4_2'],
+            'Reporter activation score_1':bipartite_scores['Reporter_1'],
+            'Reporter activation score_2':bipartite_scores['Reporter_2'],
+            'EPCAM activation score average':bipartite_scores[['EPCAM_1','EPCAM_2']].mean(axis=1),
+            'CXCR4 activation score average':bipartite_scores[['CXCR4_1','CXCR4_2']].mean(axis=1),
+            'Reporter activation score average':bipartite_scores[['Reporter_1','Reporter_2']].mean(axis=1),  
         }),
         pd.DataFrame({
             'Construct':tripartite_scores['Construct'],
             'Activator type':'Tripartite',
-            'EPCAM_activation_score_1':tripartite_scores['EPCAM_1'],
-            'EPCAM_activation_score_2':tripartite_scores['EPCAM_2'],
-            'CXCR4_activation_score_1':tripartite_scores['CXCR4_1'],
-            'CXCR4_activation_score_2':tripartite_scores['CXCR4_2'],
-            'Reporter_activation_score_1':tripartite_scores['Reporter_1'],
-            'Reporter_activation_score_2':tripartite_scores['Reporter_2'],
-            'EPCAM_activation_score_average':tripartite_scores[['EPCAM_1','EPCAM_2']].mean(axis=1),
-            'CXCR4_activation_score_average':tripartite_scores[['CXCR4_1','CXCR4_2']].mean(axis=1),
-            'Reporter_activation_score_average':tripartite_scores[['Reporter_1','Reporter_2']].mean(axis=1),  
+            'EPCAM activation score_1':tripartite_scores['EPCAM_1'],
+            'EPCAM activation score_2':tripartite_scores['EPCAM_2'],
+            'CXCR4 activation score_1':tripartite_scores['CXCR4_1'],
+            'CXCR4 activation score_2':tripartite_scores['CXCR4_2'],
+            'Reporer activation score_1':tripartite_scores['Reporter_1'],
+            'Reporter activation score_2':tripartite_scores['Reporter_2'],
+            'EPCAM activation score_average':tripartite_scores[['EPCAM_1','EPCAM_2']].mean(axis=1),
+            'CXCR4 activation score_average':tripartite_scores[['CXCR4_1','CXCR4_2']].mean(axis=1),
+            'Reporter activation score_average':tripartite_scores[['Reporter_1','Reporter_2']].mean(axis=1),  
         })
     ),ignore_index=True)
     
     output.to_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "SuppTables",
-            "Supplementary Table 4.csv"
+            "Supplementary Files",
+            "Supplementary Data 4.xlsx"
             ),
             index=False
     )
@@ -103,7 +103,7 @@ def make_supptable_5():
     single_domain_tox = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_toxicity',
             'single_domain_toxicity.csv'
@@ -114,7 +114,7 @@ def make_supptable_5():
     bipartite_tox = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_toxicity',
             'bipartite_screen_toxicity.csv'
@@ -125,7 +125,7 @@ def make_supptable_5():
     tripartite_tox = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_toxicity',
             'tripartite_screen_toxicity.csv'
@@ -137,31 +137,31 @@ def make_supptable_5():
         pd.DataFrame({
             'Construct':single_domain_tox['Construct'],
             'Activator type':'Single-domain',
-            'EPCAM_toxicity_score':single_domain_tox['EPCAM_average_Tox'],
-            'CXCR4_toxicity_score':single_domain_tox['CXCR4_average_Tox'],
-            'Toxicity_score_average':single_domain_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
+            'EPCAM toxicity score':single_domain_tox['EPCAM_average_Tox'],
+            'CXCR4 toxicity score':single_domain_tox['CXCR4_average_Tox'],
+            'Toxicity score_average':single_domain_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
             }),
         pd.DataFrame({
             'Construct':bipartite_tox['Construct'],
             'Activator type':'Bipartite',
-            'EPCAM_toxicity_score':bipartite_tox['EPCAM_average_Tox'],
-            'CXCR4_toxicity_score':bipartite_tox['CXCR4_average_Tox'],
-            'Toxicity_score_average':bipartite_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
+            'EPCAM toxicity score':bipartite_tox['EPCAM_average_Tox'],
+            'CXCR4 toxicity score':bipartite_tox['CXCR4_average_Tox'],
+            'Toxicity score average':bipartite_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
             }),
             pd.DataFrame({
             'Construct':tripartite_tox['Construct'],
             'Activator type':'Tripartite',
-            'EPCAM_toxicity_score':tripartite_tox['EPCAM_average_Tox'],
-            'CXCR4_toxicity_score':tripartite_tox['CXCR4_average_Tox'],
-            'Toxicity_score_average':tripartite_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
+            'EPCAM toxicity score':tripartite_tox['EPCAM_average_Tox'],
+            'CXCR4 toxicity score':tripartite_tox['CXCR4_average_Tox'],
+            'Toxicity score average':tripartite_tox[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1),
             })
     ),ignore_index=True)
     
-    output.to_csv(
+    output.to_excel(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "SuppTables",
-            "Supplementary Table 5.csv"
+            "Supplementary Files",
+            "Supplementary Data 5.xlsx"
             ),
             index=False
     )
