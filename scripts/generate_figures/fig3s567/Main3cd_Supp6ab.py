@@ -28,7 +28,7 @@ def main()->pd.DataFrame:
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv",
@@ -56,7 +56,7 @@ def main()->pd.DataFrame:
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",
@@ -85,7 +85,7 @@ def main()->pd.DataFrame:
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "tripartite_screen_scored.csv",
@@ -98,6 +98,10 @@ def main()->pd.DataFrame:
     for target in ['EPCAM','CXCR4','Reporter']:
         tripartite['{}_average'.format(target)] = tripartite[["{}_1".format(target),"{}_2".format(target)]].values.mean(axis=1)
     
+    single_domain.replace(np.nan,'NA',inplace=True)
+    bipartite.replace(np.nan,'NA',inplace=True)
+    tripartite.replace(np.nan,'NA',inplace=True)
+
     res = pd.concat([single_domain,bipartite,tripartite],ignore_index=True)
     return res
 

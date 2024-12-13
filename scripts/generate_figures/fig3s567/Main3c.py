@@ -6,7 +6,6 @@ All Rights Reserved
 MIT license
 --------------------------------------------------------------------------------
 """
-import numpy as np
 import pandas as pd
 import os
 from pathlib import Path
@@ -32,7 +31,7 @@ def main()->pd.DataFrame:
             df = pd.read_csv(
                 os.path.join(
                     ChavezCIRSPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_bin_counts",
                     "single_domain",
@@ -64,7 +63,7 @@ def main()->pd.DataFrame:
             df = pd.read_csv(
                 os.path.join(
                     ChavezCIRSPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_bin_counts",
                     "bipartite_screen",
@@ -97,7 +96,7 @@ def main()->pd.DataFrame:
             df = pd.read_csv(
                 os.path.join(
                     ChavezCIRSPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_bin_counts",
                     "tripartite_screen",

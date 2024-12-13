@@ -13,14 +13,14 @@ import numpy as np
 
 def main():
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
-    if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"FigureSourceData")):
-        os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"FigureSourceData"))
+    if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"Figure Source Data")):
+        os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"Figure Source Data"))
 
     writer = pd.ExcelWriter(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "FigureSourceData",
-            "Figure 3 and Supplementary Figures 5-7.xlsx"
+            "Figure Source Data",
+            "Source Data Figure 3 and Supplementary Figures 5-7.xlsx"
         ),
         engine='xlsxwriter')
     

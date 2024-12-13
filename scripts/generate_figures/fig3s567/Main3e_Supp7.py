@@ -29,7 +29,7 @@ def main()->pd.DataFrame:
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv",
@@ -57,7 +57,7 @@ def main()->pd.DataFrame:
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",
@@ -86,7 +86,7 @@ def main()->pd.DataFrame:
     df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "tripartite_screen_scored.csv",
@@ -104,7 +104,7 @@ def main()->pd.DataFrame:
     manual_testing = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "InputData",
+            "input_data",
             "Manual_validation_random_clones.csv"
         )
     ).replace(np.nan,'NA')

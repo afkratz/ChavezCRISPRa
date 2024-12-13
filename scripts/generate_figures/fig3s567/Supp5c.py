@@ -17,7 +17,7 @@ def main()->pd.DataFrame:
     single_domain_tox_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_toxicity',
             'single_domain_toxicity.csv')
@@ -34,7 +34,7 @@ def main()->pd.DataFrame:
     bipartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
@@ -61,7 +61,7 @@ def main()->pd.DataFrame:
     tripartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
