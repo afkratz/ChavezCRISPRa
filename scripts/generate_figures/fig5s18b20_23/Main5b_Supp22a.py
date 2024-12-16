@@ -11,6 +11,9 @@ import pandas as pd
 import os
 from pathlib import Path
 
+import warnings
+warnings.filterwarnings('ignore', category=RuntimeWarning, message='Mean of empty slice')
+
 def main()->pd.DataFrame:
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent.parent
     all_bcs = list(map(lambda x: 'A'+('0'*(2-len(str(x))))+str(x),range(1,26)))
