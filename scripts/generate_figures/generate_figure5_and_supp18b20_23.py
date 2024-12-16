@@ -20,7 +20,7 @@ def main():
         os.path.join(
             ChavezCIRSPRa_root_dir,
             "Figure Source Data",
-            "Source Data Figure 5 and Supplementary Figures 19b and 20-23.xlsx"
+            "Source Data Figure 5 and Supplementary Figures 18b and 20-23.xlsx"
         ),
         engine='xlsxwriter')
      

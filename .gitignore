@@ -1,2 +1,2 @@
-
-output/prescreen_results/clusters
+screen_output/
+*.pyc
