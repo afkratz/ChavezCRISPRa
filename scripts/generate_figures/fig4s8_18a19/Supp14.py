@@ -18,7 +18,7 @@ def main()->pd.DataFrame:
     single_domain_tox_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_toxicity',
             'single_domain_toxicity.csv'
@@ -30,7 +30,7 @@ def main()->pd.DataFrame:
     bipartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
@@ -43,7 +43,7 @@ def main()->pd.DataFrame:
     tripartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
@@ -55,7 +55,7 @@ def main()->pd.DataFrame:
     single_domain_scores = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv"
@@ -69,7 +69,7 @@ def main()->pd.DataFrame:
     bipartite_scores = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv"
@@ -82,7 +82,7 @@ def main()->pd.DataFrame:
     tripartite_scores = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "tripartite_screen_scored.csv"
@@ -102,27 +102,27 @@ def main()->pd.DataFrame:
              "Construct":single_domain_scores['Construct'],
              "Activator type":"Single-domain",
              "Toxicity":single_domain_tox_df['Average_Tox'],
-             "EPCAM_average":single_domain_scores['EPCAM_average_score'],
-             "CXCR4_average":single_domain_scores['CXCR4_average_score'],
-             "Reporter_average":single_domain_scores['Reporter_average_score'],
+             "EPCAM average":single_domain_scores['EPCAM_average_score'],
+             "CXCR4 average":single_domain_scores['CXCR4_average_score'],
+             "Reporter average":single_domain_scores['Reporter_average_score'],
         }),
 
         pd.DataFrame({
              "Construct":bipartite_tox_df['Construct'],
              "Activator type":"Bipartite",
              "Toxicity":bipartite_tox_df['Average_Tox'],
-             "EPCAM_average":bipartite_scores['EPCAM_average_score'],
-             "CXCR4_average":bipartite_scores['CXCR4_average_score'],
-             "Reporter_average":bipartite_scores['Reporter_average_score'],
+             "EPCAM average":bipartite_scores['EPCAM_average_score'],
+             "CXCR4 average":bipartite_scores['CXCR4_average_score'],
+             "Reporter average":bipartite_scores['Reporter_average_score'],
         }),
 
         pd.DataFrame({
              "Construct":tripartite_tox_df['Construct'],
              "Activator type":"Tripartite",
              "Toxicity":tripartite_tox_df['Average_Tox'],
-             "EPCAM_average":tripartite_scores['EPCAM_average_score'],
-             "CXCR4_average":tripartite_scores['CXCR4_average_score'],
-             "Reporter_average":tripartite_scores['Reporter_average_score'],
+             "EPCAM average":tripartite_scores['EPCAM_average_score'],
+             "CXCR4 average":tripartite_scores['CXCR4_average_score'],
+             "Reporter average":tripartite_scores['Reporter_average_score'],
         }),
     ),ignore_index=True)
 

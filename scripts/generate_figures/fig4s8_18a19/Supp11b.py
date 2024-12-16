@@ -7,6 +7,7 @@ MIT license
 --------------------------------------------------------------------------------
 """
 import pandas as pd
+import numpy as np
 import os
 from pathlib import Path
 
@@ -17,16 +18,16 @@ def main()->pd.DataFrame:
     AID_to_name = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'SuppTables',
-            'Supplementary Table 3.csv'
+            'input_data',
+            'AId_to_name.csv'
         ),index_col='A-ID'
-    )['Domain name'].to_dict()
+    )['Short name'].to_dict()
 
 
     gfp_competition_results = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "InputData",
+            "input_data",
             "GFP_competition_results.csv"
         ),index_col='Construct'
     )
@@ -49,20 +50,20 @@ def main()->pd.DataFrame:
     tripartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
     )
     
-    tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
+    tripartite_tox_df['A_Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
     tripartite_tox_df['Domain Name'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(AID_to_name[row['BC1']], AID_to_name[row['BC2']],AID_to_name[row['BC3']]), axis=1)
     
     tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
 
     tripartite_construct_to_tox = dict()
     for i in tripartite_tox_df.index:
-        construct = tripartite_tox_df.at[i,'Construct']
+        construct = tripartite_tox_df.at[i,'A_Construct']
         tox = tripartite_tox_df.at[i,'Average_Tox']
         assert construct not in tripartite_construct_to_tox
         tripartite_construct_to_tox[construct]=tox
@@ -70,19 +71,18 @@ def main()->pd.DataFrame:
 
     construct_to_name = dict()
     for i in tripartite_tox_df.index:
-        construct_to_name[tripartite_tox_df.at[i,'Construct']]=tripartite_tox_df.at[i,'Domain Name']
+        construct_to_name[tripartite_tox_df.at[i,'A_Construct']]=tripartite_tox_df.at[i,'Domain Name']
 
     for i in gfp_competition_results.index:
         if i in tripartite_construct_to_tox:
             gfp_competition_results.at[i,'Screen toxicity'] = tripartite_construct_to_tox[i]
-            gfp_competition_results.at[i,'Name']=construct_to_name[i]
+            gfp_competition_results.at[i,'Construct']=construct_to_name[i]
         else:
-            gfp_competition_results.at[i,'Name']=i
-
+            gfp_competition_results.at[i,'Construct']=i
+    
+    gfp_competition_results = gfp_competition_results.set_index('Construct',drop=True)
     gfp_competition_results.reset_index(inplace=True)
-
-    print(gfp_competition_results)
-
+    gfp_competition_results.replace(np.nan,'NA',inplace=True)
     return gfp_competition_results
 
  

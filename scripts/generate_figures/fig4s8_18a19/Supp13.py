@@ -15,7 +15,7 @@ def main()->pd.DataFrame:
     minilib_tox_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            'output',
+            'screen_output',
             'screen_results',
             'screen_toxicity',
             'minilib_toxicity.csv'

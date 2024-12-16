@@ -53,7 +53,7 @@ def minilib_toxicity():
                 dfs[t][r][b]=pd.read_csv(
                         os.path.join(
                             ChavezCRISPRa_root_dir,
-                            "output",
+                            "screen_output",
                             "screen_results",
                             "processed_reads",
                             "tripartite_minilib",
@@ -110,7 +110,7 @@ def minilib_toxicity():
             dfs[t][r].to_csv(
                 os.path.join(
                     ChavezCRISPRa_root_dir,
-                    "output",
+                    "screen_output",
                     "screen_results",
                     "screen_toxicity", 
                     "minilib_toxicity.csv"        

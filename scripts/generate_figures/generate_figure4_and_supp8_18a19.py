@@ -9,18 +9,17 @@ MIT license
 import os
 from pathlib import Path
 import pandas as pd
-import numpy as np
 
 def main():
     ChavezCIRSPRa_root_dir  = Path(__file__).resolve().parent.parent.parent
-    if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"FigureSourceData")):
-        os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"FigureSourceData"))
+    if not os.path.exists(os.path.join(ChavezCIRSPRa_root_dir,"Figure Source Data")):
+        os.mkdir(os.path.join(ChavezCIRSPRa_root_dir,"Figure Source Data"))
 
     writer = pd.ExcelWriter(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "FigureSourceData",
-            "Figure 4 and Supplementary Figures 8-18a and 19.xlsx"
+            "Figure Source Data",
+            "Source Data Figure 4 and Supplementary Figures 8-18a and 19.xlsx"
         ),
         engine='xlsxwriter')
     
@@ -133,12 +132,6 @@ def main():
 
     for col_num, value in enumerate(sheet_fifteen.columns.values):
         writer.sheets['Supp 19a,b'].write(0, col_num, value, cell_format)
-    
-    
-    
-    
-    
-    
     
     
     writer._save()

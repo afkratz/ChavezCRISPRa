@@ -20,14 +20,14 @@ def main()->pd.DataFrame:
     bipartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
     )
     
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
-    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
+    bipartite_tox_df['Average Tox']=bipartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
     pfds = ['A23','A25']
     bipartite_tox_df['PFD count'] = bipartite_tox_df.apply(
         lambda row: pfds.count(row['BC1'])+pfds.count(row['BC2']),
@@ -42,14 +42,14 @@ def main()->pd.DataFrame:
     tripartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
     )
 
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
-    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
+    tripartite_tox_df['Average Tox']=tripartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
     pfds = ['A23','A25']
     tripartite_tox_df['PFD count'] = tripartite_tox_df.apply(
         lambda row: pfds.count(row['BC1'])+pfds.count(row['BC2'])+pfds.count(row['BC3']),
@@ -63,12 +63,12 @@ def main()->pd.DataFrame:
     construct_to_tox = dict()
     for index in bipartite_tox_df.index:
         construct = bipartite_tox_df.at[index,'Construct']
-        tox = bipartite_tox_df.at[index,'Average_Tox']
+        tox = bipartite_tox_df.at[index,'Average Tox']
         construct_to_tox[construct]=tox
 
     for index in tripartite_tox_df.index:
         construct = tripartite_tox_df.at[index,'Construct']
-        tox = tripartite_tox_df.at[index,'Average_Tox']
+        tox = tripartite_tox_df.at[index,'Average Tox']
         construct_to_tox[construct]=tox
 
     res = pd.DataFrame()
@@ -87,11 +87,11 @@ def main()->pd.DataFrame:
             res.at[construct,'P1']=bipartite_tox_df.at[index,'BC1']
             res.at[construct,'P2']=bipartite_tox_df.at[index,'BC2']
             res.at[construct,'P3']=np.nan
-            res.at[construct,'Reverse_construct']=reverse
+            res.at[construct,'Reverse construct']=reverse
             res.at[construct,'Forward toxicity']=construct_to_tox[construct]
             res.at[construct,'Reverse toxicity']=construct_to_tox[reverse]
             res.at[construct,'ADs only?']=bipartite_tox_df.at[index,'PFD count']==0 and not bipartite_tox_df.at[index,'Has A24']
-            res.at[construct,'Tripartite_1 PF only']=False
+            res.at[construct,'Tripartite 1 PF only']=False
 
     for index in tripartite_tox_df.index:
         if tripartite_tox_df.at[index,'Has A24']:continue
@@ -109,11 +109,11 @@ def main()->pd.DataFrame:
                 res.at[construct,'P1']=tripartite_tox_df.at[index,'BC1']
                 res.at[construct,'P2']=tripartite_tox_df.at[index,'BC2']
                 res.at[construct,'P3']=tripartite_tox_df.at[index,'BC3']
-                res.at[construct,'Reverse_construct']=reverse
+                res.at[construct,'Reverse construct']=reverse
                 res.at[construct,'Forward toxicity']=construct_to_tox[construct]
                 res.at[construct,'Reverse toxicity']=construct_to_tox[reverse]
                 res.at[construct,'ADs only?']=False
-                res.at[construct,'Tripartite_1 PF only']=True
+                res.at[construct,'Tripartite 1 PF only']=True
     
     return res
 

@@ -19,18 +19,18 @@ def main()->pd.DataFrame:
     bipartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'bipartite_screen_toxicity.csv')
     )
     
     bipartite_tox_df['Construct'] = bipartite_tox_df.apply(lambda row: "{}_{}".format(row['BC1'], row['BC2']), axis=1)
-    bipartite_tox_df['Average_Tox']=bipartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
+    bipartite_tox_df['Average Tox']=bipartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
     bipartite_construct_to_tox = dict()
     for i in bipartite_tox_df.index:
         construct = bipartite_tox_df.at[i,'Construct']
-        tox = bipartite_tox_df.at[i,'Average_Tox']
+        tox = bipartite_tox_df.at[i,'Average Tox']
         assert construct not in bipartite_construct_to_tox
         bipartite_construct_to_tox[construct]=tox
     
@@ -52,18 +52,18 @@ def main()->pd.DataFrame:
     tripartite_tox_df = pd.read_csv(
         os.path.join(
                 ChavezCIRSPRa_root_dir,
-                'output',
+                'screen_output',
                 'screen_results',
                 'screen_toxicity',
                 'tripartite_screen_toxicity.csv')
     )
     
     tripartite_tox_df['Construct'] = tripartite_tox_df.apply(lambda row: "{}_{}_{}".format(row['BC1'], row['BC2'],row['BC3']), axis=1)
-    tripartite_tox_df['Average_Tox']=tripartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
+    tripartite_tox_df['Average Tox']=tripartite_tox_df[['EPCAM_average_Tox','CXCR4_average_Tox']].values.mean(axis=1)
     tripartite_construct_to_tox = dict()
     for i in tripartite_tox_df.index:
         construct = tripartite_tox_df.at[i,'Construct']
-        tox = tripartite_tox_df.at[i,'Average_Tox']
+        tox = tripartite_tox_df.at[i,'Average Tox']
         assert construct not in tripartite_construct_to_tox
         tripartite_construct_to_tox[construct]=tox
     
