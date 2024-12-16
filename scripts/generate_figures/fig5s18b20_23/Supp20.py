@@ -20,7 +20,7 @@ def main()->pd.DataFrame:
     single_domain_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv",
@@ -30,7 +30,7 @@ def main()->pd.DataFrame:
     bipartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",
@@ -40,7 +40,7 @@ def main()->pd.DataFrame:
     tripartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "tripartite_screen_scored.csv",
@@ -100,24 +100,24 @@ def main()->pd.DataFrame:
             'P1':bipartite_activity_df['BC1'],
             'P2':bipartite_activity_df['BC2'],
             'P3':'',
-            'Single-domain P1 EPCAM_average':bipartite_activity_df['Single-domain P1 EPCAM_average'],
-            'Single-domain P2 EPCAM_average':bipartite_activity_df['Single-domain P2 EPCAM_average'],
-            'Single-domain P3 EPCAM_average':bipartite_activity_df['Single-domain P3 EPCAM_average'],
-            'Single-domain EPCAM_average sum':bipartite_activity_df['Single-domain EPCAM_average sum'],
+            'Single-domain P1 EPCAM average':bipartite_activity_df['Single-domain P1 EPCAM_average'],
+            'Single-domain P2 EPCAM average':bipartite_activity_df['Single-domain P2 EPCAM_average'],
+            'Single-domain P3 EPCAM average':bipartite_activity_df['Single-domain P3 EPCAM_average'],
+            'Single-domain EPCAM average sum':bipartite_activity_df['Single-domain EPCAM_average sum'],
 
-            'Single-domain P1 CXCR4_average':bipartite_activity_df['Single-domain P1 CXCR4_average'],
-            'Single-domain P2 CXCR4_average':bipartite_activity_df['Single-domain P2 CXCR4_average'],
-            'Single-domain P3 CXCR4_average':bipartite_activity_df['Single-domain P3 CXCR4_average'],
-            'Single-domain CXCR4_average sum':bipartite_activity_df['Single-domain CXCR4_average sum'],
+            'Single-domain P1 CXCR4 average':bipartite_activity_df['Single-domain P1 CXCR4_average'],
+            'Single-domain P2 CXCR4 average':bipartite_activity_df['Single-domain P2 CXCR4_average'],
+            'Single-domain P3 CXCR4 average':bipartite_activity_df['Single-domain P3 CXCR4_average'],
+            'Single-domain CXCR4 average sum':bipartite_activity_df['Single-domain CXCR4_average sum'],
 
-            'Single-domain P1 Reporter_average':bipartite_activity_df['Single-domain P1 Reporter_average'],
-            'Single-domain P2 Reporter_average':bipartite_activity_df['Single-domain P2 Reporter_average'],
-            'Single-domain P3 Reporter_average':bipartite_activity_df['Single-domain P3 Reporter_average'],
-            'Single-domain Reporter_average sum':bipartite_activity_df['Single-domain Reporter_average sum'],
+            'Single-domain P1 Reporter average':bipartite_activity_df['Single-domain P1 Reporter_average'],
+            'Single-domain P2 Reporter average':bipartite_activity_df['Single-domain P2 Reporter_average'],
+            'Single-domain P3 Reporter average':bipartite_activity_df['Single-domain P3 Reporter_average'],
+            'Single-domain Reporter average sum':bipartite_activity_df['Single-domain Reporter_average sum'],
 
-            'Multi-partite EPCAM_average':bipartite_activity_df['EPCAM_average'],
-            'Multi-partite CXCR4_average':bipartite_activity_df['CXCR4_average'],
-            'Multi-partite Reporter_average':bipartite_activity_df['Reporter_average'],
+            'Multi-partite EPCAM average':bipartite_activity_df['EPCAM_average'],
+            'Multi-partite CXCR4 average':bipartite_activity_df['CXCR4_average'],
+            'Multi-partite Reporter average':bipartite_activity_df['Reporter_average'],
         }),
         pd.DataFrame({
             "Construct":tripartite_activity_df['Construct'],
@@ -125,29 +125,28 @@ def main()->pd.DataFrame:
             'P1':tripartite_activity_df['BC1'],
             'P2':tripartite_activity_df['BC2'],
             'P3':tripartite_activity_df['BC3'],
-            'Single-domain P1 EPCAM_average':tripartite_activity_df['Single-domain P1 EPCAM_average'],
-            'Single-domain P2 EPCAM_average':tripartite_activity_df['Single-domain P2 EPCAM_average'],
-            'Single-domain P3 EPCAM_average':tripartite_activity_df['Single-domain P3 EPCAM_average'],
-            'Single-domain EPCAM_average sum':tripartite_activity_df['Single-domain EPCAM_average sum'],
+            'Single-domain P1 EPCAM average':tripartite_activity_df['Single-domain P1 EPCAM_average'],
+            'Single-domain P2 EPCAM average':tripartite_activity_df['Single-domain P2 EPCAM_average'],
+            'Single-domain P3 EPCAM average':tripartite_activity_df['Single-domain P3 EPCAM_average'],
+            'Single-domain EPCAM average sum':tripartite_activity_df['Single-domain EPCAM_average sum'],
 
-            'Single-domain P1 CXCR4_average':tripartite_activity_df['Single-domain P1 CXCR4_average'],
-            'Single-domain P2 CXCR4_average':tripartite_activity_df['Single-domain P2 CXCR4_average'],
-            'Single-domain P3 CXCR4_average':tripartite_activity_df['Single-domain P3 CXCR4_average'],
-            'Single-domain CXCR4_average sum':tripartite_activity_df['Single-domain CXCR4_average sum'],
+            'Single-domain P1 CXCR4 average':tripartite_activity_df['Single-domain P1 CXCR4_average'],
+            'Single-domain P2 CXCR4 average':tripartite_activity_df['Single-domain P2 CXCR4_average'],
+            'Single-domain P3 CXCR4 average':tripartite_activity_df['Single-domain P3 CXCR4_average'],
+            'Single-domain CXCR4 average sum':tripartite_activity_df['Single-domain CXCR4_average sum'],
 
-            'Single-domain P1 Reporter_average':tripartite_activity_df['Single-domain P1 Reporter_average'],
-            'Single-domain P2 Reporter_average':tripartite_activity_df['Single-domain P2 Reporter_average'],
-            'Single-domain P3 Reporter_average':tripartite_activity_df['Single-domain P3 Reporter_average'],
-            'Single-domain Reporter_average sum':tripartite_activity_df['Single-domain Reporter_average sum'],
+            'Single-domain P1 Reporter average':tripartite_activity_df['Single-domain P1 Reporter_average'],
+            'Single-domain P2 Reporter average':tripartite_activity_df['Single-domain P2 Reporter_average'],
+            'Single-domain P3 Reporter average':tripartite_activity_df['Single-domain P3 Reporter_average'],
+            'Single-domain Reporter average sum':tripartite_activity_df['Single-domain Reporter_average sum'],
 
-            'Multi-partite EPCAM_average':tripartite_activity_df['EPCAM_average'],
-            'Multi-partite CXCR4_average':tripartite_activity_df['CXCR4_average'],
-            'Multi-partite Reporter_average':tripartite_activity_df['Reporter_average'],
+            'Multi-partite EPCAM average':tripartite_activity_df['EPCAM_average'],
+            'Multi-partite CXCR4 average':tripartite_activity_df['CXCR4_average'],
+            'Multi-partite Reporter average':tripartite_activity_df['Reporter_average'],
         }),
     )).replace(np.nan,'NA')
 
 
-    
     return res
 
     

@@ -21,7 +21,7 @@ def main()->pd.DataFrame:
     bipartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",

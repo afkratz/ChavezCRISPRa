@@ -20,7 +20,7 @@ def main()->pd.DataFrame:
     single_domain_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv",
@@ -30,7 +30,7 @@ def main()->pd.DataFrame:
     bipartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",
@@ -40,7 +40,7 @@ def main()->pd.DataFrame:
     tripartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "tripartite_screen_scored.csv",
@@ -137,7 +137,6 @@ def main()->pd.DataFrame:
                 res.at[i,'Tripartite {} with PFs'.format(target)] = "NA"
 
 
-    
     return res
 
     

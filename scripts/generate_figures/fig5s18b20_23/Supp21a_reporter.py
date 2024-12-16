@@ -17,7 +17,7 @@ def main()->pd.DataFrame:
     single_domain_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv",
@@ -28,7 +28,7 @@ def main()->pd.DataFrame:
     bipartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",
@@ -44,10 +44,10 @@ def main()->pd.DataFrame:
 
     for i in bipartite_activity_df.index:
         construct = bipartite_activity_df.at[i,'Construct']
-        score = bipartite_activity_df.at[i,'EPCAM_average']
+        score = bipartite_activity_df.at[i,'Reporter_average']
         construct_to_score[construct]=score
 
-    ordered_activity= single_domain_activity_df.sort_values(by='EPCAM_average',ascending=False)['Construct'].to_list()
+    ordered_activity= single_domain_activity_df.sort_values(by='Reporter_average',ascending=False)['Construct'].to_list()
 
     right_part = pd.DataFrame()
     for col in ordered_activity[::-1]:
@@ -61,15 +61,15 @@ def main()->pd.DataFrame:
             "Activator type":"Bipartite",
             "P1":bipartite_activity_df['BC1'],
             "P2":bipartite_activity_df['BC2'],
-            "EPCAM_1":bipartite_activity_df["EPCAM_1"],
-            "EPCAM_2":bipartite_activity_df["EPCAM_2"],
-            "CXCR4_1":bipartite_activity_df["CXCR4_1"],
-            "CXCR4_2":bipartite_activity_df["CXCR4_2"],
-            "Reporter_1":bipartite_activity_df["Reporter_1"],
-            "Reporter_2":bipartite_activity_df["Reporter_2"],
-            "EPCAM_average":bipartite_activity_df["EPCAM_average"],
-            "CXCR4_average":bipartite_activity_df["CXCR4_average"],
-            "Reporter_average":bipartite_activity_df["Reporter_average"],           
+            "EPCAM1 ":bipartite_activity_df["EPCAM_1"],
+            "EPCAM 2":bipartite_activity_df["EPCAM_2"],
+            "CXCR4 1":bipartite_activity_df["CXCR4_1"],
+            "CXCR4 2":bipartite_activity_df["CXCR4_2"],
+            "Reporter 1":bipartite_activity_df["Reporter_1"],
+            "Reporter 2":bipartite_activity_df["Reporter_2"],
+            "EPCAM average":bipartite_activity_df["EPCAM_average"],
+            "CXCR4 average":bipartite_activity_df["CXCR4_average"],
+            "Reporter average":bipartite_activity_df["Reporter_average"],           
             
             "":""#Buffer
         }

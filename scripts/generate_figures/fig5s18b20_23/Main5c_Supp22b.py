@@ -20,7 +20,7 @@ def main()->pd.DataFrame:
     single_domain_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "single_domain_screen_scored.csv",
@@ -31,7 +31,7 @@ def main()->pd.DataFrame:
     bipartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "bipartite_screen_scored.csv",
@@ -42,7 +42,7 @@ def main()->pd.DataFrame:
     tripartite_activity_df = pd.read_csv(
         os.path.join(
             ChavezCIRSPRa_root_dir,
-            "output",
+            "screen_output",
             "screen_results",
             "screen_scores",
             "tripartite_screen_scored.csv",
@@ -76,6 +76,8 @@ def main()->pd.DataFrame:
         axis=1
     )
     
+    tripartite_activity_df.replace(np.nan,'NA',inplace=True)
+
     construct_to_score = dict()
     for index in bipartite_activity_df.index:
         construct = bipartite_activity_df.at[index,'Construct']
@@ -145,7 +147,7 @@ def main()->pd.DataFrame:
             res.at[construct,'Reverse_Reporter_average']=construct_to_score[reverse]['Reporter']
             res.at[construct,'ADs only?']=False
             res.at[construct,'Tripartite_1 PF only']=True
-    res.replace(np.nan,'NA',inplace=True)
+    
     return res
 
 if __name__=="__main__":
