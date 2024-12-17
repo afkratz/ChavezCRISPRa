@@ -70,69 +70,55 @@ Before running any code, ensure that you are in the chavezcrispra environment by
 
 #### make_supp_tables
 
-- **prescreen_1_validate_sequences_sources.py**
-  
-  - Description - Checks that the sequences in Supp 1 are either designed (ie, human-made) or that they have a known natural source. For naturally-sourced sequences, this script checks the listed uniprot entry to confirm that the sequence is indeed found there. For a few sequences, there are minor differences to the native sequence, which the script handles explicitly by locating the original sequence.
-  
-  - Input files 
-    
-    - `InputData/Supplementary Table 1.xlsx`
-  
-  - Output files - None
-  
-  - Estimated run time - 10 minutes
-- **prescreen_2_run_uclust.py**
-  
+- **prescreen_1_run_uclust.py**
   - Description - Guides the user to download and run uclust executable to cluster prescreen sequences at 50% identity. Assigns status as either a centroid or non-centroid and cluster membership to the prescreen sequences.
   
   - Input files 
     
-    - `InputData/Supplementary Table 1.xlsx`
+    - input_data/Supplementary Table 1.xlsx`
   
   - Output files 
     
-    - cluster fastas in `outputs/prescreen_results/clusters/`
+    - cluster fastas in `screen_output/prescreen_results/clusters/`
     
-    - `outputs/prescreen_results/centroids.fasta`
+    - `screen_output/prescreen_results/centroids.fasta`
     
-    - `output/prescreen_results/2_manually_tested_clusters_assigned.csv`
+    - `screen_output/prescreen_results/2_manually_tested_clusters_assigned.csv`
   
   - Estimated run time - 1 minute
-- **prescreen_3_charachterize_domains.py**
-  
+- **prescreen_2_characterize_domains.py**
   - Description - Uses package [localCIDER](https://pappulab.github.io/localCIDER/) to calculate biochemical traits of prescreen sequences.
   
   - Input files
     
-    - `output/prescreen_results/2_manually_tested_clusters_assigned.csv`
+    - `screen_output/prescreen_results/1_manually_tested_clusters_assigned.csv`
   
   - Output files
     
-    - `output/prescreen_results/3_manually_tested_biochem_charachterized.csv`
+    - `screen_output/prescreen_results/2_manually_tested_biochem_charachterized.csv`
   
   - Estimated run time - 1 minute
-- **prescreen_4_run_PADDLE_make_supp2.py**
-  
+- **prescreen_3_run_PADDLE_make_supp3.py**
   - Description - Guides the user to clone the [PADDLE github repository](https://github.com/asanborn/PADDLE) which it then runs to predict if our prescreen sequences are strong or medium transactivation domains. Calculates precision and recall for PADDLE.
   
   - Input files
     
-    - `output/prescreen_results/3_manually_tested_hits_and_clusters_assigned.csv`
+    - `screen_output/prescreen_results/1_manually_tested_clusters_assigned.csv`
   
   - Output files
     
-    - `output/prescreen_results/4_PADDLE_precision_recall_data.csv`
+    - `screen_output/prescreen_results/3_PADDLE_precision_recall_data.csv`
     
-    - `SuppTables/Supplementary Table 2.csv`
+    - `Supplementary Files/Supplementary Data 3.xlsx`
   
   - Estimated run time - 10 minutes without GPU acceleration, 4 minutes on GPU
 - **screen_1_download_ngs.py** 
   
-  - Description - Guides the user to designate a directory to recieve the NGS reads from the screen. This is done to allow users to specify external large-storage devices. Guides the user to download the sra_toolkit. Downloads NGS reads from SRA and converts them to .fastq.gz files.
+  - Description - Guides the user to designate a directory to receive the NGS reads from the screen. This is done to allow users to specify external large-storage devices. Guides the user to download the sra_toolkit. Downloads NGS reads from SRA and converts them to .fastq.gz files.
   
   - Input files
     
-    - `ScreenData/screen_download_files.tsv`
+    - `screen_data/screen_download_files.tsv`
   
   - Output files
     
@@ -147,13 +133,13 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - `ScreenData/traits/single_domain_plasmid_traits.csv`
+    - `screen_data/traits/single_domain_plasmid_traits.csv`
     
-    - `ScreenData/conditions/single_domain_plasmid_conditions.csv`
+    - `screen_data/conditions/single_domain_plasmid_conditions.csv`
   
   - Output files
     
-    - `output/screen_results/processed_reads/single_domain_plasmid/single_domain_plasmid.csv`
+    - `screen_output/screen_results/processed_reads/single_domain_plasmid/single_domain_plasmid.csv`
   
   - Estimated run time - 1 minute
 - **screen_3_process_single_domain_screen.py**
@@ -164,13 +150,13 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - `ScreenData/traits/single_domain_screen_traits.csv`
+    - `screen_data/traits/single_domain_screen_traits.csv`
     
-    - `ScreenData/conditions/single_domain_screen_conditions.csv`
+    - `screen_data/conditions/single_domain_screen_conditions.csv`
   
   - Output files
     
-    - barcode counts located at `output/screen_results/processed_reads/single_domain_sorted/`
+    - barcode counts located at `screen_output/screen_results/processed_reads/single_domain_sorted/`
   
   - Estimated run time - 1 minute
 - **screen_4_process_bipartite_plasmid.py**
@@ -181,13 +167,13 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - `ScreenData/traits/bipartite_plasmid_traits.csv`
+    - screen_data/traits/bipartite_plasmid_traits.csv`
     
-    - `ScreenData/conditions/bipartite_plasmid_conditions.csv`
+    - `screen_data/conditions/bipartite_plasmid_conditions.csv`
   
   - Output files
     
-    - `output/screen_results/processed_reads/bipartite_plasmid/bipartite_plasmid.csv`
+    - `screen_output/screen_results/processed_reads/bipartite_plasmid/bipartite_plasmid.csv`
   
   - Estimated run time - 1 minute
 - **screen_5_process_bipartite_screen.py**
@@ -198,9 +184,9 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - `ScreenData/traits/bipartite_screen_traits.csv`
+    - `screen_data/traits/bipartite_screen_traits.csv`
     
-    - `ScreenData/conditions/bipartite_screen_conditions.csv`
+    - `screen_data/conditions/bipartite_screen_conditions.csv`
   
   - Output files
     
@@ -215,13 +201,13 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - `ScreenData/traits/tripartite_plasmid_traits.csv`
+    - screen_data/traits/tripartite_plasmid_traits.csv`
     
-    - `ScreenData/conditions/tripartite_plasmid_conditions.csv`
+    - `screen_data/conditions/tripartite_plasmid_conditions.csv`
   
   - Output files
     
-    - `output/screen_results/processed_reads/tripartite_plasmid/tripartite_plasmid.csv`
+    - `screen_output/screen_results/processed_reads/tripartite_plasmid/tripartite_plasmid.csv`
   
   - Estimated run time - 1 minute
 - **screen_7_process_tripartite_screen.py**
@@ -232,13 +218,13 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - `ScreenData/traits/tripartite_screen_traits.csv`
+    - `screen_data/traits/tripartite_screen_traits.csv`
     
-    - `ScreenData/conditions/tripartite_screen_conditions.csv`
+    - `screen_data/conditions/tripartite_screen_conditions.csv`
   
   - Output files
     
-    - barcode counts located at `output/screen_results/processed_reads/tripartite_sorted/`
+    - barcode counts located at screen_output/screen_results/processed_reads/tripartite_sorted/`
   
   - Estimated run time - 6 hours
 - **screen_8_score_screens.py**
@@ -251,11 +237,11 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Output files
     
-    - Screen bin counts, stored in `output/screen_results/screen_bin_counts/`
+    - Screen bin counts, stored in `screen_output/screen_results/screen_bin_counts/`
     
-    - Screen activation scores, stored in `output/screen_results/screen_scores/`
+    - Screen activation scores, stored in `screen_output/screen_results/screen_scores/`
     
-    - Screen tox scores, stored in `output/screen_results/screen_toxicity/`
+    - Screen tox scores, stored in `screen_output/screen_results/screen_toxicity/`
   
   - Estimated run time - 30 minutes
 - **screen_9_make_supp4_5.py**
@@ -268,94 +254,78 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     - Screen toxicity score csv's
   - Output files
     
-    - `SuppTables/Supplementary Table 4.csv`
+    - `Supplementary Files/Supplementary Data 4.xlsx`
     
-    - `SuppTables/Supplementary Table 5.csv`
+    - `Supplementary Files/Supplementary Data 5.xlsx`
   - Estimated run time - 1 minute
 - **postscreen_1_process_minilib.py**
   - Description - Processes NGS reads to produce barcode counts for the tripartite mini-screen which we performed after the main screen to validate toxicity.
   - Input files
     - .fastq.gz files
-    - `ScreenData/traits/tripartite_plasmid_traits.csv`
-    - `ScreenData/conditions/tripartite_minilib.csv`
+    - `screen_data/traits/tripartite_plasmid_traits.csv`
+    - `screen_data/conditions/tripartite_minilib.csv`
   - Output files
-    - barcode counts located at `output/screen_results/processed_reads/tripartite_minilib/`
+    - barcode counts located at `screen_output/screen_results/processed_reads/tripartite_minilib/`
   - Estimated run time - 1 minute
 - **postscreen_2_calc_tox_minilib.py**
   - Description - Calculates toxicity scores for the minilibrary constructs in multiple cell lines.
   - Input files
     - output files from postscreen_1_process_minilib.py
   - Output files
-    - minilib tox scores, stored in `output/screen_results/screen_toxicity/`
-  - Estimated run time - 1 minute
-- **combine_supps.py**
-  - Description - Combines the supp table .csvs into one .xslx for easier transmission.
-  
-  - Input files
-    
-    - Supp tables 1-9, located at `SuppTables/Supplementary table X.csv`
-  
-  - Output files
-    
-    - `SuppTables/Supplementary Tables 1-9.xlsx`
-  
+    - minilib tox scores, stored in `screen_output/screen_results/screen_toxicity/`
   - Estimated run time - 1 minute
 
 #### generate_figures
 
-- **generate_figure_2_and_supp3**
-  
-  - Description - Generates `Figure 2 and Supplementary Figure 3.xlsx` which contains analysis of various elements of the prescreen results, specifically biochemical traits and native protein location.
+- **generate_figure_2_and_supp4
+  - Description - Generates `Source Data Figure 2 and Supplementary Figure 4.xlsx` which contains analysis of various elements of the prescreen results, specifically biochemical traits and native protein location.
   
   - Input files
     
-    - `output/prescreen_results/2_manually_tested_clusters_asssigned.csv`
+    - `screen_output/prescreen_results/2_manually_tested_clusters_asssigned.csv`
     
-    - `output/prescreen_results/3_manually_tested_biochem_charachterized.csv`
+    - `screen_output/prescreen_results/3_manually_tested_biochem_charachterized.csv`
   
   - Output files
     
-    - `FigureSourceData/Figure 2 and Supplementary Figure 3.xlsx`
+    - `Figure Source Data/Source Data Figure 2 and Supplementary Figure 4.xlsx`
   
   - Estimated run time - 1 minute
-
-- **generate_figure3_and_supp456.py**
   
-  - Description - Generates `Figure 3 and Supplementary Figures 4-6.xlsx` which contains high level analysis of screen results, including the rep-rep correlations, correlation to manual validation, and distribution of activator reads in the plasmid library.
+- **generate_figure3_and_supp567.py**
+  - Description - Generates `Source Data Figure 3 and Supplementary Figures 5-7.xlsx` which contains high level analysis of screen results, including the rep-rep correlations, correlation to manual validation, and distribution of activator reads in the plasmid library.
   
   - Input files
     
-    - Screen bin counts, stored in `output/screen_results/screen_bin_counts/`
+    - Screen bin counts, stored in `screen_output/screen_results/screen_bin_counts/`
     
-    - Screen activation scores, stored in `output/screen_results/screen_scores/`
+    - Screen activation scores, stored in `screen_output/screen_results/screen_scores/`
     
-    - Manual screen validation `InputData/Manual_validation_random_clones.csv`
+    - Manual screen validation `input_data/Manual_validation_random_clones.csv`
   
   - Output files
     
-    - `FigureSourceData/Figure 3 and Supplementary Figure 4-6.xlsx`
+    - `Figure Source Data/Source Data Figure 3 and Supplementary Figures 5-7.xlsx`
   
   - Estimated run time - 1 minute
-
-- **generate_figure_4_and_supp_7_16a17.py**
   
-  - Description - Generates `Figure 4 and Supplementary Figures 7-16a and 17.xlsx` which contains analysis of toxicity within the screen, including consistency between biological replicates, correlation of toxicity when targeting different genes, toxicity as as function of copy number, as a function of target, as a function of length, as a function of activation, as a function of biochemical traits, and manual validation of toxicity.
+- **generate_figure_4_and_supp_8_18a19.py**
+  - Description - Generates `Source Data Figure 4 and Supplementary Figures 8-18a and 19.xlsx` which contains analysis of toxicity within the screen, including consistency between biological replicates, correlation of toxicity when targeting different genes, toxicity as as function of copy number, as a function of target, as a function of length, as a function of activation, as a function of biochemical traits, and manual validation of toxicity.
   
   - Input files
     
-    - Screen toxicity scores, `output/screen_results/screen_toxicity/`
+    - Screen toxicity scores, `screen_output/screen_results/screen_toxicity/`
     
-    - Manual toxicity validation `InputData/GFP_competition_results.csv`
+    - Manual toxicity validation `input_data/GFP_competition_results.csv`
   
   - Output files
     
-    - `FigureSourceData/Figure 4 and Supplementary Figures 7-16a and 17.xlsx`
+    - `Figure Source Data/Source Data Figure 4 and Supplementary Figures 8-18a and 19.xlsx`
   
   - Estimated run time - 2 minutes
-
-- **generate_figure5_and_supp16b18_21.py**
   
-  - Description - Generates Figure 5 and Supplementary Figures 16b and 18-21.xlsx which contains analysis of activation within the screen, including consistency between biological replicates, correlations of activity when targeting different genes, activation as a function of copy number, as a function of activator position, activation as a synergistic or anti-synergistic phenomenon.
+- **generate_figure5_and_supp18b20_23.py**
+  - Description - Generates `Source Data Figure 5 and Supplementary Figures 18b and 20-23.xlsx` which contains analysis of activation within the screen, including consistency between biological replicates, correlations of activity when targeting different genes, activation as a function of copy number, as a function of activator position, activation as a synergistic or anti-synergistic phenomenon.
   
   - Input files
     
@@ -363,10 +333,10 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Output files
     
-    - `FigureSourceData/Figure 5 and Supplementary Figures 16b and 18-21.xlsx`
+    - `Figure Source Data/Source Data Figure 5 and Supplementary Figures 18b and 20-23.xlsx`
   
   - Estimated run time - 1 minute
 
 ### Contact and inquiries
 
-For questions relating to this code, please contact Alexander Kratz at afk2133@cumc.columbia.edu
+For questions relating to this code, please contact Alexander Kratz at afk2133@cumc.columbia.edu or kratzalexander1313@gmail.com
