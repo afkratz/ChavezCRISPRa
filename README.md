@@ -75,7 +75,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Input files 
     
-    - input_data/Supplementary Table 1.xlsx`
+    - `input_data/Supplementary Table 1.xlsx`
   
   - Output files 
     
@@ -83,7 +83,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - `screen_output/prescreen_results/centroids.fasta`
     
-    - `screen_output/prescreen_results/2_manually_tested_clusters_assigned.csv`
+    - `screen_output/prescreen_results/1_manually_tested_clusters_assigned.csv`
   
   - Estimated run time - 1 minute
 - **prescreen_2_characterize_domains.py**
@@ -167,7 +167,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - screen_data/traits/bipartite_plasmid_traits.csv`
+    - `screen_data/traits/bipartite_plasmid_traits.csv`
     
     - `screen_data/conditions/bipartite_plasmid_conditions.csv`
   
@@ -190,7 +190,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Output files
     
-    - barcode counts located at `output/screen_results/processed_reads/bipartite_sorted/`
+    - barcode counts located at `screen_output/screen_results/processed_reads/bipartite_sorted/`
   
   - Estimated run time - 5 minutes
 - **screen_6_process_tripartite_plasmid.py**
@@ -201,7 +201,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
     
     - .fastq.gz files
     
-    - screen_data/traits/tripartite_plasmid_traits.csv`
+    - `screen_data/traits/tripartite_plasmid_traits.csv`
     
     - `screen_data/conditions/tripartite_plasmid_conditions.csv`
   
@@ -224,7 +224,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Output files
     
-    - barcode counts located at screen_output/screen_results/processed_reads/tripartite_sorted/`
+    - barcode counts located at `screen_output/screen_results/processed_reads/tripartite_sorted/`
   
   - Estimated run time - 6 hours
 - **screen_8_score_screens.py**
@@ -270,21 +270,21 @@ Before running any code, ensure that you are in the chavezcrispra environment by
 - **postscreen_2_calc_tox_minilib.py**
   - Description - Calculates toxicity scores for the minilibrary constructs in multiple cell lines.
   - Input files
-    - output files from postscreen_1_process_minilib.py
+    - output files from `postscreen_1_process_minilib.py`
   - Output files
     - minilib tox scores, stored in `screen_output/screen_results/screen_toxicity/`
   - Estimated run time - 1 minute
 
 #### generate_figures
 
-- **generate_figure_2_and_supp4
+- **generate_figure_2_and_supp4**
   - Description - Generates `Source Data Figure 2 and Supplementary Figure 4.xlsx` which contains analysis of various elements of the prescreen results, specifically biochemical traits and native protein location.
   
   - Input files
     
-    - `screen_output/prescreen_results/2_manually_tested_clusters_asssigned.csv`
+    - `screen_output/prescreen_results/1_manually_tested_clusters_asssigned.csv`
     
-    - `screen_output/prescreen_results/3_manually_tested_biochem_charachterized.csv`
+    - `screen_output/prescreen_results/2_manually_tested_biochem_charachterized.csv`
   
   - Output files
     
@@ -314,7 +314,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Input files
     
-    - Screen toxicity scores, `screen_output/screen_results/screen_toxicity/`
+    - Screen toxicity scores in `screen_output/screen_results/screen_toxicity/`
     
     - Manual toxicity validation `input_data/GFP_competition_results.csv`
   
@@ -329,7 +329,7 @@ Before running any code, ensure that you are in the chavezcrispra environment by
   
   - Input files
     
-    - Screen activation scores
+    - Screen activation scores in `screen_output/screen_results/screen_scores`
   
   - Output files
     
