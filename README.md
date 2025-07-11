@@ -1,8 +1,8 @@
-## Code supporting "Combinatorial protein engineering to identify improved CRISPR activators"
+## Code supporting "Combinatorial Protein Engineering Identifies Potent CRISPR Activators with Reduced Toxicity."
 
 ### Summary
 
-This repository contains code and configuration files required to reproduce the findings of the manuscript "Combinatorial protein engineering to identify improved CRISPR activators" by M. Giddins*, A. Kratz*, L. Wei‡, and A. Chavez‡ (*: Contributed equally, ‡: Jointly supervised)
+This repository contains code and configuration files required to reproduce the findings of the manuscript "Combinatorial Protein Engineering Identifies Potent CRISPR Activators with Reduced Toxicity." by M. Giddins*, A. Kratz*, L. Wei‡, and A. Chavez‡ (*: Contributed equally, ‡: Jointly supervised)
 
 ### Overview
 
